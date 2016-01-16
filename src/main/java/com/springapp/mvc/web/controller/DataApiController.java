@@ -3,8 +3,8 @@ package com.springapp.mvc.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.gson.Gson;
 import com.springapp.mvc.web.jsonView.Views;
-import com.springapp.mvc.web.model.NewAdvanceSearchCriteria;
 import com.springapp.mvc.web.model.MarkLineResponseBody;
+import com.springapp.mvc.web.model.NewAdvanceSearchCriteria;
 import com.springapp.mvc.web.model.ResponseBody;
 import com.springapp.mvc.web.model.SearchCriteria;
 import com.springapp.mvc.web.service.DeviceService;
@@ -169,5 +169,17 @@ public class DataApiController {
         logger.debug("DataApiController advancedSearch starts-----------");
         String result = deviceService.getResponse4AdvanceSearch(search);
         return result;
+    }
+
+    /*
+    * @function 高级搜索，接收高级搜索传入的查询对象
+    * @param advancedSearch，用户输入的搜索条件
+    * @result String，查询结果
+    */
+    @RequestMapping(value = "/api/inputSuggest")
+    public String inputSuggest(@RequestBody String search) {
+        logger.debug("DataApiController advancedSearch starts-----------");
+
+        return "";
     }
 }

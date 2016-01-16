@@ -169,7 +169,7 @@ public class DeviceService {
         if (isValidSearchCriteria(search)) {
             Map<String, Object> criteria = new HashMap<String, Object>();
             criteria.put("q", JSON.toJSON(search));
-            result = deviceDAO.getResult4AdvancedSearch(uri4AdvsSearch,criteria);
+            result = deviceDAO.getResult4AdvancedSearch(uri4AdvsSearch, criteria);
             if ("200".equals(result.getString("statuscode")) && result.getJSONArray("data").size() <= 0) {
                 result.put("statuscode", "204");
                 result.put("errmsg", "No related data!");
