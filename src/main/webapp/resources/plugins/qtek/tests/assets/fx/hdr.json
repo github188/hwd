@@ -1,0 +1,409 @@
+{
+    "meta" : {},
+    "type" : "compositor",
+    "textures" : {
+        "lenscolor" : {
+            "path" : "../textures/lensflare/lenscolor.png"
+        }
+    },
+    "nodes" : [
+        {
+            "name" : "bright",
+            "shader" : "#source(buildin.compositor.hdr.bright)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "scene",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 256,
+                        "height" : 256
+                    }
+                }
+            },
+            "parameters" : {
+                "threshold" : 1
+            }
+        },
+        {
+            "name" : "bright2",
+            "shader" : "#source(buildin.compositor.hdr.bright)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "scene",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 256,
+                        "height" : 256,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "threshold" : 50,
+                "scale" : 0.01
+            }
+        },
+        {
+            "name" : "blur_h_1",
+            "shader" : "#source(buildin.compositor.gaussian_blur_h)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "bright",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 256,
+                        "height" : 256,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "blurSize" : 1
+            }
+        },
+        {
+            "name" : "blur_v_1",
+            "shader" : "#source(buildin.compositor.gaussian_blur_v)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "blur_h_1",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 256,
+                        "height" : 256,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "blurSize" : 1
+            }
+        },
+        {
+            "name" : "blur_h_2",
+            "shader" : "#source(buildin.compositor.gaussian_blur_h)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "bright",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 128,
+                        "height" : 128,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "blurSize" : 1
+            }
+        },
+        {
+            "name" : "blur_v_2",
+            "shader" : "#source(buildin.compositor.gaussian_blur_v)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "blur_h_2",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 128,
+                        "height" : 128,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "blurSize" : 1
+            }
+        },
+        {
+            "name" : "blur_h_3",
+            "shader" : "#source(buildin.compositor.gaussian_blur_h)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "bright",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 64,
+                        "height" : 64,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "blurSize" : 1
+            }
+        },
+        {
+            "name" : "blur_v_3",
+            "shader" : "#source(buildin.compositor.gaussian_blur_v)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "blur_h_3",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 64,
+                        "height" : 64,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "blurSize" : 1
+            }
+        },
+        {
+            "name" : "bloom",
+            "shader" : "#source(buildin.compositor.blend)",
+            "type" : "filter",
+            "inputs" : {
+                "texture1" : {
+                    "node" : "blur_v_1",
+                    "pin" : "color"
+                },
+                "texture2" : {
+                    "node" : "blur_v_2",
+                    "pin" : "color"
+                },
+                "texture3" : {
+                    "node" : "blur_v_3",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 128,
+                        "height" : 128,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "weight1" : 0.5,
+                "weight2" : 0.3,
+                "weight3" : 0.1
+            }
+        },
+        {
+            "name" : "lensflare",
+            "shader" : "#source(buildin.compositor.lensflare)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "bright2",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 128,
+                        "height" : 128,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "textureSize" : [256, 256],
+                "lensColor" : "#lenscolor"
+            }
+        },
+        {
+            "name" : "lensflare_blur_h",
+            "shader" : "#source(buildin.compositor.gaussian_blur_h)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "lensflare",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 128,
+                        "height" : 128,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "blurSize" : 2
+            }
+        },
+        {
+            "name" : "lensflare_blur_v",
+            "shader" : "#source(buildin.compositor.gaussian_blur_v)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "lensflare_blur_h",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 128,
+                        "height" : 128,
+                        "type" : 36193
+                    }
+                }
+            },
+            "parameters" : {
+                "blurSize" : 2
+            }
+        },
+        {
+            "name" : "tonemapping",
+            "shader" : "#source(buildin.compositor.hdr.tonemapping)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "scene",
+                    "pin" : "color"
+                },
+                "bloom" : {
+                    "node" : "bloom",
+                    "pin" : "color"
+                },
+                "lensflare" : {
+                    "node" : "lensflare_blur_v",
+                    "pin" : "color"
+                },
+                "lum" : {
+                    "node" : "lum_adaption",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : "100%width",
+                        "height" : "100%height"
+                    }
+                }
+            }
+        },
+
+        {
+            "name" : "log_lum",
+            "shader" : "#source(buildin.compositor.hdr.log_lum)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "scene",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 128,
+                        "height" : 128,
+                        "type" : 36193
+                    }
+                }
+            }
+        },
+        {
+            "name" : "avg_log_lum",
+            "shader" : "#source(buildin.compositor.output)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "log_lum",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 1,
+                        "height" : 1,
+                        "type" : 36193
+                    }
+                }
+            }
+        },
+        {
+            "name" : "lum_adaption",
+            "shader" : "#source(buildin.compositor.hdr.lum_adaption)",
+            "type" : "filter",
+            "inputs" : {
+                "adaptedLum" : {
+                    "node" : "lum_adaption",
+                    "pin" : "color"
+                },
+                "currentLum" : {
+                    "node" : "avg_log_lum",
+                    "pin" : "color"
+                }
+            },
+            "outputs" : {
+                "color" : {
+                    "parameters" : {
+                        "width" : 1,
+                        "height" : 1,
+                        "type" : 36193
+                    },
+                    "keepLastFrame" : true
+                }
+            }
+        },
+        {
+            "name" : "FXAA",
+            "shader" : "#source(buildin.compositor.fxaa)",
+            "type" : "filter",
+            "inputs" : {
+                "texture" : {
+                    "node" : "tonemapping",
+                    "pin" : "color"
+                }
+            },
+            "parameters": {
+                "viewportSize": ["100%width", "100%height"]
+            }
+        }
+    ]
+}

@@ -1,0 +1,258 @@
+@charset "UTF-8";
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    /*width: 100%;*/
+
+}
+
+#mapDiv {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #fff;
+}
+
+div.navbar {
+    opacity: 0.4;
+}
+
+div.navbar:hover {
+    opacity: 1;
+}
+
+/*side bar*/
+#sidebar {
+    display: none;
+    position: absolute;
+    width: 20rem;
+    /*width: auto;*/
+    padding-top: .5rem;
+    top: 4rem;
+    right: 1px;
+    z-index: 100;
+    /*padding: 0 1px;*/
+    background-color: rgba(255, 255, 255, .7);
+    color: #333;
+    box-shadow: -5px 5px 5px 5px #959595;
+    box-sizing: content-box;
+    border-radius: 3px;
+}
+
+/*#sidebar.close {
+    right: -19rem;
+}*/
+
+#sidebar .close:focus, .close:hover {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    filter: alpha(opacity=60);
+    opacity: .6
+}
+
+#sidebar .tool {
+    position: absolute;
+    height: 100%;
+    width: 1.2rem;
+    text-align: center;
+    float: left;
+}
+
+#sidebar .tool:hover, #sidebar .tool:focus {
+    /*background-color: rgba(149, 149, 149, .4);*/
+}
+
+#sidebar .tool div {
+    display: block;
+    position: absolute;
+    line-height: 100%;
+    background-color: rgba(149, 149, 149, .8);
+    /*font-size: 1.3rem;*/
+    /*border: 2px solid #ff0000;*/
+}
+
+#sidebar .xwcms {
+    margin-left: -.1rem;
+    -webkit-border-radius: 110px;
+    border-radius: 110px;
+    -webkit-transition: -webkit-transform 0.5s ease-out;
+    -moz-transition: -moz-transform 0.5s ease-out;
+    -o-transition: -o-transform 0.5s ease-out;
+    -ms-transition: -ms-transform 0.5s ease-out;
+    transition: -ms-transform 0.5s ease-out;
+}
+
+#sidebar .xwcms:hover {
+    margin-left: -.1rem;
+    -webkit-transform: rotateZ(180deg);
+    -moz-transform: rotateZ(180deg);
+    -o-transform: rotateZ(180deg);
+    -ms-transform: rotateZ(180deg);
+    transform: rotateZ(180deg);
+}
+
+#sidebar .content {
+    padding: 0 2px;
+    margin-left: 1.2rem;
+    /*border: 1px solid red;*/
+}
+
+#sidebar .content div {
+    padding: 2px;
+    margin: 0;
+}
+
+#sidebar .content > div:last-child {
+    text-align: right;
+}
+
+#sidebar .content div a {
+    color: #228DFF;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+#sidebar .content div a:hover {
+    padding-right: 3em;
+    font-size: 1.1em;
+    color: #ff7f50;
+    text-shadow: 0 0 2px #eee;
+    -webkit-animation: neon2 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon2 1.5s ease-in-out infinite alternate;
+    animation: neon2 1.5s ease-in-out infinite alternate;
+}
+
+#sidebar .content h3 {
+    padding-bottom: 5px;
+    margin: 1rem 0 0 0;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bolder;
+    /*background: #ffffff;*/
+}
+
+#sidebar .content .ipList {
+    max-height: 20rem;
+    margin-bottom: .5rem;
+    overflow: auto;
+    /*background-color: rgba(149, 149, 149, .4);*/
+}
+
+#sidebar .content form input {
+    display: inline-block;
+    width: 100%;
+    border: 1px inset;
+    border-radius: 2px;
+}
+
+#sidebar .content .ipList ul {
+    padding: 5px;
+}
+
+#sidebar .content .ipList ul li:nth-child(even) {
+    background-color: rgba(210, 210, 210, .1);
+}
+
+/*#sidebar .content .ipList ul li a {
+    color: hsl(220, 87%, 53%);
+}
+
+#sidebar .content .ipList ul li a:hover {
+    font-size: 1.1em;
+    font-weight: bolder;
+    text-shadow: 0 0 5px red;
+}*/
+
+#sidebar .content .detail {
+    display: none;
+    font-size: .8rem;
+    overflow: auto;
+}
+
+#sidebar .content .detail .row {
+    display: none;
+    padding: 0;
+    margin: 0;
+}
+
+.border {
+    border: 1px solid red;
+    padding: 0;
+    margin: 0;
+}
+
+#borderContainer {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+/* center the image in the popup */
+.esriViewPopup .gallery {
+    margin: 0 auto !important;
+}
+
+/*不显示右下角的文字*/
+.esriControlsBR {
+    display: none;
+    color: rgb(255, 200, 0);
+    color: rgb(255, 125, 3);
+    color: rgb(255, 23, 58);
+    color: rgb(204, 0, 184);
+    color: rgb(50, 100, 200);
+    color: rgba(133, 133, 133, 1);
+}
+
+#mapSearchForm {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: 5rem;
+    left: 5rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+#mapSearchForm .input-group {
+    width: 40rem;
+}
+
+#homeButton {
+    position: absolute;
+    top: 5rem;
+    left: 2rem;
+    z-index: 50;
+}
+
+.HomeButton .home {
+    width: 27px;
+    height: 27px;
+}
+
+/* Geocoder */
+.simpleGeocoder .esriGeocoderContainer {
+    width: 20rem;
+}
+
+/* Zoom buttons *//*
+
+.esriSimpleSliderTL {
+    left: 16px;
+}
+*/
+
+/* Popup */
+.esriPopup.light .contentPane {
+    padding-top: 0;
+}
+
+.esriPopup.light .contentPane > p {
+    margin: 5px 0;
+}

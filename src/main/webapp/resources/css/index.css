@@ -1,0 +1,31 @@
+@charset "UTF-8";
+#main .home-search {
+    display: block;
+    width: 52rem;
+    margin: 15% auto;
+    color: #eee;
+    /*margin: auto;*/
+}
+
+#search_form {
+    display: none;
+}
+
+.advanced-search-outer {
+    display: table;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 29px;
+    width: 100px;
+    word-break: break-all;
+    float: left;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,269 @@
+@charset "UTF-8";
+/*color: #6db33f, #3f4657, #452525*/
+#main,
+#globe4DeviceHolder {
+    height: 100%;
+    width: 100%;
+}
+
+#main span {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.color {
+    background: #ff7f50;
+    background: #87cefa;
+    background: #da70d6;
+    background: #32cd32;
+    background: #6495ed;
+    background: #ff69b4;
+    background: #ba55d3;
+    background: #ffa500;
+    background: #cd5c5c;
+    background: #1e90ff;
+    background: #ff6347;
+    background: #7b68ee;
+    background: #ffd700;
+    background: #6b8e23;
+    background: #ff00ff;
+    background: #3cb371;
+    background: #b8860b;
+    background: #40e0d0;
+    background: #00fa9a;
+
+    background: #ff0000;
+    background: #00ff00;
+    background: #ffff00;
+    background: #a9a9a9;
+}
+
+/*-----------colors-------------*/
+/*监控设备*/
+.monitor {
+    color: #00ff00;
+}
+
+.monitor-no-control {
+    background-color: hsl(128, 99%, 65%);
+}
+
+.monitor-with-picture {
+    background-color: hsl(128, 99%, 43%);
+}
+
+.monitor-control {
+    background-color: hsl(129, 100%, 31%);
+}
+
+.monitor-backdoor {
+    background-color: hsl(128, 100%, 17%);
+}
+
+/*工控设备*/
+.plc {
+    color: #ff0000;
+}
+
+.plc-no-control {
+    background-color: hsla(5, 73%, 74%, 1);
+}
+
+.plc-with-picture {
+    background-color: hsla(6, 79%, 63%, 1);
+}
+
+.plc-control {
+    background-color: hsla(6, 73%, 53%, 1);
+}
+
+.plc-backdoor {
+    background-color: hsla(6, 100%, 43%, 1);
+}
+
+/*保密/涉密设备*/
+.secret {
+    color: #ff00ff;
+}
+
+.secret-no-control {
+    background-color: hsl(273, 97%, 87%);
+}
+
+.secret-with-picture {
+    background-color: hsl(271, 100%, 73%);
+}
+
+.secret-control {
+    background-color: hsl(272, 100%, 60%);
+}
+
+.secret-backdoor {
+    background-color: hsl(272, 99%, 47%);
+}
+
+/*网络设备*/
+.net-device {
+    color: #000000
+}
+
+.net-device-no-control {
+    background-color: hsl(0, 0%, 58%);
+}
+
+.net-device-with-picture {
+    background-color: hsl(0, 0%, 30%);
+}
+
+.net-device-control {
+    background-color: hsl(0, 0%, 10%);
+}
+
+.net-device-backdoor {
+    background-color: hsl(0, 0%, 0%);
+}
+
+/*导航分类*/
+.panel, .panel-body, .panel-heading, .h4 {
+    background-color: transparent;
+}
+
+#legend {
+    display: inline-block;
+    z-index: 999;
+    position: absolute;
+    top: 5rem;
+    left: 2rem;
+    padding: 1rem;
+    font-size: 1.4rem;
+    background-color: transparent;
+    /*color: white;*/
+    -webkit-box-shadow: 10px 11px 17px 1px rgba(0, 0, 0, 0.69);
+    -moz-box-shadow: 10px 11px 17px 1px rgba(0, 0, 0, 0.69);
+    box-shadow: 10px 11px 17px 1px rgba(0, 0, 0, 0.3);
+}
+
+#legend .item {
+    border-bottom: 1px dashed #452525;
+}
+
+#legend a,
+#brand a {
+    display: inline-block;
+    /*width: 100%;*/
+    height: 100%;
+    padding: .3rem .5rem;
+    margin: 0 auto;
+    vertical-align: middle;
+    color: #fff;
+    text-decoration: none;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+/*#legend div #monitorTitle {
+    color: green;
+    font-weight: bold;
+}*/
+
+/*#legend a:before {
+    content: '\20';
+}*/
+
+#legend a:hover,
+#brand a:hover {
+    box-shadow: inset 0 0 10px #ee0;
+}
+
+#legend a:focus,
+#brand a:focus {
+    border: 1px solid #ee0;
+    box-shadow: inset 0 0 10px #ee0;
+}
+
+#legend > div > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: .5rem 1rem;
+}
+
+#legend > div > a > i {
+    margin-left: 1rem;
+}
+
+#legend ul li span {
+    border: none;
+}
+
+#legend ul {
+    padding-left: .5rem;
+    /*background-color: #452525;*/
+    /*border-radius: 4px;*/
+}
+
+#legend ul li {
+    line-height: 1.8rem;
+    font-size: 1.2rem;
+    list-style: none;
+}
+
+#legend ul li:first-child {
+    margin-top: .3rem;
+    padding-top: .3rem;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+#legend ul li:last-child {
+    padding-bottom: .3rem;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+/*brand*/
+#brand {
+    z-index: 1001;
+    position: fixed;
+    bottom: 3rem;
+    right: 5rem;
+}
+
+#brand .label {
+    display: block;
+    margin: .5rem auto;
+    padding: .5rem .3rem .3rem .3rem;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    /*color: hsla(96, 48%, 47%, 1);*/
+}
+
+#brand a span {
+    border: none;
+}
+
+.brand1 {
+    background: #ff69b4;
+}
+
+.brand2 {
+    background: orange;
+}
+
+.brand3 {
+    background: cyan;
+}

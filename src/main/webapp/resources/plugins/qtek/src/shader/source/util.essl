@@ -1,0 +1,95 @@
+// Use light attenuation formula in
+// http://blog.slindev.com/2011/01/10/natural-light-attenuation/
+@export buildin.util.calculate_attenuation
+
+uniform float attenuationFactor : 5.0;
+
+float lightAttenuation(float dist, float range)
+{
+    float attenuation = 1.0;
+    attenuation = dist*dist/(range*range+1.0);
+    float att_s = attenuationFactor;
+    attenuation = 1.0/(attenuation*att_s+1.0);
+    att_s = 1.0/(att_s+1.0);
+    attenuation = attenuation - att_s;
+    attenuation /= 1.0 - att_s;
+    return clamp(attenuation, 0.0, 1.0);
+}
+
+@end
+
+//http://codeflow.org/entries/2012/aug/02/easy-wireframe-display-with-barycentric-coordinates/
+@export buildin.util.edge_factor
+
+float edgeFactor(float width)
+{
+    vec3 d = fwidth(v_Barycentric);
+    vec3 a3 = smoothstep(vec3(0.0), d * width, v_Barycentric);
+    return min(min(a3.x, a3.y), a3.z);
+}
+
+@end
+
+// Pack depth
+// Float value can only be [0.0 - 1.0) ?
+@export buildin.util.encode_float
+vec4 encodeFloat( const in float depth )
+{
+
+    const vec4 bitShifts = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );
+
+    const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );
+    vec4 res = fract( depth * bitShifts );
+    res -= res.xxyz * bit_mask;
+
+    return res;
+}
+@end
+
+@export buildin.util.decode_float
+float decodeFloat(const in vec4 colour)
+{
+    const vec4 bitShifts = vec4( 1.0 / ( 256.0 * 256.0 * 256.0 ), 1.0 / ( 256.0 * 256.0 ), 1.0 / 256.0, 1.0 );
+    return dot(colour, bitShifts);
+}
+@end
+
+// http://graphicrants.blogspot.com/2009/04/rgbm-color-encoding.html
+@export buildin.util.rgbm_decode
+vec3 RGBMDecode(vec4 rgbm, float range) {
+  return range * rgbm.rgb * rgbm.a;
+}
+@end
+
+@export buildin.util.rgbm_encode
+vec4 RGBMEncode(vec3 color, float range) {
+    vec4 rgbm;
+    color *= 1.0 / range;
+    rgbm.a = clamp(max(max(color.r, color.g), max(color.b, 1e-6 ) ), 0.0, 1.0);
+    rgbm.a = ceil(rgbm.a * 255.0) / 255.0;
+    rgbm.rgb = color / rgbm.a;
+    return rgbm;
+}
+@end
+
+@export buildin.chunk.skin_matrix
+
+// Weighted Sum Skinning Matrix
+mat4 skinMatrixWS;
+if (joint.x >= 0.0)
+{
+    skinMatrixWS = skinMatrix[int(joint.x)] * weight.x;
+}
+if (joint.y >= 0.0)
+{
+    skinMatrixWS += skinMatrix[int(joint.y)] * weight.y;
+}
+if (joint.z >= 0.0)
+{
+    skinMatrixWS += skinMatrix[int(joint.z)] * weight.z;
+}
+if (joint.w >= 0.0)
+{
+    skinMatrixWS += skinMatrix[int(joint.w)] * (1.0-weight.x-weight.y-weight.z);
+}
+@end

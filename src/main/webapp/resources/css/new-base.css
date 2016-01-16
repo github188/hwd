@@ -1,0 +1,27 @@
+@charset "UTF-8";
+/*
+#6db33f → hsla(96,48%,47%,1)，绿色
+#3f404d → hsla(236,10%, 27%,1)，nav色
+#3f4657 → hsla(223, 16%, 29%, 1)，dark背景色
+#452525 → ，hsla(0, 30%, 21%, 1)，light背景色
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, 宋体;
+    color: #eee;
+    background: no-repeat top center fixed linear-gradient(#3f4657, #452525);
+}
+
+
+
