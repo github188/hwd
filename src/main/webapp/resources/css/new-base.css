@@ -32,7 +32,7 @@ a {
     text-decoration: none;
 }
 
-a.focus, a:focus, a.hover, a:hover {
+a.hover, a:hover {
     color: #006fa6 !important;
     font-size: 1.5rem;
     text-decoration: none;
@@ -218,12 +218,59 @@ a.visited, a:visited {
 
 /*-------------------------- ↓ main -------- -----------------------*/
 #main {
-    padding-top: 5rem;
+    padding-top: 4rem;
     /*background: #ffffff;*/
     height: 100%;
 }
 
-/*-------------------------- ↓ main  -------------------------------*/
+#main .advs-link-main {
+    display: inline-block;
+    position: relative;
+    padding: .6rem;
+    z-index: 2017;
+    /*background-color: #fff;*/
+    border-bottom: 1px solid #287bbc;
+}
+
+#main .advs-link-main .advs-indicator {
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    font-size: 18px;
+    color: #13b7f1;
+    content: "\e025";
+    margin-top: -4px;
+    height: 16px;
+    width: 14px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+}
+
+#main .advs-link-main .advs-indicator:before {
+    margin-top: -4px;
+    vertical-align: middle;
+    display: inline-block;
+    zoom: 1;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    font-size: 18px;
+    color: #13b7f1;
+    content: "\e025";
+}
+
+#main .advs-link-main.open .advs-indicator.available:before {
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    font-size: 18px;
+    color: #13b7f1;
+    content: "\e024";
+}
+
+/*-------------------------- main ↑ -------------------------------*/
 
 /*-------------------------- ↓ loading -----------------------------*/
 #main .processing-overlay {
@@ -237,7 +284,7 @@ a.visited, a:visited {
     /*display: none;*/
     z-index: 80;
     position: absolute;
-    top: 8rem;
+    top: 7rem;
     width: 0;
     padding-left: 0;
     padding-bottom: 4rem;

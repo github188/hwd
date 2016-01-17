@@ -4,8 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.springapp.mvc.web.model.Device;
-import com.springapp.mvc.web.model.NewDevice;
 import com.springapp.mvc.web.model.Device4MapOrGlobe;
+import com.springapp.mvc.web.model.NewAdvanceSearchCriteria;
+import com.springapp.mvc.web.model.NewDevice;
 import com.springapp.mvc.web.util.MyHttpClient;
 import com.springapp.mvc.web.util.RestClient;
 import org.slf4j.Logger;
@@ -405,6 +406,7 @@ public class DeviceDAO {
         if ("200".equals(result.getString("statuscode"))) {
             result = rawData2ResponseBody(result);
         }
+//        System.out.println("dao result: " + result.toString());
         return result;
     }
 
@@ -664,23 +666,26 @@ public class DeviceDAO {
                                 brand = item.getString("device_brand"),
                                 model = item.getString("device_model");
                         //(1.b)tags.type
-                        if (!contains(tags, type)) {
+                        if (!"".equals(type) && !contains(tags, type)) {
                             tags.add(type);
                         }
                         //(1.c)tags.brand
-                        if (!contains(tags, brand)) {
+                        if (!"".equals(brand) && !contains(tags, brand)) {
                             tags.add(brand);
                         }
                         //(1.d)tags.model
-                        if (!contains(tags, model)) {
+                        if (!"".equals(model) && !contains(tags, model)) {
                             tags.add(model);
                         }
                     }
                     device.setPorts(ports);
                 }
                 //(1.e)tags.os
-                if (!"".equals(os_info.getString("os"))) {
-                    tags.add(os_info.getString("os"));
+                if (os_info.containsKey("os")) {
+                    String os = os_info.getString("os");
+                    if (!"".equals(os) && !contains(tags, os)) {
+                        tags.add(os_info.getString("os"));
+                    }
                 }
                 //(7)vuls
                 if (vul_info.size() > 0) {
@@ -702,6 +707,8 @@ public class DeviceDAO {
 
                 //(8)lastModified (timestamp)
                 device.setTimestamp(d.getString("lastModified"));
+                //(1.f)
+                device.setTags(tags);
                 devices.add(device);
             }
             result.put("data", devices);
@@ -721,17 +728,15 @@ public class DeviceDAO {
         return has;
     }
 
-/*    public static void main(String[] args) {
+    public static void main(String[] args) {
         DeviceDAO dd = new DeviceDAO();
         Map<String, Object> criteria = new HashMap<String, Object>();
-        AdvanceSearchCriteria advs = new AdvanceSearchCriteria();
-        advs.setIp("1.1.1.1");
-        criteria.put("q", JSON.toJSON(advs));
+        String json = "{\"must\":\"\",\"should\":\"\",\"mustnot\":\"\",\"ip\":\"1.2.3%202.3.4-3.4.5\",\"country\":\"\",\"province\":\"\",\"city\":\"\",\"type\":\"\",\"brand\":\"\",\"model\":\"\",\"protocol\":\"\",\"port\":\"\",\"banner\":\"\",\"vulId\":\"\",\"vulType\":\"\",\"vulName\":\"\",\"os\":\"\",\"timestamp\":\"NaN-NaN\"}";
+        criteria.put("q", JSON.parseObject(json));
+
 //        String search = "{\"geo\":\"polygon(69.9199218750096 56.629998264227424,114.04101562499787 56.629998264227424,158.1621093749862 56.629998264227424,158.1621093749862 -8.88878176349202,114.04101562499787 -8.88878176349202,69.9199218750096 -8.88878176349202)\",\"lossycompress\":1,\"page\":1,\"permitfilter\":\"\",\"typefilter\":\"\",\"wd\":\"* \",\"zoomlevel\":6}";
-//
         //dd.getDevices4List(criteria);
         //dd.getResponse4Globe(JSONObject.fromObject(search).toString());
         System.out.println(dd.getResult4AdvancedSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
-    }*/
-
+    }
 }

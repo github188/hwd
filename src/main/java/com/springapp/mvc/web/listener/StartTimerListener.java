@@ -1,6 +1,6 @@
 package com.springapp.mvc.web.listener;
 
-import com.springapp.mvc.web.model.Suggestions;
+import com.springapp.mvc.web.model.NewSuggestions;
 import com.springapp.mvc.web.timer.SuggestionTimer;
 
 import javax.servlet.ServletContextEvent;
@@ -28,7 +28,7 @@ public class StartTimerListener implements ServletContextListener {
 //        System.out.println("--------------------------timer.init-----------------------");
         suggTimer = new SuggestionTimer();
         suggTimer.execute();
-        System.out.println(Suggestions.getSuggestions());
+        System.out.println(NewSuggestions.getSuggestions());
     }
 
     /*

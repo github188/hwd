@@ -153,10 +153,10 @@ public class DataApiController {
     */
     @JsonView(Views.Public.class)
     @RequestMapping(value = "/api/getResponse4Map")
-    public String getResponse4Map(@RequestBody SearchCriteria search) {
+    public String getResponse4Map(@RequestBody SearchCriteria criteria) {
         logger.debug("DataApiController ==>> getResponse4Map starts-----------");
-        System.out.println("Controller ==>> getResponse4Map starts-----------" + JSONObject.fromObject(search));
-        String result = deviceService.getResponse4Map(search);
+        System.out.println("Controller ==>> getResponse4Map starts-----------" + JSONObject.fromObject(criteria));
+        String result = deviceService.getResponse4Map(criteria);
 //        System.out.println("map controller result length: " + result);
         return result;
     }
@@ -168,9 +168,10 @@ public class DataApiController {
      * @result String，查询结果
      */
     @RequestMapping(value = "/api/advancedSearch")
-    public String advancedSearch(@RequestBody NewAdvanceSearchCriteria search) {
+    public String advancedSearch(@RequestBody NewAdvanceSearchCriteria criteria) {
         logger.debug("DataApiController advancedSearch starts-----------");
-        String result = deviceService.getResponse4AdvanceSearch(search);
+        String result = deviceService.getResponse4AdvanceSearch(criteria);
+//        System.out.println(result);
         return result;
     }
 

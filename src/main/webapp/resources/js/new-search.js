@@ -18,7 +18,7 @@ function newSearch(obj) {
     //（2）查询数据
     $.ajax({
         url: obj.url,
-        type: "POST",
+        type: "post",
         contentType: "application/json",
         dataType: "json",
         timeout: 50000,
@@ -55,4 +55,17 @@ function newSearch(obj) {
             disableButton(obj.searchButton, false);
         }
     });
+
+    //启用/禁用指定的按钮
+    function disableButton(button, flag) {
+        if (button) {
+            button.prop("disabled", flag);
+        }
+    }
+
+    function setSearchInputValue(input, value) {
+        if (input) {
+            input.val(value);
+        }
+    }
 }

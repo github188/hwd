@@ -1,3 +1,4 @@
+var $advs = $('.advs-wrapper');
 $(function () {
     "use strict";
     suggestCursorToggle();
@@ -12,15 +13,20 @@ $(function () {
     //advanced search link
     $('.advs-link').on('click', function (e) {
         e.preventDefault();
-        var $advs = $('.advs-wrapper');
-        if (!($advs.hasClass('acitve'))) {
+        if (!($advs.hasClass('active'))) {
             $advs.addClass('active');
+        } else {
+            $advs.removeClass('active');
         }
     });
     //advanced search form
     $('#advs').on('submit', function (e) {
         e.preventDefault();
-        console.log(e);
+        advsSearch(this);
+    });
+    //advanced close button
+    $('.close-advs').on('click', function () {
+        $advs.removeClass('active');
     });
 });
 
@@ -38,7 +44,11 @@ function inputSuggest(input, sourceURL) {
                 limit: 10,
                 filter: function (list) {
                     return $.map(list, function (item) {
-                        return $.isArray(item) && item.length == 2 ? {title: item[0], desc: item[1], value: item[0]} : {
+                        return $.isArray(item) && item.length == 2 ? {
+                            title: item[0],
+                            desc: item[1],
+                            value: item[0]
+                        } : {
                             title: item,
                             value: item
                         }
@@ -49,7 +59,11 @@ function inputSuggest(input, sourceURL) {
                 url: dataSource + '%QUERY',
                 filter: function (resp) {
                     return $.map(resp.data, function (item) {
-                        return $.isArray(item) && item.length == 2 ? {title: item[0], desc: item[1], value: item[0]} : {
+                        return $.isArray(item) && item.length == 2 ? {
+                            title: item[0],
+                            desc: item[1],
+                            value: item[0]
+                        } : {
                             title: item,
                             value: item
                         }
@@ -93,7 +107,46 @@ function suggestCursorToggle() {
     });
 }
 
+function advsSearch(form) {
+    var success = function (data) {
+            console.log('success', data);
+        },
+        error = function (data) {
+            console.log('error', data);
+        },
+        noData = function (data) {
+            console.log('nodata', data);
+        };
+    var criteria = {}, ipSegment = '', timeSegment = '',
+        inputs = $(form).find('fieldset').find('input');
 
+    for (var i = 0; i < inputs.length; i++) {
+        var key = inputs[i].id;
+        if (key.indexOf("ip_") >= 0) {
+            ipSegment += $(inputs[i]).val() + '-';
+            continue;
+        }
+        if (key.indexOf('time_') >= 0) {
+            var timestamp = (Date.parse(new Date($(inputs[i]).val()))) / 1000;
+            timeSegment += timestamp + '-';
+            continue;
+        }
+        criteria[key] = $(inputs[i]).val();
+    }
+    criteria['ip'] += ' ' + ipSegment.replace(/^-|-$/g, '');
+    criteria['timestamp'] = timeSegment.substr(0, timeSegment.length - 1);
+
+    //arguments
+    var obj = {};
+    obj["url"] = 'api/advancedSearch';
+    obj['criteria'] = criteria;
+    obj['success'] = success;
+    obj['error'] = error;
+    obj['noDataFunc'] = noData;
+    obj['searchButton'] = $('.submit-advs');
+    console.log(obj);
+    newSearch(obj);
+}
 
 
 

@@ -13,11 +13,11 @@ import java.util.Set;
  * Created by lyp on 2016/1/17.
  * 从搜索服务器获取提示信息
  */
-public class Suggestions {
+public class NewSuggestions {
     public static List<String> suggestions = new ArrayList<String>();
     private static String suggestionURL = AppConfig.suggestionURL;
 
-    public Suggestions() {
+    public NewSuggestions() {
         //可以用来初始化映射表
     }
 

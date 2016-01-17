@@ -42,7 +42,12 @@
     </div>
 </div>
 <div id="main">
-    <div class="advs-wrapper">
+    <a class="advs-link advs-link-main" href="#" class="advs-link mod open" aria-role="button"
+       aria-controls="advs-wrapper">精确搜索
+        <%--<span class="advs-indicator available">Advanced Search is available</span>--%>
+    </a>
+
+    <div class="advs-wrapper" id="advs-wrapper">
         <h3>精确搜索</h3>
 
         <div class="advs-controls">
@@ -55,17 +60,17 @@
                     <legend>使用以下条件来搜索</legend>
                     <div class="row form-group">
                         <label class="col-sm-2" for="must">包含以下全部字词：</label>
-                        <input type="text" class="col-sm-8" id="must">
+                        <input type="text" class="col-sm-8" id="must" name="must">
                         <span class="col-sm-2">多个字词用空格分隔</span>
                     </div>
                     <div class="row form-group">
                         <label class="col-sm-2" for="should">包含以下任意字词：</label>
-                        <input type="text" class="col-sm-8" id="should">
+                        <input type="text" class="col-sm-8" id="should" name="should">
                         <span class="col-sm-2">多个字词用空格分隔</span>
                     </div>
                     <div class="row form-group">
-                        <label class="col-sm-2" for="not">不包含以下任意字词：</label>
-                        <input type="text" class="col-sm-8" id="not">
+                        <label class="col-sm-2" for="mustnot">不包含以下任意字词：</label>
+                        <input type="text" class="col-sm-8" id="mustnot" name="mustnot">
                         <span class="col-sm-2">多个字词用空格分隔</span>
                     </div>
                 </fieldset>
@@ -77,11 +82,11 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <label class="col-sm-1" for="ip">单IP</label>
-                                <input type="text" id="ip" class="col-sm-3">
+                                <input type="text" id="ip" class="col-sm-3" name="ip" value="1.2.3">
                                 <label class="col-sm-1" for="ip_from">/ 从</label>
-                                <input type="text" id="ip_from" class="col-sm-3">
+                                <input type="text" id="ip_from" class="col-sm-3" name="ip_from" value="2.3.4">
                                 <label class="col-sm-1" for="ip_to">到</label>
-                                <input type="text" id="ip_to" class="col-sm-3">
+                                <input type="text" id="ip_to" class="col-sm-3" name="ip_to" value="3.4.5">
                             </div>
                         </div>
                     </div>
@@ -91,11 +96,11 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <label class="col-sm-1" for="country">国家</label>
-                                <input type="text" id="country" class="col-sm-3" placeholder="中国 印度 巴西">
+                                <input type="text" id="country" name="country" class="col-sm-3" placeholder="中国 印度 巴西">
                                 <label class="col-sm-1" for="province">省份</label>
-                                <input type="text" id="province" class="col-sm-3" placeholder="北京 南京">
+                                <input type="text" id="province" name="province" class="col-sm-3" placeholder="北京 南京">
                                 <label class="col-sm-1" for="city">城市</label>
-                                <input type="text" id="city" class="col-sm-3" placeholder="北京 连云港">
+                                <input type="text" id="city" name="city" class="col-sm-3" placeholder="北京 连云港">
                             </div>
                         </div>
                     </div>
@@ -105,11 +110,11 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <label class="col-sm-1" for="type">类型</label>
-                                <input type="text" id="type" class="col-sm-3">
+                                <input type="text" id="type" class="col-sm-3" name="type">
                                 <label class="col-sm-1" for="brand">品牌</label>
-                                <input type="text" id="brand" class="col-sm-3">
+                                <input type="text" id="brand" class="col-sm-3" name="brand">
                                 <label class="col-sm-1" for="model">型号</label>
-                                <input type="text" id="model" class="col-sm-3">
+                                <input type="text" id="model" class="col-sm-3" name="model">
                             </div>
                         </div>
                     </div>
@@ -119,11 +124,12 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <label class="col-sm-1" for="protocol">协议</label>
-                                <input type="text" id="protocol" class="col-sm-3" placeholder="http ftp">
+                                <input type="text" id="protocol" name="protocol" class="col-sm-3"
+                                       placeholder="http ftp">
                                 <label class="col-sm-1" for="port">端口</label>
-                                <input type="text" id="port" class="col-sm-3" placeholder="80 21">
+                                <input type="text" id="port" class="col-sm-3" name="port" placeholder="80 21">
                                 <label class="col-sm-1" for="banner">标语</label>
-                                <input type="text" id="banner" class="col-sm-3">
+                                <input type="text" id="banner" class="col-sm-3" name="banner">
                             </div>
                         </div>
                     </div>
@@ -132,18 +138,18 @@
 
                         <div class="col-sm-8">
                             <div class="row">
-                                <label class="col-sm-1" for="vul_id">ID</label>
-                                <input type="text" id="vul_id" class="col-sm-3">
-                                <label class="col-sm-1" for="vul_type">类型</label>
-                                <input type="text" id="vul_type" class="col-sm-3">
-                                <label class="col-sm-1" for="vul_name">名称</label>
-                                <input type="text" id="vul_name" class="col-sm-3">
+                                <label class="col-sm-1" for="vulId">ID</label>
+                                <input type="text" id="vulId" class="col-sm-3" name="vulId">
+                                <label class="col-sm-1" for="vulType">类型</label>
+                                <input type="text" id="vulType" class="col-sm-3" name="vulType">
+                                <label class="col-sm-1" for="vulName">名称</label>
+                                <input type="text" id="vulName" class="col-sm-3" name="vulName">
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
                         <label class="col-sm-2" for="os">操作系统：</label>
-                        <input type="text" class="col-sm-8" id="os">
+                        <input type="text" class="col-sm-8" id="os" name="os">
                     </div>
                     <div class="row form-group">
                         <label class="col-sm-2">最后更新日期：</label>
@@ -151,9 +157,9 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <label class="col-sm-1" for="time_from">从</label>
-                                <input type="datetime-local" id="time_from" class="col-sm-5">
+                                <input type="date" id="time_from" name="time_from" class="col-sm-5">
                                 <label class="col-sm-1" for="time_to">到</label>
-                                <input type="datetime-local" id="time_to" class="col-sm-5">
+                                <input type="date" id="time_to" name="time_to" class="col-sm-5">
                             </div>
                         </div>
                     </div>
