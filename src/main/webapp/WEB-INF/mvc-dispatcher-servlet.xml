@@ -15,20 +15,24 @@
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+    <!-- 配置文件 -->
+    <!--<beans>
+        <context:property-placeholder location="classpath:com/example/config.properties"/>
+    </beans>-->
     <!-- Error handling for restTemplate -->
     <bean class="org.springframework.web.client.RestTemplate" id="restTemplate">
         <property name="errorHandler" ref="customErrorHandler"/>
     </bean>
     <bean class="com.springapp.mvc.web.handler.MyErrorHandler" id="customErrorHandler"/>
 
-   <!-- &lt;!&ndash;Global error handler&ndash;&gt;
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        &lt;!&ndash;定义异常处理页面用来获取异常信息的变量名，默认为exception&ndash;&gt;
-        <property name="exceptionMappings">
-            <props>
-                <prop key="java.lange.Throwable">error/error</prop>
-            </props>
-        </property>
-    </bean>-->
+    <!-- &lt;!&ndash;Global error handler&ndash;&gt;
+     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+         &lt;!&ndash;定义异常处理页面用来获取异常信息的变量名，默认为exception&ndash;&gt;
+         <property name="exceptionMappings">
+             <props>
+                 <prop key="java.lange.Throwable">error/error</prop>
+             </props>
+         </property>
+     </bean>-->
 
 </beans>

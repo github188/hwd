@@ -36,4 +36,7 @@
     <session-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
+   <!-- <listener>
+        <listener-class>com.springapp.mvc.web.listener.StartTimerListener</listener-class>
+    </listener>-->
 </web-app>

@@ -42,7 +42,7 @@ public class MarkLineDAO {
 //        System.out.println("DAO ==>> getAllMarkLines starts =================");
         MarkLines markLines = null;
         rc = new RestClient();
-        JSONArray resArr = rc.get(URL4Line + pageId);
+        JSONArray resArr = rc.getJSONArray(URL4Line + pageId);
         if (resArr.size() > 0) {
             markLines = new MarkLines();
             List<MarkLines.LinesEntity> lines = new ArrayList<MarkLines.LinesEntity>();             //lines
@@ -50,7 +50,7 @@ public class MarkLineDAO {
             Map<String, String> lineTypes = new HashMap<String, String>();                   //line types
 
             for (Object o : resArr) {
-                JSONObject json = (JSONObject)JSONObject.toJSON(o);
+                JSONObject json = (JSONObject) JSONObject.toJSON(o);
                 JSONObject sLoc = json.getJSONObject("start_geo");
                 JSONObject eLoc = json.getJSONObject("end_geo");
                 String lineType = json.getString("scan_type");

@@ -9,6 +9,7 @@ import com.springapp.mvc.web.model.ResponseBody;
 import com.springapp.mvc.web.model.SearchCriteria;
 import com.springapp.mvc.web.service.DeviceService;
 import com.springapp.mvc.web.service.MarkLinesService;
+import com.springapp.mvc.web.service.SuggestionService;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +30,13 @@ public class DataApiController {
     private static Gson gson = new Gson();
     private final DeviceService deviceService;
     private final MarkLinesService markLinesService;
+    private final SuggestionService suggestionService;
 
     @Autowired
-    public DataApiController(DeviceService deviceService, MarkLinesService markLinesService) {
+    public DataApiController(DeviceService deviceService, MarkLinesService markLinesService, SuggestionService suggestionService) {
         this.deviceService = deviceService;
         this.markLinesService = markLinesService;
+        this.suggestionService = suggestionService;
     }
 
     @JsonView(Views.Public.class)
@@ -176,10 +179,9 @@ public class DataApiController {
     * @param advancedSearch，用户输入的搜索条件
     * @result String，查询结果
     */
-    @RequestMapping(value = "/api/inputSuggest")
-    public String inputSuggest(@RequestBody String search) {
+    @RequestMapping(value = "/api/getSuggestions")
+    public String getSuggestions(@RequestParam(value = "search") String search) {
         logger.debug("DataApiController advancedSearch starts-----------");
-
-        return "";
+        return suggestionService.getResponse4Suggestion(search).toString();
     }
 }

@@ -1,7 +1,27 @@
 $(function () {
     "use strict";
     suggestCursorToggle();
-    inputSuggest($('.global-search-input'), "resources/data/countries.json");
+    inputSuggest($('.global-search-input'), "api/getSuggestions?search=");
+
+    /*-------------listener-----------*/
+    //global search form
+    $('.global-search-form').on('submit', function (e) {
+        e.preventDefault();
+        console.log(e);
+    });
+    //advanced search link
+    $('.advs-link').on('click', function (e) {
+        e.preventDefault();
+        var $advs = $('.advs-wrapper');
+        if (!($advs.hasClass('acitve'))) {
+            $advs.addClass('active');
+        }
+    });
+    //advanced search form
+    $('#advs').on('submit', function (e) {
+        e.preventDefault();
+        console.log(e);
+    });
 });
 
 //输入框实时提示
@@ -26,9 +46,9 @@ function inputSuggest(input, sourceURL) {
                 }
             },
             remote: {
-                url: dataSource + '?s=%QUERY',
-                filter: function (list) {
-                    return $.map(list, function (item) {
+                url: dataSource + '%QUERY',
+                filter: function (resp) {
+                    return $.map(resp.data, function (item) {
                         return $.isArray(item) && item.length == 2 ? {title: item[0], desc: item[1], value: item[0]} : {
                             title: item,
                             value: item
