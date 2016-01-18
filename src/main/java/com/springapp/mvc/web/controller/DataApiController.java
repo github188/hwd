@@ -1,5 +1,6 @@
 package com.springapp.mvc.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.gson.Gson;
 import com.springapp.mvc.web.jsonView.Views;
@@ -170,6 +171,7 @@ public class DataApiController {
     @RequestMapping(value = "/api/advancedSearch")
     public String advancedSearch(@RequestBody NewAdvanceSearchCriteria criteria) {
         logger.debug("DataApiController advancedSearch starts-----------");
+        System.out.println("DataApiController advancedSearch starts-----------" + JSON.toJSON(criteria).toString());
         String result = deviceService.getResponse4AdvanceSearch(criteria);
 //        System.out.println(result);
         return result;

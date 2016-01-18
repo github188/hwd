@@ -1,13 +1,16 @@
 var $advs = $('.advs-wrapper');
 $(function () {
     "use strict";
+    //input suggestions
     suggestCursorToggle();
     inputSuggest($('.global-search-input'), "api/getSuggestions?search=");
+
+    //date default value
+    $('#time_to').val(new Date().toDateInputValue());
 
     /*-------------listener-----------*/
     //global search form
     $('.global-search-form').on('submit', function (e) {
-        e.preventDefault();
         console.log(e);
     });
     //advanced search link
@@ -148,6 +151,12 @@ function advsSearch(form) {
     newSearch(obj);
 }
 
+//Format the date value
+Date.prototype.toDateInputValue = (function () {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0, 10);
+});
 
 
 

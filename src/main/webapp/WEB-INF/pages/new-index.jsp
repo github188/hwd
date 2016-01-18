@@ -17,6 +17,7 @@
     <title>Hooray World Device</title>
     <link rel="stylesheet" href="resources/css/bootstrap.min.css">
     <link rel="stylesheet" href="resources/css/new-base.css">
+    <link rel="stylesheet" href="resources/css/list.css">
     <script src="resources/js/lib/jquery-1.11.3.min.js"></script>
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
 </head>
@@ -42,8 +43,8 @@
     </div>
 </div>
 <div id="main">
-    <a class="advs-link advs-link-main" href="#" class="advs-link mod open" aria-role="button"
-       aria-controls="advs-wrapper">精确搜索
+    <div class="sidebar-col"></div>
+    <a class="advs-link advs-link-main mod open" href="#" role="button" aria-controls="advs-wrapper">精确搜索
         <%--<span class="advs-indicator available">Advanced Search is available</span>--%>
     </a>
 
@@ -82,11 +83,11 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <label class="col-sm-1" for="ip">单IP</label>
-                                <input type="text" id="ip" class="col-sm-3" name="ip" value="1.2.3">
-                                <label class="col-sm-1" for="ip_from">/ 从</label>
-                                <input type="text" id="ip_from" class="col-sm-3" name="ip_from" value="2.3.4">
+                                <input type="text" id="ip" class="col-sm-3" name="ip" value="1.2.3.4">
+                                <label class="col-sm-1" for="ip_from"><span class="pull-left">|</span> 从</label>
+                                <input type="text" id="ip_from" class="col-sm-3" name="ip_from" value="1.1.1.1">
                                 <label class="col-sm-1" for="ip_to">到</label>
-                                <input type="text" id="ip_to" class="col-sm-3" name="ip_to" value="3.4.5">
+                                <input type="text" id="ip_to" class="col-sm-3" name="ip_to" value="1.1.1.254">
                             </div>
                         </div>
                     </div>
@@ -149,7 +150,13 @@
                     </div>
                     <div class="row form-group">
                         <label class="col-sm-2" for="os">操作系统：</label>
-                        <input type="text" class="col-sm-8" id="os" name="os">
+
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <input type="text" id="os" class="col-sm-offset-1 col-sm-11" name="os">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="row form-group">
                         <label class="col-sm-2">最后更新日期：</label>
@@ -162,6 +169,7 @@
                                 <input type="date" id="time_to" name="time_to" class="col-sm-5">
                             </div>
                         </div>
+                        <span class="col-sm-2">默认为当前日期之前</span>
                     </div>
                 </fieldset>
                 <div class="form-controls">
@@ -171,11 +179,15 @@
             </form>
         </div>
     </div>
-    <section class="list-wrapper"></section>
-    <section class="map-wrapper"></section>
-    <section class="globe-wrapper"></section>
-    <section class="globe-line-wrapper"></section>
-    <section class="chart-wrapper"></section>
+    <div id="content">
+        <section class="list-wrapper">
+            <div class="result-col .for-sidebar-margin "></div>
+        </section>
+        <section class="map-wrapper"></section>
+        <section class="globe-wrapper"></section>
+        <section class="globe-line-wrapper"></section>
+        <section class="chart-wrapper"></section>
+    </div>
     <div class="processing-overlay"></div>
 </div>
 <div id="footer"></div>

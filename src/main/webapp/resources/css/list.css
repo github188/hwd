@@ -1,5 +1,17 @@
 @charset "UTF-8";
-#list-wrapper {
-    display: none;
+/* ------------------------ ↓ List Wrapper ---------------------- */
+.list-wrapper {
+    display: block;
     height: 100%;
+    width: 90%;
+    margin: 0 auto;
 }
+
+/* -- result list -- */
+.list-wrapper .result-col {
+    width: 100%;
+    height: 10rem;
+    background-color: #32cd32;
+}
+
+/* ------------------------  List Wrapper ↑ ---------------------- */
