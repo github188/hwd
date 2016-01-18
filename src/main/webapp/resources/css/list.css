@@ -1,6 +1,6 @@
 /* ------------------------ ↓ List Wrapper ---------------------- */
 .list-wrapper {
-    display: block;
+    display: none;
     height: 100%;
     margin: 0 auto;
     background: #ff0000;

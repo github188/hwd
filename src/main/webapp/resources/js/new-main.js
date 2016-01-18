@@ -1,9 +1,13 @@
-var $advs = $('.advs-wrapper'), $advsControl = $('.advs-link-main').find('span');
+var $advs = $('.advs-wrapper'),
+    $advsControl = $('.advs-link-main').find('span'),
+    $header = $('header').hide();
 $(function () {
     "use strict";
     //input suggestions
     suggestCursorToggle();
     inputSuggest($('.global-search-input'), "api/getSuggestions?search=");
+    //carousel
+    pageSlide();
 
     //date default value
     $('#time_to').val(new Date().toDateInputValue());
@@ -171,8 +175,38 @@ Date.prototype.toDateInputValue = (function () {
     return local.toJSON().slice(0, 10);
 });
 
+//页面滑动,使用bootstrap的carousel和slide
+function pageSlide() {
+    var $carousel = $('.carousel').carousel({"interval": false});
+    var INIT_PROGRESS = 150;
+    $carousel.on('slide.bs.carousel', function (event) {
+        var tag = $(event.relatedTarget).attr("tag");
+        var progress = ($(event.relatedTarget).index() + 1) * INIT_PROGRESS;
+        $(".progress").animate({width: progress, left: (progress / 2) - 400}, 500);
+        //playAnimation(tag);
+    });
+    $("body,html").animate({
+        scrollTop: ($(".home").offset().top)
+    }, 10);
 
+    //点击切换，起到carousel control的作用
+    $('footer .navbtn').on('click', function (e) {
+        e.preventDefault();
+        var index = $(this).index();
+        switch (index) {
+            case 0: //home
+                onHomePageShow();
+                break;
+            default:
+                $header.show();
+        }
+        $('.carousel').carousel(index);
+    });
+}
 
+function onHomePageShow() {
+    $header.hide();
+}
 
 
 

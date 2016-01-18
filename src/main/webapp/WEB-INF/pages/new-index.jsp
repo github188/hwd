@@ -205,65 +205,65 @@
             </form>
         </div>
     </div>
-    <div id="content">
-
-        <section class="list-wrapper item" tag="list">
-            <div class="result-col for-sidebar-margin">
-                <div class="result-count-duration">
-                    <p>搜索到约 <strong class="badge">0</strong> 条结果，共用时 <strong class="badge">0</strong> ms</p>
+    <div id="content" class="carousel slide full-height">
+        <div class="carousel-inner full_height" role="listboxt">
+            <section class="home item active" tag="home" style="overflow: hidden;position: relative;">
+                <canvas id="galaxy"></canvas>
+            </section>
+            <section class="list-wrapper item" tag="list">
+                <div class="result-col for-sidebar-margin">
+                    <div class="result-count-duration">
+                        <p>搜索到约 <strong class="badge">0</strong> 条结果，共用时 <strong class="badge">0</strong> ms</p>
+                    </div>
+                    <div class="pivot-bar-container">
+                        <div id="pivot-bar"></div>
+                    </div>
+                    <div class="empty-result-desc-container"></div>
+                    <div class="result-container"></div>
+                    <div class="result-pagination"></div>
                 </div>
-                <div class="pivot-bar-container">
-                    <div id="pivot-bar"></div>
-                </div>
-                <div class="empty-result-desc-container"></div>
-                <div class="result-container"></div>
-                <div class="result-pagination"></div>
-            </div>
-        </section>
-        <section class="map-wrapper item" tag="map"></section>
-        <section class="globe-point-wrapper"></section>
-        <section class="globe-line-wrapper"></section>
-        <section class="charts-wrapper"></section>
+            </section>
+            <section class="map-wrapper item" tag="map">map</section>
+            <section class="globe-point-wrapper item" tag="globe-point">point</section>
+            <section class="globe-line-wrapper item" tag="globe-line">line</section>
+            <section class="charts-wrapper item" tag="charts">charts</section>
+        </div>
     </div>
     <div class="processing-overlay"></div>
 </div>
-<footer>
+<footer class="navbar-fixed-bottom">
     <div id="navbar">
         <div class="dash"></div>
-        <div class="progress"></div>
+        <div class="carousel-progress"></div>
         <div id="navbtns" class="container">
-            <div class="navbtn">
-                <a href="">
-                    <%--<img src="resources/img/home.png" alt="首页">--%>
-
-                    <div>首页</div>
-                </a>
-            </div>
-            <div class="navbtn">
-                <a href="">
-                    <%--<img src="resources/img/home.png" alt="首页2">--%>
-
-                    <div>首页2</div>
-                </a>
-            </div>
-            <div class="navbtn">
-                <a href="">
-                    <%--<img src="resources/img/home.png" alt="首页3">--%>
-
-                    <div>首页3</div>
-                </a>
-            </div>
+            <div class="navbtn"><a href="">
+                <div>首页</div>
+            </a></div>
+            <div class="navbtn"><a href="">
+                <div>搜索</div>
+            </a></div>
+            <div class="navbtn"><a href="">
+                <div>定位</div>
+            </a></div>
+            <div class="navbtn"><a href="">
+                <div>展示</div>
+            </a></div>
+            <div class="navbtn"><a href="">
+                <div>探测</div>
+            </a></div>
+            <div class="navbtn"><a href="">
+                <div>分析</div>
+            </a></div>
         </div>
     </div>
 </footer>
-<script>
-    //footer -- navbar
-    $('footer .navbtn').on('click', function (e) {
-        e.preventDefault();
-        $('.carousel').carousel($(this).index());
-    });
-</script>
+
+<script src="resources/js/lib/bootstrap.min.js"></script>
 <script src="resources/js/new-search.js"></script>
-<script src="resources/js/new-index.js"></script>
+<script src="resources/js/new-main.js"></script>
+<script src="resources/js/index.js"></script>
+<script>
+
+</script>
 </body>
 </html>

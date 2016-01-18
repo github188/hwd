@@ -1,23 +1,33 @@
 /* ----------------------- ↓ Footer ---------------------- */
 footer {
     position: absolute;
-    top: 650px;
-    height: 120px;
+    bottom: -1rem;
     text-align: center;
 }
 
+footer.navbar-fixed-bottom {
+    bottom: -2rem;
+    transition: all .6s;
+}
+
+footer.navbar-fixed-bottom:hover {
+    bottom: 0;
+}
+
 footer .dash {
+    position: relative;
+    top: 2rem;
     margin: 0 auto;
     height: 2px;
-    width: 800px;
+    width: 60rem;
     background: url("../img/dot.png");
 }
 
-footer .progress {
+footer .carousel-progress {
     position: relative;
-    top: 23px;
-    left: -325px;
-    width: 150px;
+    top: 1.85rem;
+    left: -30rem;
+    width: 12rem;
     height: 2px;
     margin: 0 auto;
     background: #fff;
@@ -26,16 +36,19 @@ footer .progress {
 footer #navbtns {
     z-index: 1;
     position: relative;
-    width: 800px;
+    margin: 0 auto;
+    width: 60rem;
+    text-align: center;
+    /*border: 4px solid blue;*/
 }
 
 footer .navbtn {
     display: inline-block;
-    width: 70px;
-    margin: 0 25px;
-    line-height: 50px;
+    width: 7rem;
+    margin: 0 1rem;
+    line-height: 4rem;
     text-align: center;
-    color: #ffffff;
+    color: #eee;
     float: left;
 }
 
@@ -43,11 +56,11 @@ footer .navbtn a:hover {
     color: #ffffff;
 }
 
-footer .navbtn img {
-    width: 50px;
+footer .navbtn a:active, footer .navbtn a.active {
+    background-color: olive;
 }
 
 footer .navbtn div {
-    background-color: #ffff00;
+    background-color: #287bbc;
     border-radius: 50%;
 }
