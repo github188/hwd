@@ -26,7 +26,7 @@ public class NewAdvanceSearchCriteria {
     String vulType;
     String lastModified;    //时间段用-分隔
     String vpsIp;
-    String tastId;
+    String taskId;
 
     @JSONField(name = "wd.must")
     public String getMust() {
@@ -220,19 +220,19 @@ public class NewAdvanceSearchCriteria {
     }
 
     @JSONField(name = "description.vul_info.taskId ")
-    public String getTastId() {
-        return tastId;
+    public String getTaskId() {
+        return taskId;
     }
 
     @JSONField(name = "description.vul_info.taskId ")
-    public void setTastId(String tastId) {
-        this.tastId = tastId;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
 
     @Override
     public String toString() {//为了校验所有字段是否均为空
         return must + should + mustnot + ip + country + province + city + type + brand + model + os +
-                protocol + port + banner + vulId + vulName + vulType + lastModified + vpsIp + tastId;
+                protocol + port + banner + vulId + vulName + vulType + lastModified + vpsIp + taskId;
     }
 }

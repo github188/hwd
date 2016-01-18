@@ -1,4 +1,4 @@
-var $advs = $('.advs-wrapper');
+var $advs = $('.advs-wrapper'), $advsControl = $('.advs-link-main').find('span');
 $(function () {
     "use strict";
     //input suggestions
@@ -8,7 +8,7 @@ $(function () {
     //date default value
     $('#time_to').val(new Date().toDateInputValue());
 
-    /*-------------listener-----------*/
+    /*-------------listeners-----------*/
     //global search form
     $('.global-search-form').on('submit', function (e) {
         console.log(e);
@@ -18,8 +18,10 @@ $(function () {
         e.preventDefault();
         if (!($advs.hasClass('active'))) {
             $advs.addClass('active');
+            $advsControl.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
         } else {
             $advs.removeClass('active');
+            $advsControl.removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
         }
     });
     //advanced search form
@@ -27,9 +29,17 @@ $(function () {
         e.preventDefault();
         advsSearch(this);
     });
-    //advanced close button
+    //advanced search from controls.close
     $('.close-advs').on('click', function () {
         $advs.removeClass('active');
+    });
+    //advanced search from controls.reset
+    $('.reset-advs').on('click', function () {
+        document.getElementById("advs").reset();
+    });
+    //advanced search form input for ip
+    $('#ip').on('blur', function () {
+        //d+.d+.d+.d+，验证ip地址的合法性，预留
     });
 });
 
@@ -134,11 +144,14 @@ function advsSearch(form) {
             timeSegment += timestamp + '-';
             continue;
         }
-        criteria[key] = $(inputs[i]).val();
+        criteria[key] = $(inputs[i]).val().replace(/\s+/g, " ");//所有空白符都替换为一个空格
     }
-    criteria['ip'] += ' ' + ipSegment.replace(/^-|-$/g, '');
-    criteria['timestamp'] = timeSegment.substr(0, timeSegment.length - 1);
-
+    if (ipSegment != '') {
+        criteria['ip'] += ' ' + ipSegment.replace(/^-|-$/g, '');//去掉收尾-和空格
+    }
+    if (timeSegment != '') {
+        criteria['timestamp'] = timeSegment.replace(/\s+/g, "").substr(0, timeSegment.length - 1);
+    }
     //arguments
     var obj = {};
     obj["url"] = 'api/advancedSearch';

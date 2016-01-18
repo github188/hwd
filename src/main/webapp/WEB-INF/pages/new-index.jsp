@@ -18,11 +18,13 @@
     <link rel="stylesheet" href="resources/css/bootstrap.min.css">
     <link rel="stylesheet" href="resources/css/new-base.css">
     <link rel="stylesheet" href="resources/css/list.css">
+    <link rel="stylesheet" href="resources/css/sidebar.css">
+    <link rel="stylesheet" href="resources/css/footer.css">
     <script src="resources/js/lib/jquery-1.11.3.min.js"></script>
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
 </head>
 <body>
-<div id="header" class="navbar-fixed-top">
+<header class="navbar-fixed-top">
     <div class="wrapper">
         <h2 class="logo-container">
             <a href="#" target="_self" class="logo">HWD</a>
@@ -41,12 +43,8 @@
             <div class="advs-link-wrapper"><a href="#" class="advs-link">精确搜索</a></div>
         </form>
     </div>
-</div>
+</header>
 <div id="main">
-    <div class="sidebar-col"></div>
-    <a class="advs-link advs-link-main mod open" href="#" role="button" aria-controls="advs-wrapper">精确搜索
-        <%--<span class="advs-indicator available">Advanced Search is available</span>--%>
-    </a>
 
     <div class="advs-wrapper" id="advs-wrapper">
         <h3>精确搜索</h3>
@@ -78,90 +76,118 @@
                 <fieldset class="extra">
                     <legend>并用以下条件缩小搜索范围</legend>
                     <div class="row form-group">
-                        <label class="col-sm-2">IP（段）：</label>
+                        <label for="ip">IP（段）</label>
 
-                        <div class="col-sm-8">
+                        <div class="col-lg-offset-1 col-sm-11">
                             <div class="row">
-                                <label class="col-sm-1" for="ip">单IP</label>
+                                <input type="text" id="ip" class="col-sm-offset-1 col-sm-11" name="ip"
+                                       placeholder="多个IP之间用空格分隔，IP段使用“-”连接。如，1.1.1.1  1.1.1.2-1.1.1.254">
+                                <%--<label class="col-sm-1" for="ip">单IP</label>
                                 <input type="text" id="ip" class="col-sm-3" name="ip" value="1.2.3.4">
                                 <label class="col-sm-1" for="ip_from"><span class="pull-left">|</span> 从</label>
                                 <input type="text" id="ip_from" class="col-sm-3" name="ip_from" value="1.1.1.1">
                                 <label class="col-sm-1" for="ip_to">到</label>
-                                <input type="text" id="ip_to" class="col-sm-3" name="ip_to" value="1.1.1.254">
+                                <input type="text" id="ip_to" class="col-sm-3" name="ip_to" value="1.1.1.254">--%>
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label class="col-sm-2">地理位置：</label>
+                        <label>地理位置</label>
 
-                        <div class="col-sm-8">
+                        <div class="col-lg-offset-1 col-sm-11">
                             <div class="row">
                                 <label class="col-sm-1" for="country">国家</label>
-                                <input type="text" id="country" name="country" class="col-sm-3" placeholder="中国 印度 巴西">
+                                <input type="text" id="country" name="country" class="col-sm-3"
+                                       placeholder="中国  印度  巴西">
                                 <label class="col-sm-1" for="province">省份</label>
-                                <input type="text" id="province" name="province" class="col-sm-3" placeholder="北京 南京">
+                                <input type="text" id="province" name="province" class="col-sm-3" placeholder="北京  江苏">
                                 <label class="col-sm-1" for="city">城市</label>
-                                <input type="text" id="city" name="city" class="col-sm-3" placeholder="北京 连云港">
+                                <input type="text" id="city" name="city" class="col-sm-3" placeholder="北京  南京">
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label class="col-sm-2">设备属性：</label>
+                        <label>设备属性</label>
 
-                        <div class="col-sm-8">
+                        <div class="col-lg-offset-1 col-sm-11">
                             <div class="row">
                                 <label class="col-sm-1" for="type">类型</label>
-                                <input type="text" id="type" class="col-sm-3" name="type">
+                                <input type="text" id="type" class="col-sm-3" name="type" placeholder="Webcam">
                                 <label class="col-sm-1" for="brand">品牌</label>
-                                <input type="text" id="brand" class="col-sm-3" name="brand">
+                                <input type="text" id="brand" class="col-sm-3" name="brand" placeholder="Hikvision">
                                 <label class="col-sm-1" for="model">型号</label>
-                                <input type="text" id="model" class="col-sm-3" name="model">
+                                <input type="text" id="model" class="col-sm-3" name="model" placeholder="DE34">
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label class="col-sm-2">服务：</label>
+                        <label>服务</label>
 
-                        <div class="col-sm-8">
+                        <div class="col-lg-offset-1 col-sm-11">
                             <div class="row">
                                 <label class="col-sm-1" for="protocol">协议</label>
                                 <input type="text" id="protocol" name="protocol" class="col-sm-3"
-                                       placeholder="http ftp">
+                                       placeholder="http  ftp">
                                 <label class="col-sm-1" for="port">端口</label>
-                                <input type="text" id="port" class="col-sm-3" name="port" placeholder="80 21">
-                                <label class="col-sm-1" for="banner">标语</label>
+                                <input type="text" id="port" class="col-sm-3" name="port" placeholder="80  21">
+                                <label class="col-sm-1" for="banner">banner</label>
                                 <input type="text" id="banner" class="col-sm-3" name="banner">
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label class="col-sm-2">已知漏洞：</label>
+                        <label>已知漏洞</label>
 
-                        <div class="col-sm-8">
+                        <div class="col-lg-offset-1 col-sm-11">
                             <div class="row">
                                 <label class="col-sm-1" for="vulId">ID</label>
-                                <input type="text" id="vulId" class="col-sm-3" name="vulId">
+                                <input type="text" id="vulId" class="col-sm-3" name="vulId" placeholder="CVE-2009_5149">
                                 <label class="col-sm-1" for="vulType">类型</label>
-                                <input type="text" id="vulType" class="col-sm-3" name="vulType">
+                                <input type="text" id="vulType" class="col-sm-3" name="vulType"
+                                       placeholder="weak_password">
                                 <label class="col-sm-1" for="vulName">名称</label>
-                                <input type="text" id="vulName" class="col-sm-3" name="vulName">
+                                <input type="text" id="vulName" class="col-sm-3" name="vulName" placeholder="dots_POC">
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label class="col-sm-2" for="os">操作系统：</label>
+                        <label for="os">操作系统</label>
 
-                        <div class="col-sm-8">
+                        <div class="col-lg-offset-1 col-sm-11">
                             <div class="row">
-                                <input type="text" id="os" class="col-sm-offset-1 col-sm-11" name="os">
+                                <input type="text" id="os" class="col-sm-offset-1 col-sm-11" name="os"
+                                       placeholder="多个操作系统之间用空格分隔。如，Linux  Unix">
 
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label class="col-sm-2">最后更新日期：</label>
+                        <label for="taskId">任务ID</label>
 
-                        <div class="col-sm-8">
+                        <div class="col-lg-offset-1 col-sm-11">
+                            <div class="row">
+                                <input type="text" id="taskId" class="col-sm-offset-1 col-sm-11" name="taskId"
+                                       placeholder="DS001">
+
+                            </div>
+                        </div>
+                        <span class="right-tip">(仅内部开放)</span>
+                    </div>
+                    <div class="row form-group">
+                        <label for="vpsIp">IP（段）</label>
+
+                        <div class="col-lg-offset-1 col-sm-11">
+                            <div class="row">
+                                <input type="text" id="vpsIp" class="col-sm-offset-1 col-sm-11" name="vpsIp"
+                                       placeholder="多个IP之间用空格分隔，IP段使用-连接。如，1.1.1.1  1.1.1.2-1.1.1.254">
+                            </div>
+                        </div>
+                        <span class="right-tip">(仅内部开放)</span>
+                    </div>
+                    <div class="row form-group">
+                        <label>更新日期</label>
+
+                        <div class="col-lg-offset-1 col-sm-11">
                             <div class="row">
                                 <label class="col-sm-1" for="time_from">从</label>
                                 <input type="date" id="time_from" name="time_from" class="col-sm-5">
@@ -169,7 +195,7 @@
                                 <input type="date" id="time_to" name="time_to" class="col-sm-5">
                             </div>
                         </div>
-                        <span class="col-sm-2">默认为当前日期之前</span>
+                        <span class="right-tip">默认为当前日期之前</span>
                     </div>
                 </fieldset>
                 <div class="form-controls">
@@ -180,17 +206,63 @@
         </div>
     </div>
     <div id="content">
-        <section class="list-wrapper">
-            <div class="result-col .for-sidebar-margin "></div>
+
+        <section class="list-wrapper item" tag="list">
+            <div class="result-col for-sidebar-margin">
+                <div class="result-count-duration">
+                    <p>搜索到约 <strong class="badge">0</strong> 条结果，共用时 <strong class="badge">0</strong> ms</p>
+                </div>
+                <div class="pivot-bar-container">
+                    <div id="pivot-bar"></div>
+                </div>
+                <div class="empty-result-desc-container"></div>
+                <div class="result-container"></div>
+                <div class="result-pagination"></div>
+            </div>
         </section>
-        <section class="map-wrapper"></section>
-        <section class="globe-wrapper"></section>
+        <section class="map-wrapper item" tag="map"></section>
+        <section class="globe-point-wrapper"></section>
         <section class="globe-line-wrapper"></section>
-        <section class="chart-wrapper"></section>
+        <section class="charts-wrapper"></section>
     </div>
     <div class="processing-overlay"></div>
 </div>
-<div id="footer"></div>
+<footer>
+    <div id="navbar">
+        <div class="dash"></div>
+        <div class="progress"></div>
+        <div id="navbtns" class="container">
+            <div class="navbtn">
+                <a href="">
+                    <%--<img src="resources/img/home.png" alt="首页">--%>
+
+                    <div>首页</div>
+                </a>
+            </div>
+            <div class="navbtn">
+                <a href="">
+                    <%--<img src="resources/img/home.png" alt="首页2">--%>
+
+                    <div>首页2</div>
+                </a>
+            </div>
+            <div class="navbtn">
+                <a href="">
+                    <%--<img src="resources/img/home.png" alt="首页3">--%>
+
+                    <div>首页3</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+<script>
+    //footer -- navbar
+    $('footer .navbtn').on('click', function (e) {
+        e.preventDefault();
+        $('.carousel').carousel($(this).index());
+    });
+</script>
 <script src="resources/js/new-search.js"></script>
 <script src="resources/js/new-index.js"></script>
 </body>

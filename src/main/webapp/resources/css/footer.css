@@ -1,0 +1,53 @@
+/* ----------------------- ↓ Footer ---------------------- */
+footer {
+    position: absolute;
+    top: 650px;
+    height: 120px;
+    text-align: center;
+}
+
+footer .dash {
+    margin: 0 auto;
+    height: 2px;
+    width: 800px;
+    background: url("../img/dot.png");
+}
+
+footer .progress {
+    position: relative;
+    top: 23px;
+    left: -325px;
+    width: 150px;
+    height: 2px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+footer #navbtns {
+    z-index: 1;
+    position: relative;
+    width: 800px;
+}
+
+footer .navbtn {
+    display: inline-block;
+    width: 70px;
+    margin: 0 25px;
+    line-height: 50px;
+    text-align: center;
+    color: #ffffff;
+    float: left;
+}
+
+footer .navbtn a:hover {
+    color: #ffffff;
+}
+
+footer .navbtn img {
+    width: 50px;
+}
+
+footer .navbtn div {
+    background-color: #ffff00;
+    border-radius: 50%;
+}

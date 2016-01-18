@@ -1,0 +1,9 @@
+/* ------------------------ ↓ Map Wrapper ---------------------- */
+.charts-wrapper {
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+    background: pink;
+}
+
+/* ------------------------  Map Wrapper ↑ ---------------------- */

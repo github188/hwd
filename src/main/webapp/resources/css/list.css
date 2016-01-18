@@ -1,17 +1,16 @@
-@charset "UTF-8";
 /* ------------------------ ↓ List Wrapper ---------------------- */
 .list-wrapper {
     display: block;
     height: 100%;
-    width: 90%;
     margin: 0 auto;
+    background: #ff0000;
 }
 
 /* -- result list -- */
 .list-wrapper .result-col {
-    width: 100%;
     height: 10rem;
-    background-color: #32cd32;
+    border: 1px solid #32cd32;
+    padding-right: 2rem;
 }
 
 /* ------------------------  List Wrapper ↑ ---------------------- */

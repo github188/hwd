@@ -30,12 +30,13 @@ body {
 
 a {
     color: #eee;
+    font-size: 2rem;
     text-decoration: none;
 }
 
 a.hover, a:hover {
     color: #006fa6 !important;
-    font-size: 1.5rem;
+    font-size: 2.1rem !important;
     text-decoration: none;
     text-shadow: 0 0 1px #333;
 }
@@ -46,7 +47,6 @@ a.visited, a:visited {
 
 .text-button {
     margin: 0 .5rem;
-    /*font-size: 1.5rem;*/
     line-height: 2rem;
     font-weight: normal;
     border: none;
@@ -111,12 +111,12 @@ a.visited, a:visited {
 }
 
 /* ------------------------- ↓header ----------------------------- */
-#header {
+header {
     background-color: hsla(236, 10%, 27%, 1);
     box-shadow: 0 0 10px #333;
 }
 
-#header .wrapper {
+header .wrapper {
     margin: 0 auto;
     line-height: 100%;
     text-align: center;
@@ -124,7 +124,7 @@ a.visited, a:visited {
 }
 
 /*logo*/
-#header .logo-container {
+header .logo-container {
     margin: 0;
     padding-top: 0;
     padding-bottom: 0;
@@ -132,7 +132,7 @@ a.visited, a:visited {
     float: left;
 }
 
-#header .logo {
+header .logo {
     display: none;
     position: relative;
     left: -1px;
@@ -147,30 +147,31 @@ a.visited, a:visited {
 }
 
 /*search form*/
-#header .global-search-form {
+header .global-search-form {
     display: inline-block;
     padding: 0;
     color: hsla(236, 10%, 27%, 1);
     box-sizing: content-box;
 }
 
-#header .global-search-form fieldset {
+header .global-search-form fieldset {
     display: inline-block;
+
 }
 
-#header .global-search-form .search-scope {
+header .global-search-form .search-scope {
     /*备用，用于用户选择搜索范围，目前暂未使用（参考LinkedIn）*/
     display: none;
     float: left;
     /*z-index: 10005;*/
 }
 
-#header .global-search-form .search-box-container {
+header .global-search-form .search-box-container {
     border-radius: 0 2px 2px 0;
     float: left;
 }
 
-#header .global-search-form .global-search-input {
+header .global-search-form .global-search-input {
     position: fixed;
     top: 0;
     border-radius: 4px;
@@ -179,7 +180,7 @@ a.visited, a:visited {
     width: 40rem;
 }
 
-#header .global-search-form .search-button {
+header .global-search-form .search-button {
     display: inline-block;
     margin: 0 5px;
     padding: 0 3px;
@@ -208,7 +209,7 @@ a.visited, a:visited {
 }
 
 /*advanced search link*/
-#header .advs-link-wrapper {
+header .advs-link-wrapper {
     display: inline-block;
     height: 2.7rem;
     line-height: 2.5rem;
@@ -222,7 +223,6 @@ a.visited, a:visited {
 /*-------------------------- ↓ main -------- -----------------------*/
 #main {
     padding-top: 4rem;
-    /*background: #ffffff;*/
     height: 100%;
 }
 
@@ -232,47 +232,13 @@ a.visited, a:visited {
     margin-left: 5%;
     padding: .6rem;
     z-index: 2017;
-    /*background-color: #fff;*/
     border-bottom: 1px solid #287bbc;
+    text-decoration: none;
     float: left;
 }
 
-#main .advs-link-main .advs-indicator {
-    font-weight: normal;
-    font-style: normal;
-    text-decoration: inherit;
-    font-size: 1.8rem;
-    color: #13b7f1;
-    content: "\e025";
-    margin-top: -4px;
-    height: 1.6rem;
-    width: 1.4rem;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
-    zoom: 1;
-}
-
-#main .advs-link-main .advs-indicator:before {
-    margin-top: -4px;
-    vertical-align: middle;
-    display: inline-block;
-    zoom: 1;
-    font-weight: normal;
-    font-style: normal;
-    text-decoration: inherit;
-    font-size: 18px;
-    color: #13b7f1;
-    content: "\e025";
-}
-
-#main .advs-link-main.open .advs-indicator.available:before {
-    font-weight: normal;
-    font-style: normal;
-    text-decoration: inherit;
-    font-size: 18px;
-    color: #13b7f1;
-    content: "\e024";
+#main .advs-link-main span {
+    color: #287bbc;
 }
 
 /*-------------------------- main ↑ -------------------------------*/
@@ -291,13 +257,12 @@ a.visited, a:visited {
     position: absolute;
     top: 7rem;
     width: 0;
-    height: 45rem;
-    padding-left: 0;
-    padding-bottom: 4rem;
+    max-height: 90%;
+    padding: 0 0 2rem 0;
     white-space: nowrap;
     color: #666;
     background-color: hsla(0, 0%, 95%, .8);
-    overflow: hidden;
+    overflow: auto;
     -webkit-box-shadow: 0 0 10px #b4b4b4;
     -moz-box-shadow: 0 0 10px #b4b4b4;
     box-shadow: 0 0 10px #b4b4b4;
@@ -350,8 +315,40 @@ a.visited, a:visited {
     margin-bottom: 1rem;
 }
 
-#advs .form-group {
-    margin-bottom: 5px;
+#advs fieldset legend {
+    padding-bottom: .4rem;
+}
+
+#advs .row .col-sm-1 {
+    text-align: center;
+}
+
+#advs fieldset.extra {
+    padding: 0 17% 0 0;
+    box-sizing: content-box;
+}
+
+#advs .extra .form-group {
+    position: relative;
+    margin-left: 8%;
+    font-size: 2rem;
+    padding: 1rem .5rem .3rem 1rem;
+    border: 1px solid #999;
+    box-sizing: border-box;
+}
+
+#advs .extra .form-group .right-tip {
+    margin-left: 2rem;
+}
+
+#advs .extra > div > label {
+    position: absolute;
+    top: -.8rem;
+    /*margin-left: 2rem;*/
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: left;
+    background-color: hsl(240, 3%, 81%);
 }
 
 #advs .row label.col-sm-2 {
@@ -362,10 +359,6 @@ a.visited, a:visited {
     line-height: 1.8rem;
     border: 1px #aaa solid;
     border-radius: 4px;
-}
-
-#advs .row .col-sm-1 {
-    text-align: center;
 }
 
 #advs .form-controls {
@@ -397,25 +390,38 @@ a.visited, a:visited {
     white-space: nowrap;
 }
 
-#advs .form-controls .submit-advs:hover {
+/*.form-controls .text-button:hover {
     font-size: 1.5rem;
-}
+}*/
 
 /*-------------------------- ↑ advanced search---------------------*/
 
-/* -- sidebar -- */
-.sidebar-col {
+/*-------------------------- ↑ sidebar ---------------------------*/
+.sidebar {
+    position: relative;
     z-index: 100;
-    width: 20rem;
-    height: 10rem;
+    width: 18rem;
+    height: auto;
+    margin-left: 1rem;
     float: left;
-    background-color: #ff0000;
+    border: 1px solid #ff0000;
 }
 
-/*侧边栏显示，需要正文内容缩进，以免内容与边栏覆盖，margin-left的值与.sidebar-col的width一致*/
+/*侧边栏显示。需要正文内容缩进，以免内容与边栏覆盖，margin-left的值与.sidebar-col.width一致*/
 .for-sidebar-margin {
     margin-left: 20rem;
 }
+
+.sidebar .search-types {
+    /*预留，为将来按端口搜索或者按漏洞搜索预留*/
+    display: none;
+}
+
+.sidebar .aggregation {
+    /*结果汇总列表*/
+}
+
+/*-------------------------- sidebar ↑ ---------------------------*/
 
 /*---------------------------- ↓媒体查询 -----------------------------*/
 /*超级小屏幕，暂时不做处理，用不到*/
@@ -424,14 +430,14 @@ a.visited, a:visited {
 
 /* 超小屏幕（手机，小于768）*/
 @media (max-width: 767px) and (min-width: 480px) {
-    #header .global-search-form .global-search-input {
+    header .global-search-form .global-search-input {
         width: 25rem;
     }
 }
 
 /* 小屏幕（平板，大于等于 768px） */
 @media (min-width: 768px) and (max-width: 991px) {
-    #header .global-search-form .global-search-input {
+    header .global-search-form .global-search-input {
         width: 33rem;
     }
 }

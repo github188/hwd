@@ -1,0 +1,9 @@
+/* ------------------------ ↓ Globe MarkPoints Wrapper ---------------------- */
+.globe-point-wrapper {
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+    background: #ffff00;
+}
+
+/* ------------------------  Globe MarkPoints Wrapper ↑ ---------------------- */

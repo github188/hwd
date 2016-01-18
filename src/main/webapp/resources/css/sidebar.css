@@ -1,0 +1,51 @@
+@charset "UTF-8";
+/*-------------------------- ↑ sidebar ---------------------------*/
+.sidebar {
+    position: relative;
+    z-index: 100;
+    width: 18rem;
+    height: auto;
+    margin-left: 1rem;
+    float: left;
+    border: 1px solid #ff0000;
+}
+
+/*侧边栏显示。需要正文内容缩进，以免内容与边栏覆盖，margin-left的值与.sidebar-col.width一致*/
+.for-sidebar-margin {
+    margin-left: 20rem;
+}
+
+.sidebar .search-types {
+    /*预留，为将来按端口搜索或者按漏洞搜索预留*/
+    display: none;
+}
+
+.sidebar .aggregation {
+    /*结果汇总列表*/
+}
+
+/*-------------------------- sidebar ↑ ---------------------------*/
+
+/*---------------------------- ↓媒体查询 -----------------------------*/
+/*超级小屏幕，暂时不做处理，用不到*/
+@media (max-width: 480px) and (min-width: 320px) {
+}
+
+/* 超小屏幕（手机，小于768）*/
+@media (max-width: 767px) and (min-width: 480px) {
+
+}
+
+/* 小屏幕（平板，大于等于 768px） */
+@media (min-width: 768px) and (max-width: 991px) {
+
+}
+
+/* 中等屏幕（桌面显示器，大于等于 992px） */
+@media (min-width: 992px) and (max-width: 1199px) {
+}
+
+/* 大屏幕（大桌面显示器，大于等于 1200px） */
+@media (min-width: 1200px) {
+
+}
