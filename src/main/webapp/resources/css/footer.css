@@ -1,4 +1,10 @@
 /* ----------------------- ↓ Footer ---------------------- */
+.bgd-light-blue {
+    color: #fff;
+    background-color: #287bbc !important;
+    box-shadow: 1px -2px 3px #eee;
+}
+
 footer {
     position: absolute;
     bottom: -1rem;
@@ -26,7 +32,7 @@ footer .dash {
 footer .carousel-progress {
     position: relative;
     top: 1.85rem;
-    left: -30rem;
+    left: -28rem;
     width: 12rem;
     height: 2px;
     margin: 0 auto;
@@ -61,6 +67,6 @@ footer .navbtn a:active, footer .navbtn a.active {
 }
 
 footer .navbtn div {
-    background-color: #287bbc;
+    background-color: #1b5480;
     border-radius: 50%;
 }

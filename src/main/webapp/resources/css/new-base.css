@@ -403,32 +403,6 @@ header .advs-link-wrapper a:hover {
 
 /*-------------------------- ↑ advanced search---------------------*/
 
-/*-------------------------- ↑ sidebar ---------------------------*/
-.sidebar {
-    position: relative;
-    z-index: 100;
-    width: 18rem;
-    height: auto;
-    margin-left: 1rem;
-    float: left;
-    border: 1px solid #ff0000;
-}
-
-/*侧边栏显示。需要正文内容缩进，以免内容与边栏覆盖，margin-left的值与.sidebar-col.width一致*/
-.for-sidebar-margin {
-    margin-left: 20rem;
-}
-
-.sidebar .search-types {
-    /*预留，为将来按端口搜索或者按漏洞搜索预留*/
-    display: none;
-}
-
-.sidebar .aggregation {
-    /*结果汇总列表*/
-}
-
-/*-------------------------- sidebar ↑ ---------------------------*/
 
 /*---------------------------- ↓媒体查询 -----------------------------*/
 /*超级小屏幕，暂时不做处理，用不到*/

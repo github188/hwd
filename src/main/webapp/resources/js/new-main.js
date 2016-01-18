@@ -181,8 +181,16 @@ function pageSlide() {
     var INIT_PROGRESS = 150;
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
-        var progress = ($(event.relatedTarget).index() + 1) * INIT_PROGRESS;
-        $(".progress").animate({width: progress, left: (progress / 2) - 400}, 500);
+        var navbtns = $('.navbtn').find('div');
+        navbtns.removeClass("bgd-light-blue");
+        $.each(navbtns, function (id, item) {
+            if ($(item).attr('data-target') == tag) {
+                $(item).addClass('bgd-light-blue');
+            }
+        });
+
+        var progress = $(event.relatedTarget).attr("tabindex") * 120;
+        $(".carousel-progress").animate({width: progress, left: (progress / 2) - 400}, 500);
         //playAnimation(tag);
     });
     $("body,html").animate({

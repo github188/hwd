@@ -45,7 +45,6 @@
     </div>
 </header>
 <div id="main">
-
     <div class="advs-wrapper" id="advs-wrapper">
         <h3>精确搜索</h3>
 
@@ -207,10 +206,10 @@
     </div>
     <div id="content" class="carousel slide full-height">
         <div class="carousel-inner full_height" role="listboxt">
-            <section class="home item active" tag="home" style="overflow: hidden;position: relative;">
+            <section class="home item active" tag="home" tabindex="1">
                 <canvas id="galaxy"></canvas>
             </section>
-            <section class="list-wrapper item" tag="list">
+            <section class="list-wrapper item" tag="list" tabindex="2">
                 <div class="result-col for-sidebar-margin">
                     <div class="result-count-duration">
                         <p>搜索到约 <strong class="badge">0</strong> 条结果，共用时 <strong class="badge">0</strong> ms</p>
@@ -223,10 +222,10 @@
                     <div class="result-pagination"></div>
                 </div>
             </section>
-            <section class="map-wrapper item" tag="map">map</section>
-            <section class="globe-point-wrapper item" tag="globe-point">point</section>
-            <section class="globe-line-wrapper item" tag="globe-line">line</section>
-            <section class="charts-wrapper item" tag="charts">charts</section>
+            <section class="map-wrapper item" tag="map" tabindex="3">map</section>
+            <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">point</section>
+            <section class="globe-line-wrapper item" tag="globe-line" tabindex="5">line</section>
+            <section class="charts-wrapper item" tag="charts" tabindex="6">charts</section>
         </div>
     </div>
     <div class="processing-overlay"></div>
@@ -237,22 +236,22 @@
         <div class="carousel-progress"></div>
         <div id="navbtns" class="container">
             <div class="navbtn"><a href="">
-                <div>首页</div>
+                <div data-target="home" class="bgd-light-blue">首页</div>
             </a></div>
             <div class="navbtn"><a href="">
-                <div>搜索</div>
+                <div data-target="list">搜索</div>
             </a></div>
             <div class="navbtn"><a href="">
-                <div>定位</div>
+                <div data-target="map">定位</div>
             </a></div>
             <div class="navbtn"><a href="">
-                <div>展示</div>
+                <div data-target="globe-point">展示</div>
             </a></div>
             <div class="navbtn"><a href="">
-                <div>探测</div>
+                <div data-target="globe-line">探测</div>
             </a></div>
             <div class="navbtn"><a href="">
-                <div>分析</div>
+                <div data-target="charts">分析</div>
             </a></div>
         </div>
     </div>
