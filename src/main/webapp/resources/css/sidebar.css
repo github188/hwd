@@ -22,7 +22,7 @@
 
 /*侧边栏显示。需要正文内容缩进，以免内容与边栏覆盖，margin-left的值与.sidebar-col.width一致*/
 .for-sidebar-margin {
-    margin-left: 20rem;
+    margin-left: 22rem;
 }
 
 .sidebar .search-types {

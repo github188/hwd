@@ -17,8 +17,10 @@
     <title>Hooray World Device</title>
     <link rel="stylesheet" href="resources/css/bootstrap.min.css">
     <link rel="stylesheet" href="resources/css/new-base.css">
-    <link rel="stylesheet" href="resources/css/list.css">
     <link rel="stylesheet" href="resources/css/sidebar.css">
+    <link rel="stylesheet" href="resources/css/list.css">
+    <link rel="stylesheet" href="resources/css/map.css">
+    <link rel="stylesheet" href="resources/plugins/leaflet/leaflet.css">
     <link rel="stylesheet" href="resources/css/footer.css">
     <script src="resources/js/lib/jquery-1.11.3.min.js"></script>
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
@@ -210,10 +212,12 @@
             <section class="home item" tag="home" tabindex="1">
                 <canvas id="galaxy"></canvas>
             </section>
-            <section class="list-wrapper item active" tag="list" tabindex="2">
+            <section class="list-wrapper item" tag="list" tabindex="2">
                 <%@include file="list.jsp" %>
             </section>
-            <section class="map-wrapper item" tag="map" tabindex="3">map</section>
+            <section class="map-wrapper item active" tag="map" tabindex="3">
+                <%@include file="map-leaflet.jsp" %>
+            </section>
             <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">point</section>
             <section class="globe-line-wrapper item" tag="globe-line" tabindex="5">line</section>
             <section class="charts-wrapper item" tag="charts" tabindex="6">charts</section>
