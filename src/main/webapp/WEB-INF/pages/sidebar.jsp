@@ -1,91 +1,103 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="sidebar hidden-xs">
     <a class="advs-link advs-link-main" href="#" role="button" aria-controls="advs-wrapper">精确搜索
         <span class="glyphicon glyphicon-menu-right"></span>
     </a>
 
     <div class="search-types"></div>
-    <div class="aggregation hidden-print hidden-xs" id="aggregation" role="tablist"
-         aria-multiselectable="true">
-        <br>
+    <div class="clearfix"></div>
+    <div class="panel-group" id="facet" role="tablist" aria-multiselectable="true">
 
-        <div>搜索类型</div>
-        <hr>
-        <%--国家--%>
-        <div class="panel panel-default" id="country_panel">
-            <div class="panel-heading" role="tab" id="filter_title_country">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="countryTitle">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" href="#filter_country"
-                       aria-controls="filter_country">国家 </a>
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#countryList" aria-expanded="false" aria-controls="countryList">
+                        国家<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
                 </h4>
             </div>
-            <div id="filter_country" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="filter_title_country" aria-expanded="true">
-                <ul class="list-group"></ul>
+            <div id="countryList" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="countryTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
             </div>
         </div>
-        <%--服务--%>
-        <div class="panel panel-default" id="device_service_panel">
-            <div class="panel-heading" role="tab" id="filter_title_service">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="device_serviceTitle">
                 <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" href="#filter_device_service"
-                       aria-controls="filter_service">服务 </a>
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#device_serviceList" aria-expanded="false" aria-controls="device_serviceList">
+                        服务<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
                 </h4>
             </div>
-            <div id="filter_device_service" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="filter_title_service" aria-expanded="true">
-                <ul class="list-group"></ul>
+            <div id="device_serviceList" class="panel-collapse collapse" role="tabpanel"
+                 aria-labelledby="device_serviceTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
             </div>
         </div>
-        <%--端口号--%>
-        <div class="panel panel-default" id="port_panel">
-            <div class="panel-heading" role="tab" id="filter_title_port">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="portTitle">
                 <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" href="#filter_port"
-                       aria-controls="filter_port">端口 </a>
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#portList" aria-expanded="false" aria-controls="portList">
+                        端口<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
                 </h4>
             </div>
-            <div id="filter_port" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="filter_title_port" aria-expanded="true">
-                <ul class="list-group"></ul>
+            <div id="portList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="portTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
             </div>
         </div>
-        <%--设备类型--%>
-        <div class="panel panel-default" id="device_type_panel">
-            <div class="panel-heading" role="tab" id="filter_title_type">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="device_typeTitle">
                 <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" href="#filter_device_type"
-                       aria-controls="filter_type">设备类型 </a>
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#device_typeList" aria-expanded="false" aria-controls="device_typeList">
+                        类型<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
                 </h4>
             </div>
-            <div id="filter_device_type" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="filter_title_type" aria-expanded="true">
-                <ul class="list-group"></ul>
+            <div id="device_typeList" class="panel-collapse collapse" role="tabpanel"
+                 aria-labelledby="device_typeTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
             </div>
         </div>
-        <%--漏洞--%>
-        <div class="panel panel-default" id="vul_panel">
-            <div class="panel-heading" role="tab" id="filter_title_vul">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="vulTitle">
                 <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" href="#filter_vul"
-                       aria-controls="filter_vul">漏洞 </a>
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#vulList" aria-expanded="false" aria-controls="vulList">
+                        漏洞<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
                 </h4>
             </div>
-            <div id="filter_vul" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="filter_title_vul" aria-expanded="true">
-                <ul class="list-group"></ul>
+            <div id="vulList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="vulTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
             </div>
         </div>
-        <%--漏洞--%>
-        <div class="panel panel-default" id="os_panel">
-            <div class="panel-heading" role="tab" id="filter_title_os">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="osTitle">
                 <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" href="#filter_os"
-                       aria-controls="filter_os">操作系统 </a>
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#osList" aria-expanded="false" aria-controls="osList">
+                        操作系统<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
                 </h4>
             </div>
-            <div id="filter_os" class="panel-collapse collapse in" role="tabpanel"
-                 aria-labelledby="filter_title_os" aria-expanded="true">
-                <ul class="list-group"></ul>
+            <div id="osList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="osTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
             </div>
         </div>
     </div>

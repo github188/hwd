@@ -204,23 +204,14 @@
             </form>
         </div>
     </div>
+    <%@include file="sidebar.jsp" %>
     <div id="content" class="carousel slide full-height">
         <div class="carousel-inner full_height" role="listboxt">
-            <section class="home item active" tag="home" tabindex="1">
+            <section class="home item" tag="home" tabindex="1">
                 <canvas id="galaxy"></canvas>
             </section>
-            <section class="list-wrapper item" tag="list" tabindex="2">
-                <div class="result-col for-sidebar-margin">
-                    <div class="result-count-duration">
-                        <p>搜索到约 <strong class="badge">0</strong> 条结果，共用时 <strong class="badge">0</strong> ms</p>
-                    </div>
-                    <div class="pivot-bar-container">
-                        <div id="pivot-bar"></div>
-                    </div>
-                    <div class="empty-result-desc-container"></div>
-                    <div class="result-container"></div>
-                    <div class="result-pagination"></div>
-                </div>
+            <section class="list-wrapper item active" tag="list" tabindex="2">
+                <%@include file="list.jsp" %>
             </section>
             <section class="map-wrapper item" tag="map" tabindex="3">map</section>
             <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">point</section>
@@ -261,6 +252,7 @@
 <script src="resources/js/new-search.js"></script>
 <script src="resources/js/new-main.js"></script>
 <script src="resources/js/index.js"></script>
+<script src="resources/js/sidebar.js"></script>
 <script>
 
 </script>

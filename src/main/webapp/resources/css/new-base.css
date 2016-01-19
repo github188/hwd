@@ -6,8 +6,10 @@
 #452525 → hsla(0, 30%, 21%, 1)，light背景色
 #006fa6 → 链接a的颜色，#96999c（visited）
 #cd5c5c → 高亮字体的颜色
-#287bbc → 前景，主色调
+#287bbc →  hsla(206,65%,45%,1)，前景，主色调
+hsla(206, 85%, 65%, 1); 侧栏前景a颜色
 #f2f2f2 → hsla(0,0%,95%,1);高级搜索背景
+hsla(206, 85%, 65%, .5);，border-bottom
 */
 
 * {
@@ -29,18 +31,16 @@ body {
 }
 
 a {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     text-decoration: none;
 }
 
 a.hover, a:hover {
     font-size: 1.6rem;
-    /*text-decoration: none;*/
 }
 
 a.visited, a:visited {
     color: #96999c;
-    text-decoration: none;
 }
 
 .text-button {
@@ -229,22 +229,22 @@ header .advs-link-wrapper a:hover {
 
 /*-------------------------- ↓ main -------- -----------------------*/
 #main {
-    /*padding-top: 4rem;*/
+    padding-top: 4rem;
     height: 100%;
 }
 
-#main .advs-link-main {
+.sidebar .advs-link-main {
     display: inline-block;
     position: relative;
-    margin-left: 5%;
-    padding: .6rem;
+    /*margin-left: 5%;*/
+    padding: .6rem 0 0 .6rem;
     z-index: 2017;
     border-bottom: 1px solid #287bbc;
     text-decoration: none;
     float: left;
 }
 
-#main .advs-link-main span {
+.sidebar .advs-link-main span {
     color: #287bbc;
 }
 
@@ -259,7 +259,6 @@ header .advs-link-wrapper a:hover {
 
 /*-------------------------- ↓ advanced search----------------------*/
 .advs-wrapper {
-    /*display: none;*/
     z-index: 80;
     position: absolute;
     top: 7rem;
@@ -268,7 +267,7 @@ header .advs-link-wrapper a:hover {
     padding: 0 0 2rem 0;
     white-space: nowrap;
     color: #666;
-    background-color: hsla(0, 0%, 95%, .8);
+    background-color: hsla(0, 0%, 95%, .95);
     overflow: auto;
     -webkit-box-shadow: 0 0 10px #b4b4b4;
     -moz-box-shadow: 0 0 10px #b4b4b4;
@@ -402,7 +401,6 @@ header .advs-link-wrapper a:hover {
 }*/
 
 /*-------------------------- ↑ advanced search---------------------*/
-
 
 /*---------------------------- ↓媒体查询 -----------------------------*/
 /*超级小屏幕，暂时不做处理，用不到*/

@@ -1,6 +1,8 @@
 var $advs = $('.advs-wrapper'),
     $advsControl = $('.advs-link-main').find('span'),
-    $header = $('header').hide();
+    $header = $('header').hide(),
+    pivotsContainer = $('.pivot-bar-container').hide();
+var wd; //全局搜索条件，为搜索框中的值+用户在侧边栏选择的条件，每次搜索结束后都要设置这个值
 $(function () {
     "use strict";
     //input suggestions
@@ -9,42 +11,12 @@ $(function () {
     //carousel
     pageSlide();
 
-    //date default value
-    $('#time_to').val(new Date().toDateInputValue());
-
     /*-------------listeners-----------*/
     //global search form
     $('.global-search-form').on('submit', function (e) {
         console.log(e);
     });
-    //advanced search link
-    $('.advs-link').on('click', function (e) {
-        e.preventDefault();
-        if (!($advs.hasClass('active'))) {
-            $advs.addClass('active');
-            $advsControl.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
-        } else {
-            $advs.removeClass('active');
-            $advsControl.removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
-        }
-    });
-    //advanced search form
-    $('#advs').on('submit', function (e) {
-        e.preventDefault();
-        advsSearch(this);
-    });
-    //advanced search from controls.close
-    $('.close-advs').on('click', function () {
-        $advs.removeClass('active');
-    });
-    //advanced search from controls.reset
-    $('.reset-advs').on('click', function () {
-        document.getElementById("advs").reset();
-    });
-    //advanced search form input for ip
-    $('#ip').on('blur', function () {
-        //d+.d+.d+.d+，验证ip地址的合法性，预留
-    });
+    advancedSearch();
 });
 
 //输入框实时提示
@@ -124,48 +96,95 @@ function suggestCursorToggle() {
     });
 }
 
-function advsSearch(form) {
-    var success = function (data) {
-            console.log('success', data);
-        },
-        error = function (data) {
-            console.log('error', data);
-        },
-        noData = function (data) {
-            console.log('nodata', data);
-        };
-    var criteria = {}, ipSegment = '', timeSegment = '',
-        inputs = $(form).find('fieldset').find('input');
+//------------------------Advanced Search 精确搜索----------------------------------//
+function advancedSearch() {
+    //date default value
+    $('#time_to').val(new Date().toDateInputValue());
 
-    for (var i = 0; i < inputs.length; i++) {
-        var key = inputs[i].id;
-        if (key.indexOf("ip_") >= 0) {
-            ipSegment += $(inputs[i]).val() + '-';
-            continue;
+    //advanced search link
+    $('.advs-link').on('click', function (e) {
+        e.preventDefault();
+        if (!($advs.hasClass('active'))) {
+            $advs.addClass('active');
+            $advsControl.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
+        } else {
+            $advs.removeClass('active');
+            $advsControl.removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
         }
-        if (key.indexOf('time_') >= 0) {
+    });
+    //advanced search form
+    $('#advs').on('submit', function (e) {
+        e.preventDefault();
+        advsSearch(this);
+    });
+    //advanced search from controls.close
+    $('.close-advs').on('click', function () {
+        $advs.removeClass('active');
+    });
+    //advanced search from controls.reset
+    $('.reset-advs').on('click', function () {
+        document.getElementById("advs").reset();
+    });
+    //advanced search form input for ip
+    $('#ip').on('blur', function () {
+        //d+.d+.d+.d+，验证ip地址的合法性，预留
+    });
+    function advsSearch(form) {
+        var success = function (data) {
+                console.log('success', data);
+                //generate sidebar
+                initSidebar(data.aggregation);
+                $advs.removeClass('active');
+            },
+            error = function (data) {
+                console.log('error', data);
+                $advs.removeClass('active');
+            },
+            noData = function (data) {
+                console.log('nodata', data);
+                $advs.removeClass('active');
+            };
+        var criteria = {}, ipSegment = '', timeSegment = '',
+            inputs = $(form).find('fieldset').find('input');
+
+        for (var i = 0; i < inputs.length; i++) {
+            var key = inputs[i].id;
+            if (key.indexOf("ip_") >= 0) {
+                ipSegment += $(inputs[i]).val() + '-';
+                continue;
+            }
+
             var timestamp = (Date.parse(new Date($(inputs[i]).val()))) / 1000;
-            timeSegment += timestamp + '-';
-            continue;
+            if (key.indexOf('time_') >= 0) {
+                timeSegment += timestamp + '-';
+                continue;
+            }
+            criteria[key] = $(inputs[i]).val().replace(/\s+/g, " ");//所有空白符都替换为一个空格
         }
-        criteria[key] = $(inputs[i]).val().replace(/\s+/g, " ");//所有空白符都替换为一个空格
+        if (ipSegment != '') {
+            criteria['ip'] += ' ' + ipSegment.replace(/^-|-$/g, '');//去掉首尾的“-”和空格
+        }
+        if (timeSegment != '') {
+            timeSegment = timeSegment.replace(/\s+/g, "").replace(/^-|-$/g, '');
+            if (timeSegment.indexOf('-NaN') >= 0) {
+                timeSegment = timeSegment.replace('-NaN', '-' + (Date.parse(new Date().toDateInputValue())) / 1000);
+            } else if (timeSegment.indexOf('NaN-') >= 0) {
+                timeSegment = timeSegment.replace('NaN-', '');
+            }
+            criteria['lastModified'] = timeSegment;
+        }
+
+        //arguments
+        var obj = {};
+        obj["url"] = 'api/advancedSearch';
+        obj['criteria'] = criteria;
+        obj['success'] = success;
+        obj['error'] = error;
+        obj['noDataFunc'] = noData;
+        obj['searchButton'] = $('.submit-advs');
+        console.log(obj);
+        newSearch(obj);
     }
-    if (ipSegment != '') {
-        criteria['ip'] += ' ' + ipSegment.replace(/^-|-$/g, '');//去掉收尾-和空格
-    }
-    if (timeSegment != '') {
-        criteria['timestamp'] = timeSegment.replace(/\s+/g, "").substr(0, timeSegment.length - 1);
-    }
-    //arguments
-    var obj = {};
-    obj["url"] = 'api/advancedSearch';
-    obj['criteria'] = criteria;
-    obj['success'] = success;
-    obj['error'] = error;
-    obj['noDataFunc'] = noData;
-    obj['searchButton'] = $('.submit-advs');
-    console.log(obj);
-    newSearch(obj);
 }
 
 //Format the date value
@@ -178,7 +197,6 @@ Date.prototype.toDateInputValue = (function () {
 //页面滑动,使用bootstrap的carousel和slide
 function pageSlide() {
     var $carousel = $('.carousel').carousel({"interval": false});
-    var INIT_PROGRESS = 150;
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
         var navbtns = $('.navbtn').find('div');
@@ -188,8 +206,8 @@ function pageSlide() {
                 $(item).addClass('bgd-light-blue');
             }
         });
-
         var progress = $(event.relatedTarget).attr("tabindex") * 120;
+        console.log(progress);
         $(".carousel-progress").animate({width: progress, left: (progress / 2) - 400}, 500);
         //playAnimation(tag);
     });
@@ -216,7 +234,14 @@ function onHomePageShow() {
     $header.hide();
 }
 
-
+/* --------------------------- Helper ------------------------ */
+//判断对象是否为空
+function isEmptyObject(obj) {
+    for (var n in obj) {
+        return false
+    }
+    return true;
+}
 
 
 

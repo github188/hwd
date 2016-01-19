@@ -1,13 +1,23 @@
 @charset "UTF-8";
 /*-------------------------- ↑ sidebar ---------------------------*/
 .sidebar {
-    position: relative;
-    z-index: 100;
-    width: 18rem;
-    height: auto;
+    z-index: 70;
+    position: absolute;
+    top: 5rem;
+    width: 20rem;
+    height: 90%;
     margin-left: 1rem;
     float: left;
-    border: 1px solid #ff0000;
+    overflow-y: auto;
+}
+
+.sidebar a {
+    font-size: 2rem;
+    color: hsla(206, 85%, 65%, 1);
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
 }
 
 /*侧边栏显示。需要正文内容缩进，以免内容与边栏覆盖，margin-left的值与.sidebar-col.width一致*/
@@ -20,32 +30,117 @@
     display: none;
 }
 
-.sidebar .aggregation {
-    /*结果汇总列表*/
+#facet div {
+    background-color: transparent;
+    color: #ccc;
+    border: none;
+}
+
+#facet > div {
+    margin-top: 1rem;
+    border-bottom: 1px solid hsla(0, 30%, 21%, .6);
+}
+
+#facet .panel-title a {
+    display: block;
+    width: 100%;
+    padding-left: 1rem;
+    margin-left: 2px;
+    font-size: 2.1rem;
+    font-weight: bold;
+    line-height: 2.5rem;
+    letter-spacing: .5rem;
+}
+
+#facet .panel-heading {
+    padding: 5px;
+}
+
+#facet .panel-body {
+    padding-bottom: 0;
+}
+
+#facet ol.facet-values {
+    padding-top: 5px;
+    clear: left;
+}
+
+#facet ol li.facet-value {
+    width: 16rem;
+    padding-bottom: 3px;
+}
+
+#facet li input[type="checkbox"] {
+    z-index: 60;
+    position: relative;
+    display: inline;
+    width: 1em;
+    height: 1em;
+    margin-left: 5px;
+    cursor: pointer;
+    float: left;
+}
+
+#facet input[type="checkbox"] + .label-container label {
+    margin-left: 5px;
+    display: -moz-inline-stack;
+    display: inline-block;
+    zoom: 1;
+    position: relative;
+    cursor: pointer;
+    vertical-align: text-bottom;
+    line-height: 1.5rem;
+}
+
+#facet input[type="checkbox"] + label::before, .facet input[type="checkbox"] + .label-container label::before {
+    line-height: 2rem;
+    color: #0077b5;
+    font-weight: normal;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    margin-left: -2rem;
+    z-index: 50;
+    display: -moz-inline-stack;
+    display: inline-block;
+    zoom: 1;
+    border: 1px solid #c1c1c1;
+    content: " ";
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    text-align: center;
+}
+
+#facet li.facet-value .facet-count {
+    font-weight: normal;
+    float: right;
+    unicode-bidi: bidi-override;
+}
+
+#facet li.facet-value .facet-label {
+    font-weight: normal;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+
+}
+
+#facet li.facet-value .facet-label bdi {
+    margin-right: 5px;
+}
+
+#facet ol.inner-facet-values {
+    margin-left: 1rem;
+}
+
+#facet ol.inner-facet-values .facet-value {
+    width: 15rem;
 }
 
 /*-------------------------- sidebar ↑ ---------------------------*/
-
-/*---------------------------- ↓媒体查询 -----------------------------*/
-/*超级小屏幕，暂时不做处理，用不到*/
-@media (max-width: 480px) and (min-width: 320px) {
-}
-
-/* 超小屏幕（手机，小于768）*/
-@media (max-width: 767px) and (min-width: 480px) {
-
-}
-
-/* 小屏幕（平板，大于等于 768px） */
-@media (min-width: 768px) and (max-width: 991px) {
-
-}
-
-/* 中等屏幕（桌面显示器，大于等于 992px） */
-@media (min-width: 992px) and (max-width: 1199px) {
-}
-
-/* 大屏幕（大桌面显示器，大于等于 1200px） */
-@media (min-width: 1200px) {
-
-}

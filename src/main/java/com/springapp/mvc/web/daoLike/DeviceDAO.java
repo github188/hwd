@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.springapp.mvc.web.model.Device;
 import com.springapp.mvc.web.model.Device4MapOrGlobe;
-import com.springapp.mvc.web.model.NewAdvanceSearchCriteria;
 import com.springapp.mvc.web.model.NewDevice;
 import com.springapp.mvc.web.util.MyHttpClient;
 import com.springapp.mvc.web.util.RestClient;
