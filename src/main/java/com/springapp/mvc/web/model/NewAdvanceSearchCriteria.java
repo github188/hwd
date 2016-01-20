@@ -18,7 +18,7 @@ public class NewAdvanceSearchCriteria {
     String brand;
     String model;
     String os;
-    String protocol;
+    String service;
     String port;//多个port用逗号分隔（或），port段用-分隔
     String banner;
     String vulId;
@@ -138,14 +138,14 @@ public class NewAdvanceSearchCriteria {
         this.os = os;
     }
 
-    @JSONField(name = "description.port_info.protocol")
-    public String getProtocol() {
-        return protocol;
+    @JSONField(name = "description.port_info.device_service")
+    public String getService() {
+        return service;
     }
 
-    @JSONField(name = "description.port_info.protocol")
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
+    @JSONField(name = "description.port_info.device_service")
+    public void setService(String service) {
+        this.service = service;
     }
 
     @JSONField(name = "description.port_info.port")
@@ -233,6 +233,6 @@ public class NewAdvanceSearchCriteria {
     @Override
     public String toString() {//为了校验所有字段是否均为空
         return must + should + mustnot + ip + country + province + city + type + brand + model + os +
-                protocol + port + banner + vulId + vulName + vulType + lastModified + vpsIp + taskId;
+                service + port + banner + vulId + vulName + vulType + lastModified + vpsIp + taskId;
     }
 }

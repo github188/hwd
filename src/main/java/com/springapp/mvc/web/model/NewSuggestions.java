@@ -2,7 +2,6 @@ package com.springapp.mvc.web.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.springapp.mvc.web.config.AppConfig;
 import com.springapp.mvc.web.util.RestClient;
 
 import java.util.ArrayList;
@@ -15,7 +14,8 @@ import java.util.Set;
  */
 public class NewSuggestions {
     public static List<String> suggestions = new ArrayList<String>();
-    private static String suggestionURL = AppConfig.suggestionURL;
+    //    private static String suggestionURL = AppConfig.suggestionURL;
+    private static String suggestionURL = "http://10.10.12.72:8083/se/search/advanced/completionsuggest";
 
     public NewSuggestions() {
         //可以用来初始化映射表
@@ -31,24 +31,30 @@ public class NewSuggestions {
     public static void initSuggestions() {
         RestClient rc = new RestClient();
         if (suggestionURL == null) {
-            System.out.println("suggestion url is " + suggestionURL);
-            suggestionURL = "http://10.10.12.72:8083/se/getSuggestions";
+            suggestionURL = "http://10.10.12.72:8083/se/search/advanced/completionsuggest";
         }
-        JSONObject resp = rc.getJSONObject(suggestionURL);
+        String respStr = rc.getJackson(suggestionURL);
+        JSONObject resp = JSONObject.parseObject(respStr);
         if ("200".equals(resp.getString("statuscode")) && resp.getJSONObject("data") != null) {
             JSONObject data = resp.getJSONObject("data");
             Set<String> keys = data.keySet();
             for (String key : keys) {
+                System.out.println("key: " + key);
                 JSONArray arrItem = data.getJSONArray(key);
                 for (int i = 0; i < arrItem.size(); i++) {
-                    suggestions.add(key + ":" + arrItem.get(i));
+                    if ("description.port_info.device_model".equals(key)) {
+                        System.out.println(key);
+                        continue;
+                    }
+                    suggestions.add(arrItem.get(i).toString());
+//                    suggestions.add(key + ":" + arrItem.get(i));
                 }
             }
         }
     }
 
-   /* public static void main(String[] args) {
-        Suggestions.initSuggestions();
+/*    public static void main(String[] args) {
+        NewSuggestions.initSuggestions();
         System.out.println(suggestions);
     }*/
 }

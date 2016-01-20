@@ -237,7 +237,7 @@ header .advs-link-wrapper a:hover {
     display: inline-block;
     position: relative;
     /*margin-left: 5%;*/
-    padding: .6rem 0 0 .6rem;
+    padding: 0 0 0 .6rem;
     z-index: 2017;
     border-bottom: 1px solid #287bbc;
     text-decoration: none;
@@ -267,7 +267,7 @@ header .advs-link-wrapper a:hover {
     padding: 0 0 2rem 0;
     white-space: nowrap;
     color: #666;
-    background-color: hsla(0, 0%, 95%, .95);
+    background-color: hsla(0, 0%, 85%, 1);
     overflow: auto;
     -webkit-box-shadow: 0 0 10px #b4b4b4;
     -moz-box-shadow: 0 0 10px #b4b4b4;
@@ -339,7 +339,7 @@ header .advs-link-wrapper a:hover {
     margin-left: 8%;
     font-size: 2rem;
     padding: 1rem .5rem .3rem 1rem;
-    border: 1px solid #999;
+    border: 1px solid hsl(0, 0%, 95%);
     box-sizing: border-box;
 }
 
@@ -354,7 +354,7 @@ header .advs-link-wrapper a:hover {
     font-size: 1.2rem;
     font-weight: bold;
     text-align: left;
-    background-color: hsl(240, 3%, 81%);
+    background-color: hsl(0, 0%, 85%);
 }
 
 #advs .row label.col-sm-2 {
@@ -402,6 +402,53 @@ header .advs-link-wrapper a:hover {
 
 /*-------------------------- ↑ advanced search---------------------*/
 
+/*-------------------------- ↓ 跟sidebar联动的部分-----------------*/
+.result-count-duration {
+    padding: .5rem;
+    border-bottom: 1px solid hsla(0, 30%, 21%, .6);
+}
+
+.pivot-bar {
+    padding: 5px 0 10px 0;
+    overflow: hidden;
+    /*background-color: #fff;*/
+    border-bottom: 1px solid hsla(0, 30%, 21%, .6);
+}
+
+.pivot-bar .pivots {
+    display: block;
+}
+
+.pivot-bar .pivot {
+    background-color: hsla(0, 30%, 21%, .3);
+    padding: 5px 5px 4px 10px;
+    color: #eee;
+    float: left;
+    margin: 5px 5px 0 0;
+    -webkit-box-shadow: inset 0 0 3px #666;
+    -moz-box-shadow: inset 0 0 3px #666;
+    box-shadow: inset 0 0 3px #666;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.pivot-bar .remove-pivot {
+    height: 2rem;
+    width: 2rem;
+    overflow: hidden;
+    margin: 0 0 0 6px;
+    padding: 0;
+    vertical-align: middle;
+    background: none;
+    border: none;
+}
+
+/*-------------------------- 跟sidebar联动的部分 ↑-----------------*/
+
 /*---------------------------- ↓媒体查询 -----------------------------*/
 /*超级小屏幕，暂时不做处理，用不到*/
 @media (max-width: 480px) and (min-width: 320px) {
@@ -416,6 +463,11 @@ header .advs-link-wrapper a:hover {
 
 /* 小屏幕（平板，大于等于 768px） */
 @media (min-width: 768px) and (max-width: 991px) {
+    form {
+        font-size: 10rem;
+        font-weight: 500;
+    }
+
     header .global-search-form .global-search-input {
         width: 33rem;
     }

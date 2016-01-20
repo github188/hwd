@@ -182,6 +182,7 @@ public class DataApiController {
     * @param advancedSearch，用户输入的搜索条件
     * @result String，查询结果
     */
+    @JsonView(Views.Public.class)
     @RequestMapping(value = "/api/getSuggestions")
     public String getSuggestions(@RequestParam(value = "search") String search) {
         logger.debug("DataApiController advancedSearch starts-----------");

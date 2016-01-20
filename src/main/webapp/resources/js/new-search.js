@@ -16,6 +16,7 @@ function newSearch(obj) {
         disableButton(obj.searchButton, true);
     }
     //（2）查询数据
+    console.log("requestData: ", requestData);
     $.ajax({
         url: obj.url,
         type: "post",

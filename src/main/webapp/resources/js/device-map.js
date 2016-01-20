@@ -31,6 +31,7 @@ require(
 
         "esri/dijit/HomeButton",
         "esri/layers/GraphicsLayer",
+        "esri/layers/ArcGISDynamicMapServiceLayer",
         "esri/SpatialReference",
         "esri/dijit/PopupTemplate",
         "esri/geometry/Point",
@@ -45,23 +46,39 @@ require(
     ], function (parser, ready, arrayUtils, Color, domStyle, domConstruct, query, on,
                  Map, esriRequest, Graphic, Extent,
                  SimpleLineSymbol, SimpleMarkerSymbol, SimpleFillSymbol, PictureMarkerSymbol, ClassBreaksRenderer,
-                 HomeButton, GraphicsLayer, SpatialReference, PopupTemplate, Point, ScreenPoint, webMercatorUtils,
+                 HomeButton, GraphicsLayer, DynamicLayer, SpatialReference, PopupTemplate, Point, ScreenPoint, webMercatorUtils,
                  ClusterLayer) {
         ready(function () {
             parser.parse();
             disableButton($('#mapSearchButton'), true);    //地图加载完之前禁用搜索按钮
             var clusterLayer, home, link;
 
+            /*map = new Map("mapDiv", {
+             basemap: "gray",
+             center: [113.25, 23.1167],
+             //center: [-96.63281250004201, 33.09759959058161],
+             zoom: 3,
+             minZoom: 3,
+             maxZoom: 8,
+             sliderPosition: "bottom-right",
+             logo: false
+             });*/
             map = new Map("mapDiv", {
-                basemap: "gray",
-                center: [113.25, 23.1167],
-                //center: [-96.63281250004201, 33.09759959058161],
-                zoom: 3,
-                minZoom: 3,
-                maxZoom: 8,
-                sliderPosition: "bottom-right",
                 logo: false
             });
+
+
+            /* */
+            /* var baseUrl = "http://10.10.2.81:6080/arcgis/rest/services/yiyuanyx2/MapServer";
+             var tiledLayer = new TiledLayer(baseUrl);
+             map.addLayer(tiledLayer);*/
+
+            //添加我们部署的地图
+            //var Url = "http://10.10.2.81:6080/arcgis/rest/services/yiyuanyxscd/MapServer";
+            var Url = "http://10.10.2.81:6080/arcgis/rest/services/China_Community_BaseMap/MapServer";
+            var dynamicLayer = new DynamicLayer(Url);
+            map.addLayer(dynamicLayer);
+
 
             // Home button
             home = new HomeButton({
@@ -410,3 +427,8 @@ document.getElementById('ipInput').oninput = function (e) {
     }
 
 };
+function disableButton(button, flag) {
+    if (button) {
+        button.prop("disabled", flag);
+    }
+}

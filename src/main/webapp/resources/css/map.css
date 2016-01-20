@@ -7,19 +7,11 @@
     font-size: 2rem;
 }
 
-.map-wrapper .result-count-duration {
-    display: none;
-}
-
-.map-wrapper .pivot-bar-container {
-    display: none;
-}
-
 /*leaflet*/
-.map-wrapper .map-container {
+.map-wrapper .mapHolder {
     width: 100%;
     height: 100%;
-    border:3px solid deeppink;
+    border: 3px solid deeppink;
 }
 
 /*arcgis js api*/

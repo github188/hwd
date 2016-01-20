@@ -1,16 +1,25 @@
 //http://leafletjs.com/examples/choropleth.html
 //my access token=pk.eyJ1IjoieWFzZW1pbiIsImEiOiJjaWdya2NraXAwMXpkdjFrb3ZrYnA0Z3N3In0.-eebf1plZJVyYP9HdaU8bg
 //my map id=yasemin.cigrkcj2t01zfusm1oqkqlzoc
-
+var map, tiledLayer,
+    baseURL = 'http://10.10.2.81:6080/arcgis/rest/services/yiyuanyx2/MapServer';
+//http://10.10.2.81:6080/arcgis/rest/services/world/MapServer
+//http://10.10.2.81:6080/arcgis/rest/services/area/MapServer
 initMap();
 function initMap() {
-    var map = L.map('mapHolder').setView([51.505, -0.09], 13);
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
-        id: 'yasemin.cigrkcj2t01zfusm1oqkqlzoc',
-        accessToken: 'pk.eyJ1IjoieWFzZW1pbiIsImEiOiJjaWdya2NraXAwMXpkdjFrb3ZrYnA0Z3N3In0.-eebf1plZJVyYP9HdaU8bg'
+    map = L.map('mapHolder').setView([45.528, -122.680], 13);
+    //L.esri.basemapLayer("Gray").addTo(map);
+    tiledLayer = L.esri.tiledMapLayer({
+        url: baseURL
     }).addTo(map);
+
+    /*    map = L.map('mapHolder').setView([51.505, -0.09], 13);
+     L.tileLayer('http://10.10.2.81:6080/arcgis/rest/services/area/MapServer', {
+     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+     maxZoom: 18,
+     id: 'yasemin.cigrkcj2t01zfusm1oqkqlzoc',
+     accessToken: 'pk.eyJ1IjoieWFzZW1pbiIsImEiOiJjaWdya2NraXAwMXpkdjFrb3ZrYnA0Z3N3In0.-eebf1plZJVyYP9HdaU8bg'
+     }).addTo(map);*/
 
     map.on('click', onMapClick);
 

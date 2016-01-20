@@ -405,18 +405,23 @@ public class DeviceDAO {
         if ("200".equals(result.getString("statuscode"))) {
             result = rawData2ResponseBody(result);
         }
-//        System.out.println("dao result: " + result.toString());
         return result;
     }
 
     private JSONObject responseToListOld(JSONObject resp) {
         JSONObject result = resp;
+        System.out.println("or---------" + resp);
         //aggregation中的country@%city的处理
         JSONObject agg = resp.getJSONObject("aggregation");
         if (agg.containsKey("country@%city")) {
+            System.out.println("key: " + agg);
             JSONObject cc = agg.getJSONObject("country@%city");
-            JSONObject countries = new JSONObject();    //处理后的countries
-            for (String key : new ArrayList<String>(cc.keySet())) {
+            System.out.println("cc: " + cc.toString());
+            JSONObject countries = new JSONObject(true);    //处理后的countries
+            Iterator<String> it = cc.keySet().iterator();
+            while (it.hasNext()) {
+                String key = it.next().toString();
+
                 String country, city;
                 try {
                     String[] keyArr = key.split("@%");
@@ -431,16 +436,17 @@ public class DeviceDAO {
                         city = "Unknown";
                     }
                     if (!countries.containsKey(country)) {
-                        Map<String, Integer> map = new HashMap<String, Integer>();
+                        Map<String, Integer> map = new LinkedHashMap<String, Integer>();
                         map.put(city, cc.getIntValue(key));
                         countries.put(country, map);
                     } else {
-                        ((Map<String, Integer>) countries.get(country)).put(city, cc.getIntValue(key));
+                        ((LinkedHashMap<String, Integer>) countries.get(country)).put(city, cc.getIntValue(key));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+
             agg.put("country@%city", countries);
             result.put("aggregation", agg);
         }
@@ -577,13 +583,15 @@ public class DeviceDAO {
     }
 
     private JSONObject rawData2ResponseBody(JSONObject resp) {
-        JSONObject result = resp;
         //aggregation中的country@%city的处理
         JSONObject agg = resp.getJSONObject("aggregation");
         if (agg.containsKey("country@%city")) {
+            JSONObject countries = new JSONObject(true);    //处理后的countries
             JSONObject cc = agg.getJSONObject("country@%city");
-            JSONObject countries = new JSONObject();    //处理后的countries
-            for (String key : new ArrayList<String>(cc.keySet())) {
+            Iterator<String> it = cc.keySet().iterator();
+            while (it.hasNext()) {
+                String key = it.next();
+//                System.out.println("key sort:" + key + ": " + cc.getInteger(key));
                 String country, city;
                 try {
                     String[] keyArr = key.split("@%");
@@ -597,18 +605,25 @@ public class DeviceDAO {
                         continue;
                     }
                     if (!countries.containsKey(country)) {
-                        Map<String, Integer> map = new HashMap<String, Integer>();
-                        map.put(city, cc.getIntValue(key));
-                        countries.put(country, map);
+                        JSONObject countryObj = new JSONObject(true);
+                        JSONObject cities = new JSONObject(true);
+                        int initCount = cc.getInteger(key);
+                        cities.put(city, initCount);
+                        countryObj.put("count", initCount);
+                        countryObj.put("cities", cities);
+                        countries.put(country, countryObj);
                     } else {
-                        ((Map<String, Integer>) countries.get(country)).put(city, cc.getIntValue(key));
+                        JSONObject tmpCountry = countries.getJSONObject(country);
+                        JSONObject tmpCities = tmpCountry.getJSONObject("cities");
+                        tmpCities.put(city, cc.getInteger(key));
+                        tmpCountry.put("count", tmpCountry.getInteger("count") + cc.getInteger(key));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             agg.put("country@%city", countries);
-            result.put("aggregation", agg);
+            resp.put("aggregation", agg);
         }
 
         //data
@@ -710,9 +725,9 @@ public class DeviceDAO {
                 device.setTags(tags);
                 devices.add(device);
             }
-            result.put("data", devices);
+            resp.put("data", devices);
         }
-        return result;
+        return resp;
     }
 
     private boolean contains(List<String> sArr, String s) {
@@ -727,15 +742,15 @@ public class DeviceDAO {
         return has;
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         DeviceDAO dd = new DeviceDAO();
         Map<String, Object> criteria = new HashMap<String, Object>();
-        String json = "{\"must\":\"\",\"should\":\"\",\"mustnot\":\"\",\"ip\":\"1.2.3%202.3.4-3.4.5\",\"country\":\"\",\"province\":\"\",\"city\":\"\",\"type\":\"\",\"brand\":\"\",\"model\":\"\",\"protocol\":\"\",\"port\":\"\",\"banner\":\"\",\"vulId\":\"\",\"vulType\":\"\",\"vulName\":\"\",\"os\":\"\",\"timestamp\":\"NaN-NaN\"}";
+        String json = "{\"must\":\"北\",\"should\":\"\",\"mustnot\":\"\",\"ip\":\"\",\"country\":\"\",\"province\":\"\",\"city\":\"\",\"type\":\"\",\"brand\":\"\",\"model\":\"\",\"protocol\":\"\",\"port\":\"\",\"banner\":\"\",\"vulId\":\"\",\"vulType\":\"\",\"vulName\":\"\",\"os\":\"\",\"taskId\":\"\",\"vpsIp\":\"\",\"lastModified\":\"1453248000\"}";
         criteria.put("q", JSON.parseObject(json));
 
 //        String search = "{\"geo\":\"polygon(69.9199218750096 56.629998264227424,114.04101562499787 56.629998264227424,158.1621093749862 56.629998264227424,158.1621093749862 -8.88878176349202,114.04101562499787 -8.88878176349202,69.9199218750096 -8.88878176349202)\",\"lossycompress\":1,\"page\":1,\"permitfilter\":\"\",\"typefilter\":\"\",\"wd\":\"* \",\"zoomlevel\":6}";
         //dd.getDevices4List(criteria);
         //dd.getResponse4Globe(JSONObject.fromObject(search).toString());
         System.out.println(dd.getResult4AdvancedSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ var $advs = $('.advs-wrapper'),
     $advsControl = $('.advs-link-main').find('span'),
     $header = $('header').hide(),
     pivotsContainer = $('.pivot-bar-container').hide();
+var advancedSearchURL = basePath + 'api/advancedSearch';
 var wd; //全局搜索条件，为搜索框中的值+用户在侧边栏选择的条件，每次搜索结束后都要设置这个值
 $(function () {
     "use strict";
@@ -29,10 +30,12 @@ function inputSuggest(input, sourceURL) {
             //Prefetched data is fetched and processed on initialization. If the browser supports local storage,
             // the processed data will be cached there to prevent additional network requests on subsequent page loads.
             prefetch: {
-                url: 'resources/data/countries.json',
+                //url: 'resources/data/countries.json',
+                url: dataSource,
                 limit: 10,
-                filter: function (list) {
-                    return $.map(list, function (item) {
+                //ttl: 10000,//The time (in milliseconds) the prefetched data should be cached in local storage. Defaults to 86400000 (1 day).
+                filter: function (resp) {
+                    return $.map(resp.data, function (item) {
                         return $.isArray(item) && item.length == 2 ? {
                             title: item[0],
                             desc: item[1],
@@ -176,7 +179,7 @@ function advancedSearch() {
 
         //arguments
         var obj = {};
-        obj["url"] = 'api/advancedSearch';
+        obj["url"] = advancedSearchURL;
         obj['criteria'] = criteria;
         obj['success'] = success;
         obj['error'] = error;
@@ -207,7 +210,6 @@ function pageSlide() {
             }
         });
         var progress = $(event.relatedTarget).attr("tabindex") * 120;
-        console.log(progress);
         $(".carousel-progress").animate({width: progress, left: (progress / 2) - 400}, 500);
         //playAnimation(tag);
     });
