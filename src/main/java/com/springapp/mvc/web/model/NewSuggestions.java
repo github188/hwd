@@ -33,7 +33,7 @@ public class NewSuggestions {
         if (suggestionURL == null) {
             suggestionURL = "http://10.10.12.72:8083/se/search/advanced/completionsuggest";
         }
-        String respStr = rc.getJackson(suggestionURL);
+        String respStr = rc.get(suggestionURL);
         JSONObject resp = JSONObject.parseObject(respStr);
         if ("200".equals(resp.getString("statuscode")) && resp.getJSONObject("data") != null) {
             JSONObject data = resp.getJSONObject("data");

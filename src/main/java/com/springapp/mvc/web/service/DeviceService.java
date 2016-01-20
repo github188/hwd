@@ -163,7 +163,7 @@ public class DeviceService {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //返回用户查询的数据，用于前端以列表的形式显示设备信息（高级搜索）
-    public String getResponse4AdvanceSearch(NewAdvanceSearchCriteria search) {
+/*    public String getResponse4AdvanceSearch(NewAdvanceSearchCriteria search) {
         logger.debug("Service ==>> getResponse4AdvanceSearch starts ================");
         JSONObject result;
         if (isValidSearchCriteria(search)) {
@@ -193,5 +193,5 @@ public class DeviceService {
             }
         }
         return valid;
-    }
+    }*/
 }

@@ -1,15 +1,15 @@
 package com.springapp.mvc.web.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.gson.Gson;
 import com.springapp.mvc.web.jsonView.Views;
+import com.springapp.mvc.web.model.AdvanceSearchCriteria;
 import com.springapp.mvc.web.model.MarkLineResponseBody;
-import com.springapp.mvc.web.model.NewAdvanceSearchCriteria;
 import com.springapp.mvc.web.model.ResponseBody;
 import com.springapp.mvc.web.model.SearchCriteria;
 import com.springapp.mvc.web.service.DeviceService;
 import com.springapp.mvc.web.service.MarkLinesService;
+import com.springapp.mvc.web.service.NewDeviceService;
 import com.springapp.mvc.web.service.SuggestionService;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -32,12 +32,14 @@ public class DataApiController {
     private final DeviceService deviceService;
     private final MarkLinesService markLinesService;
     private final SuggestionService suggestionService;
+    private final NewDeviceService newDeviceService;
 
     @Autowired
-    public DataApiController(DeviceService deviceService, MarkLinesService markLinesService, SuggestionService suggestionService) {
+    public DataApiController(DeviceService deviceService, MarkLinesService markLinesService, SuggestionService suggestionService, NewDeviceService newDeviceService) {
         this.deviceService = deviceService;
         this.markLinesService = markLinesService;
         this.suggestionService = suggestionService;
+        this.newDeviceService = newDeviceService;
     }
 
     @JsonView(Views.Public.class)
@@ -169,10 +171,10 @@ public class DataApiController {
      * @result String，查询结果
      */
     @RequestMapping(value = "/api/advancedSearch")
-    public String advancedSearch(@RequestBody NewAdvanceSearchCriteria criteria) {
+    public String advancedSearch(@RequestBody AdvanceSearchCriteria criteria) {
         logger.debug("DataApiController advancedSearch starts-----------");
-        System.out.println("DataApiController advancedSearch starts-----------" + JSON.toJSON(criteria).toString());
-        String result = deviceService.getResponse4AdvanceSearch(criteria);
+        System.out.println("DataApiController advancedSearch starts-----------" + JSONObject.fromObject(criteria));
+        String result = newDeviceService.getResponse4AdvanceSearch(criteria);
 //        System.out.println(result);
         return result;
     }

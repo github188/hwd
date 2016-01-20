@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.springapp.mvc.web.model.Device;
 import com.springapp.mvc.web.model.Device4MapOrGlobe;
-import com.springapp.mvc.web.model.NewDevice;
 import com.springapp.mvc.web.util.MyHttpClient;
 import com.springapp.mvc.web.util.RestClient;
 import org.slf4j.Logger;
@@ -78,7 +77,7 @@ public class DeviceDAO {
     public JSONObject getDevices4List(Map<String, Object> criteria) {
         logger.debug("DAO ==>> getDevices4List starts =================");
 //        System.out.println("DAO ==>> getDevices4List starts =======================");
-        JSONObject result = rc.get(uri4List, criteria);
+        JSONObject result = JSON.parseObject(rc.get(uri4List, criteria));
 //        System.out.println("dao rc: "+result.toString());
         if ("200".equals(result.getString("statuscode"))) {
             //aggregation中的country@%city的处理
@@ -253,7 +252,7 @@ public class DeviceDAO {
     public JSONObject getDevices4Globe(String criteria) {
         logger.debug("DAO ==>> getResponse4Globe starts =================");
 //        System.out.println("DAO ==>> getResponse4Globe starts =======================");
-        JSONObject result = rc.get(uri4MapOrGlobe, criteria);
+        JSONObject result = JSON.parseObject(rc.get(uri4MapOrGlobe, criteria));
         if ("200".equals(result.getString("statuscode"))) {
             JSONArray data = result.getJSONArray("data");
             Map<String, List<Device4MapOrGlobe>> map;
@@ -301,7 +300,7 @@ public class DeviceDAO {
     public JSONObject getDevices4Map(String criteria) {
         logger.debug("DAO ==>> getDevices4Map starts =================");
 //      System.out.println("DAO ==>> getDevices4Map starts =======================");
-        JSONObject result = rc.get(uri4MapOrGlobe, criteria);
+        JSONObject result = JSON.parseObject(rc.get(uri4MapOrGlobe, criteria));
         if ("200".equals(result.getString("statuscode"))) {
             JSONArray deviceList = new JSONArray();
             JSONArray data = result.getJSONArray("data");
@@ -398,7 +397,7 @@ public class DeviceDAO {
     }
 
     //返回用户查询的数据，用于前端以列表的形式显示设备信息（数据访问层）高级搜素-----------------------------√
-    public JSONObject getResult4AdvancedSearch(String uri, Map<String, Object> criteria) {
+/*    public JSONObject getResult4AdvancedSearch(String uri, Map<String, Object> criteria) {
         logger.debug("DAO ==>> getResult4AdvancedSearch starts =================");
         System.out.println("DAO ==>> getResult4AdvancedSearch starts =======================");
         JSONObject result = rc.get(uri, criteria);
@@ -406,180 +405,6 @@ public class DeviceDAO {
             result = rawData2ResponseBody(result);
         }
         return result;
-    }
-
-    private JSONObject responseToListOld(JSONObject resp) {
-        JSONObject result = resp;
-        System.out.println("or---------" + resp);
-        //aggregation中的country@%city的处理
-        JSONObject agg = resp.getJSONObject("aggregation");
-        if (agg.containsKey("country@%city")) {
-            System.out.println("key: " + agg);
-            JSONObject cc = agg.getJSONObject("country@%city");
-            System.out.println("cc: " + cc.toString());
-            JSONObject countries = new JSONObject(true);    //处理后的countries
-            Iterator<String> it = cc.keySet().iterator();
-            while (it.hasNext()) {
-                String key = it.next().toString();
-
-                String country, city;
-                try {
-                    String[] keyArr = key.split("@%");
-                    if (keyArr.length == 2) {   //国家和城市都有值，例如"中国@%北京"
-                        country = "".equals(keyArr[0]) ? "Unknown" : keyArr[0];
-                        city = keyArr[1];
-                    } else if (keyArr.length == 1) {    //只有国家的，例如"中国@%"
-                        country = keyArr[0];
-                        city = "Unknown";
-                    } else {//既没有国家也没有城市的，例如"@%"
-                        country = "Unknown";
-                        city = "Unknown";
-                    }
-                    if (!countries.containsKey(country)) {
-                        Map<String, Integer> map = new LinkedHashMap<String, Integer>();
-                        map.put(city, cc.getIntValue(key));
-                        countries.put(country, map);
-                    } else {
-                        ((LinkedHashMap<String, Integer>) countries.get(country)).put(city, cc.getIntValue(key));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            agg.put("country@%city", countries);
-            result.put("aggregation", agg);
-        }
-
-        //data
-        JSONArray sourceData = resp.getJSONArray("data");
-        if (sourceData.size() > 0) {
-            JSONArray data = new JSONArray();
-            String latestTime = "0";                //存储最近的时间，用于设备时间的显示
-            for (Object obj : sourceData) {
-                JSONObject objItem = (JSONObject) JSON.toJSON(obj);
-                    /*dataItem contains the following fields,
-                    * tags: Array. Includes original tags. <--Later the os and type of the device will be included-->
-                    * location: JSONObject. Includes country, city, longitude and latitude
-                    * timestamp: String. The latest time
-                    * ports: JSONArray. Each item includes port number and detail information
-                    * vuls: JSONArray. Each item includes vul name and detail information
-                    */
-                JSONObject dataItem = new JSONObject();
-                //desc(a tmp variable)
-                JSONObject objDesc = (JSONObject) JSONObject.toJSON(objItem.get("description"));
-
-                //dataItem.ip
-                dataItem.put("ip", objDesc.get("ip"));
-
-                    /*dataItem.location, which contains the following fields,
-                     * country : China
-                     * city : Beijing
-                     * lat : 23.1167
-                     * lon : 113.25
-                     */
-                JSONObject objLoc = (JSONObject) JSONObject.toJSON(objDesc.get("device_location"));
-                JSONObject dataLoc = new JSONObject();
-                String country = "".equals(objLoc.getString("zh_CN")) ? objLoc.getString("country") : objLoc.getString("zh_CN");
-                dataLoc.put("country", country);
-                String city = "".equals(objLoc.getString("zh_City")) ? objLoc.getString("city") : objLoc.getString("zh_City");
-                dataLoc.put("city", city);
-                dataLoc.put("lat", objLoc.getString("lat"));
-                dataLoc.put("lon", objLoc.getString("lon"));
-                dataItem.put("location", dataLoc);
-
-                //dataItem.os
-                if (!objDesc.getJSONObject("os_info").isEmpty()) {
-                    dataItem.put("os", objDesc.getJSONObject("os_info").getString("os"));
-                }
-
-                //dataItem.tags
-                dataItem.put("tags", objItem.get("tags"));
-
-                //从端口扫描信息列表中获取所需数据，拼装端口和其他字段(type和timestamp)
-                JSONArray objPorts = objDesc.getJSONArray("port_info");
-                //data.type
-                if (objPorts.size() > 0) {
-                    dataItem.put("type", ((JSONObject) JSONObject.toJSON(objPorts.get(0))).getString("device_type"));
-                } else {
-                    dataItem.put("type", "Unknown");
-                }
-
-                    /*
-                    * dataItem.ports, JSONArray.
-                    * Each item is an JSONObject, the key is port number, value is also a JSONArray, containing service, banner and display fields.
-                    * i.e.{"21":{"service":"http","banner":"banner21"}
-                    */
-                JSONArray dataPorts = new JSONArray();
-                for (Object o : objPorts) {
-                    JSONObject objPort = (JSONObject) JSONObject.toJSON(o);
-                    JSONObject dataPort = new JSONObject();
-                    JSONObject dataPortValue = new JSONObject();
-                    //指定本条端口信息是否显示，-1不显示，其他显示
-                    if (objPort.get("display") != null && objPort.getIntValue("display") == -1) {
-                        dataPortValue.put("display", -1);
-                    }
-                    dataPortValue.put("banner", objPort.getString("banner"));
-                    dataPortValue.put("service", objPort.getString("device_service"));
-                    dataPort.put(objPort.getString("port"), dataPortValue);
-                    dataPorts.add(dataPort);
-
-                    //获取离当前最近的时间
-                    String tmpTime = objPort.getString("timestamp_received");
-                    if (latestTime.compareTo(tmpTime) < 0) {
-                        latestTime = tmpTime;
-                    }
-                }
-                dataItem.put("ports", dataPorts);
-
-                     /*dataItem.vuls. JSONArray. Each item contains the following fields,
-                     * risk_level : 1
-                     * desc : description
-                     * vul_type : weak_password
-                     * type : exploit
-                     * platform : Unix
-                     * data : JSONObject
-                     * display: -1
-                     * i.e. "vulName1":{"risk_level":"1","desc":"description","vul_type":"weak_password","type":"exploit","platform":"Unix","data":"sss"}
-                     */
-                JSONArray objVuls = objDesc.getJSONArray("vul_info");
-                JSONArray dataVuls = new JSONArray();
-                for (Object o : objVuls) {
-                    JSONObject objVul = (JSONObject) JSONObject.toJSON(o);
-                    JSONObject dataVul = new JSONObject();
-                    JSONObject dataVulValue = new JSONObject();
-                    //指定本条消息是否显示-1不显示，其他显示
-                    if (objVul.get("display") != null && objVul.getIntValue("display") == -1) {
-                        dataVulValue.put("display", -1);
-                    }
-
-                    dataVulValue.put("risk_level", objVul.getString("risk_level"));
-                    dataVulValue.put("desc", objVul.getString("description"));
-                    dataVulValue.put("vul_type", objVul.getString("vul_type"));
-                    dataVulValue.put("type", objVul.getString("type"));
-                    dataVulValue.put("platform", objVul.getString("platform"));
-                    //漏洞的data中数据类似json格式，但需要传回字符串，需要将双引号进行转义
-                    dataVulValue.put("data", objVul.getString("data").replace("\"", "\\\""));
-                    dataVul.put(objVul.getString("vul_name"), dataVulValue);
-                    dataVuls.add(dataVul);
-
-                    //获取离当前最近的时间
-                    String tmpTime = objVul.getString("timestamp_update");
-                    if (latestTime.compareTo(tmpTime) < 0) {
-                        latestTime = tmpTime;
-                    }
-                }
-                dataItem.put("vuls", dataVuls);
-
-                //dataItem.timestamp
-                dataItem.put("timestamp", latestTime);
-
-                //add dataItem to data array
-                data.add(dataItem);
-            }
-            result.put("data", data);
-        }
-        return null;
     }
 
     private JSONObject rawData2ResponseBody(JSONObject resp) {
@@ -740,7 +565,7 @@ public class DeviceDAO {
             }
         }
         return has;
-    }
+    }*/
 
 /*    public static void main(String[] args) {
         DeviceDAO dd = new DeviceDAO();

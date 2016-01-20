@@ -1,6 +1,7 @@
 package com.springapp.mvc.web.model;
 
-import com.alibaba.fastjson.JSONObject;
+
+import net.sf.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
