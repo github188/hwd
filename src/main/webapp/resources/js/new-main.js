@@ -1,22 +1,43 @@
-var $advs = $('.advs-wrapper'),
+// global variables --> dom
+var $advsWrapper = $('.advs-wrapper'),
     $advsControl = $('.advs-link-main').find('span'),
     $header = $('header').hide(),
-    pivotsContainer = $('.pivot-bar-container').hide();
+    $pivotsContainer = $('.pivot-bar-container').hide();
+
+// global variables --> static url
 var advancedSearchURL = basePath + 'api/advancedSearch';
-var wd; //全局搜索条件，为搜索框中的值+用户在侧边栏选择的条件，每次搜索结束后都要设置这个值
+
+// global variables --> localStorage
+var localStorage = {
+    'wd': '',               //用户输入的查询条件（不包含已选中的复选框信息）（input的值）
+    'checked': [],         //用户选中的复选框id
+    'currentDevices': [], //当前获取到的设备信息
+    'currentAgg': {},      //当前的聚类信息（即左边栏列表数据）
+    'user': '',              //用户信息，包含用户名、密码、级别
+    'countryFS': {},         //国家FeatureSet映射表
+    'provinceFS': {},        //省份FeatureSet映射表
+    'cityFS': {}             //城市FeatureSet映射表
+};
+/* ↑---------->>>>>>>>>>>>>>>> Global Variables <<<<<<<<<<<<<<<<< ------------------------------↑ */
+/* ↑---------->>>>>>>>>>>>>>>> 入口程序 <<<<<<<<<<<<<<<<< ------------------------------↑ */
 $(function () {
     "use strict";
     //input suggestions
     suggestCursorToggle();
     inputSuggest($('.global-search-input'), "api/getSuggestions?search=");
+
     //carousel
     pageSlide();
+
+    //sidebar
+    $('.sidebar').hide();
 
     /*-------------listeners-----------*/
     //global search form
     $('.global-search-form').on('submit', function (e) {
         console.log(e);
     });
+    //advanced search
     advancedSearch();
 });
 
@@ -107,11 +128,11 @@ function advancedSearch() {
     //advanced search link
     $('.advs-link').on('click', function (e) {
         e.preventDefault();
-        if (!($advs.hasClass('active'))) {
-            $advs.addClass('active');
+        if (!($advsWrapper.hasClass('active'))) {
+            $advsWrapper.addClass('active');
             $advsControl.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
         } else {
-            $advs.removeClass('active');
+            $advsWrapper.removeClass('active');
             $advsControl.removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
         }
     });
@@ -122,7 +143,7 @@ function advancedSearch() {
     });
     //advanced search from controls.close
     $('.close-advs').on('click', function () {
-        $advs.removeClass('active');
+        $advsWrapper.removeClass('active');
     });
     //advanced search from controls.reset
     $('.reset-advs').on('click', function () {
@@ -137,15 +158,15 @@ function advancedSearch() {
                 console.log('success', data);
                 //generate sidebar
                 initSidebar(data.aggregation);
-                $advs.removeClass('active');
+                $advsWrapper.removeClass('active');
             },
             error = function (data) {
                 console.log('error', data);
-                $advs.removeClass('active');
+                $advsWrapper.removeClass('active');
             },
             noData = function (data) {
                 console.log('nodata', data);
-                $advs.removeClass('active');
+                $advsWrapper.removeClass('active');
             };
         var criteria = {}, ipSegment = '', timeSegment = '',
             inputs = $(form).find('fieldset').find('input');

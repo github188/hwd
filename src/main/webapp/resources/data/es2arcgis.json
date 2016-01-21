@@ -1,0 +1,19 @@
+﻿{
+  "country": {
+    "China": "中国",
+    "Canada": "加拿大",
+    "Japan": "日本",
+    "Australia": "澳大利亚",
+    "Germany": "德国",
+    "Indonesia": "印度尼西亚",
+    "New_Zealand": "新西兰",
+    "Armenia": "美国",
+    "India": "印度",
+    "Malaysia": "马来西亚",
+    "Netherlands": "荷兰",
+    "Italy": "意大利"
+  },
+  "province": {},
+  "city": {}
+}
+

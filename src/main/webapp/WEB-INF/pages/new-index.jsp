@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="resources/css/footer.css">
     <script src="resources/js/lib/jquery-1.11.3.min.js"></script>
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
+    <script src="resources/js/lib/bootstrap.min.js"></script>
+    <script> var basePath = '${basePath}';</script>
+
 
 </head>
 <body>
@@ -59,7 +62,7 @@
                 <%@include file="list.jsp" %>
             </section>
             <section class="map-wrapper item active" tag="map" tabindex="3">
-                <%@include file="map-leaflet.jsp" %>
+                <%@include file="map.jsp" %>
             </section>
             <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">point</section>
             <section class="globe-line-wrapper item" tag="globe-line" tabindex="5">line</section>
@@ -68,7 +71,7 @@
     </div>
     <div class="processing-overlay"></div>
 </div>
-<footer class="navbar-fixed-bottom">
+<footer class="navbar-fixed-bottom" style="display: none;">
     <div id="navbar">
         <div class="dash"></div>
         <div class="carousel-progress"></div>
@@ -94,14 +97,10 @@
         </div>
     </div>
 </footer>
-<script> var basePath = '${basePath}';</script>
-<script src="resources/js/lib/bootstrap.min.js"></script>
-<script src="resources/js/new-search.js"></script>
 <script src="resources/js/new-main.js"></script>
+<script src="resources/js/new-search.js"></script>
 <script src="resources/js/index.js"></script>
 <script src="resources/js/sidebar.js"></script>
-<script>
-
-</script>
+<script src="resources/js/map-arcgis.js"></script>
 </body>
 </html>

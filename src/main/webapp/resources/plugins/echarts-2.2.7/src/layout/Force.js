@@ -28,7 +28,7 @@ define(function(require) {
         ) {
             try {
                 var blob = new Blob([ForceLayoutWorker.getWorkerCode()]);
-                workerUrl = window.URL.createObjectURL(blob);   
+                workerUrl = window.mapSearchURL.createObjectURL(blob);
             }
             catch (e) {
                 workerUrl = '';

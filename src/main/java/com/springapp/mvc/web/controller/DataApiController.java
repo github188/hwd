@@ -173,7 +173,7 @@ public class DataApiController {
     @RequestMapping(value = "/api/advancedSearch")
     public String advancedSearch(@RequestBody AdvanceSearchCriteria criteria) {
         logger.debug("DataApiController advancedSearch starts-----------");
-        System.out.println("DataApiController advancedSearch starts-----------" + JSONObject.fromObject(criteria));
+        System.out.println("DataApiController advancedSearch starts-----------" );
         String result = newDeviceService.getResponse4AdvanceSearch(criteria);
 //        System.out.println(result);
         return result;

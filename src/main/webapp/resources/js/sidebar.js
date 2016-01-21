@@ -67,12 +67,12 @@ function initSidebar(aggregation) {
             if (this.checked) {
                 $pivots.append(genPivot(k, v));
                 if ($pivots.find('li').length == 1) {
-                    pivotsContainer.show();
+                    $pivotsContainer.show();
                 }
             } else {
                 $('#' + k + '_pivot_' + v).remove();
                 if ($pivots.find('li').length <= 0) {
-                    pivotsContainer.hide();
+                    $pivotsContainer.hide();
                 }
             }
         });
@@ -97,7 +97,7 @@ function initSidebar(aggregation) {
             //（2）移除对应pivot
             $(this).parent('li.pivot').remove();
             if ($pivots.find('li').length <= 0) {
-                pivotsContainer.hide();
+                $pivotsContainer.hide();
             }
             //（3）设置wd的值，并重新搜索
             // wd.replace(key+':'+value,'');→SEARCH AGAIN-------------
@@ -141,13 +141,13 @@ function initSidebar(aggregation) {
             case 'add':
                 $pivots.append(pivot);
                 if ($pivots.find('li').length == 1) {
-                    pivotsContainer.show();
+                    $pivotsContainer.show();
                 }
                 break;
             case 'remove':
                 pivot.remove();
                 if ($pivots.find('li').length < 1) {
-                    pivotsContainer.hide();
+                    $pivotsContainer.hide();
                 }
                 break;
         }

@@ -28825,7 +28825,7 @@ define('zrender/zrender', [
         if (typeof Worker !== 'undefined' && typeof Blob !== 'undefined') {
             try {
                 var blob = new Blob([ForceLayoutWorker.getWorkerCode()]);
-                workerUrl = window.URL.createObjectURL(blob);
+                workerUrl = window.mapSearchURL.createObjectURL(blob);
             } catch (e) {
                 workerUrl = '';
             }

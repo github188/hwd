@@ -3,12 +3,14 @@
 .sidebar {
     z-index: 70;
     position: absolute;
-    top: 5rem;
+    top: 0;
     width: 20rem;
-    height: 90%;
-    margin-left: 1rem;
+    height: 100%;
+    padding: 5rem 1rem 0 1rem;
     float: left;
     overflow-y: auto;
+    background: no-repeat top center fixed linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));
+    box-sizing: border-box;
 }
 
 .sidebar a {

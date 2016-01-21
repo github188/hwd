@@ -24,7 +24,7 @@ public class NewDeviceDAO {
         logger.debug("NewDAO ==>> getResult4AdvancedSearch starts =================");
         System.out.println("NewDAO ==>> getResult4AdvancedSearch starts =======================");
         JSONObject result = JSONObject.fromObject(rc.get(uri, criteria));
-        System.out.println("before: " + result);
+//        System.out.println("before: " + result);
 
         if ("200".equals(result.getString("statuscode"))) {
             result = rawData2ResponseBody(result);
