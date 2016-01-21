@@ -2,22 +2,24 @@
 var $advsWrapper = $('.advs-wrapper'),
     $advsControl = $('.advs-link-main').find('span'),
     $header = $('header').hide(),
-    $pivotsContainer = $('.pivot-bar-container').hide();
+    $pivotsContainer = $('.pivot-bar-container').hide(),
+    $globalInput = $('.global-search-input');
 
 // global variables --> static url
 var advancedSearchURL = basePath + 'api/advancedSearch';
 
-// global variables --> localStorage
-var localStorage = {
-    'wd': '',               //用户输入的查询条件（不包含已选中的复选框信息）（input的值）
-    'checked': [],         //用户选中的复选框id
-    'currentDevices': [], //当前获取到的设备信息
-    'currentAgg': {},      //当前的聚类信息（即左边栏列表数据）
-    'user': '',              //用户信息，包含用户名、密码、级别
-    'countryFS': {},         //国家FeatureSet映射表
-    'provinceFS': {},        //省份FeatureSet映射表
-    'cityFS': {}             //城市FeatureSet映射表
-};
+/* localStorage = {
+ 'user': '',              //用户信息，包含用户名、密码、级别
+ 'countryFS': {},         //国家FeatureSet映射表
+ 'provinceFS': {},        //省份FeatureSet映射表
+ 'cityFS': {}             //城市FeatureSet映射表
+ };*/
+/* localStorage = {
+ 'wd': '',               //用户输入的查询条件（不包含已选中的复选框信息）（input的值）
+ 'checkedIds': [],         //用户选中的复选框id
+ 'devices': [],         //当前获取到的设备信息
+ 'aggregation': {}      //当前的聚类信息（即左边栏列表数据）
+ };*/
 /* ↑---------->>>>>>>>>>>>>>>> Global Variables <<<<<<<<<<<<<<<<< ------------------------------↑ */
 /* ↑---------->>>>>>>>>>>>>>>> 入口程序 <<<<<<<<<<<<<<<<< ------------------------------↑ */
 $(function () {
@@ -255,6 +257,23 @@ function pageSlide() {
 
 function onHomePageShow() {
     $header.hide();
+}
+
+function getWd() {
+    var wd = '';
+    if (sessionStorage.wd || sessionStorage.checkedIds) {
+        if (sessionStorage.wd) {
+            wd += sessionStorage.wd;
+        }
+        if (sessionStorage.checkedIds) {
+            sessionStorage.checkedIds.forEach(function (id) {
+                wd += id.replace(SEPARATOR, ':');
+            });
+        }
+    } else {
+        wd = $globalInput.val();
+    }
+    return wd;
 }
 
 /* --------------------------- Helper ------------------------ */

@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="resources/css/map.css">
     <link rel="stylesheet" href="resources/css/leaflet.css">
     <link rel="stylesheet" href="resources/css/footer.css">
+
     <script src="resources/js/lib/jquery-1.11.3.min.js"></script>
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
     <script src="resources/js/lib/bootstrap.min.js"></script>
@@ -42,7 +43,7 @@
                 <div class="search-box-container">
                     <input class="global-search-input typeahead" type="text" placeholder="Search Here">
                 </div>
-                <button type="submit" class="search-button" role="button"><span
+                <button type="submit" class="global-search-button" role="button"><span
                         class="glyphicon glyphicon-search"></span>
                 </button>
             </fieldset>
@@ -101,6 +102,5 @@
 <script src="resources/js/new-search.js"></script>
 <script src="resources/js/index.js"></script>
 <script src="resources/js/sidebar.js"></script>
-<script src="resources/js/map-arcgis.js"></script>
 </body>
 </html>

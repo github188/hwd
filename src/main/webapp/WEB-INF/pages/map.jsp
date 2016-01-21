@@ -8,10 +8,6 @@
     var djConfig = {parseOnLoad: true}
 </script>
 <script type="text/javascript" src="http://localhost:8080/arcgis_js_api/library/3.15/3.15/init.js"></script>
-<%--<script src="resources/js/initFeasureSet.js"></script>--%>
-
-
-
 <div class="tundra">
     <div class="mapHolder" id="mapHolder"></div>
     <div id="homeButton"></div>
@@ -20,3 +16,5 @@
     </div>
 </div>
 <div class="clearfix"></div>
+<script src="resources/js/map-arcgis.js"></script>
+

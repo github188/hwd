@@ -8,6 +8,8 @@ var mapSearchURL = "api/getResponse4Map",
     provinceURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/2',
     cityURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1';
 
+var LOSSY_COMPRESS = 1;    //压缩级别
+
 var map, featureGL, deviceGL, featureInfoTemplate, countryFS = {}, provinceFS = {}, cityFS = {};
 function initMap() {
     $('.sidebar').hide();//临时隐藏侧边栏，开发时使用的
@@ -18,6 +20,9 @@ function initMap() {
             "esri/dijit/HomeButton",
             "esri/layers/ArcGISTiledMapServiceLayer",
             "esri/SpatialReference",
+
+            "esri/geometry/ScreenPoint",
+            "esri/geometry/webMercatorUtils",
 
             //feature layer related↓
             "esri/tasks/query",
@@ -40,6 +45,7 @@ function initMap() {
             "dojo/domReady!"
         ],
         function (Map, Graphic, HomeButton, ArcGISTiledMapServiceLayer, SpatialReference,
+                  ScreenPoint, webMercatorUtils,
                   Query, QueryTask, FeatureSet, FeatureLayer,
                   GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer,
                   esriLang, Color, number, domStyle, TooltipDialog, dijitPopup) {
@@ -68,16 +74,27 @@ function initMap() {
 
             map.on("load", function () {
                 console.log("on load");
-                console.log(map.spatialReference);
-                //（4）Initialize the FeatureLayer(areas) and GraphicLayer(devices)
-                addFeatureGraphicLayer(map.getZoom());
-                addDeviceGraphicLayer(localStorage['currentDevices']);
+                var devices = sessionStorage.devices,
+                    agg = sessionStorage.aggregation,
+                    wd = sessionStorage.wd;
+                if (!devices && !agg) {
+                    if (wd) {
+                        //ajax get data, render graphic layers and set sessionStorage
+                        mapSearch();
+                    }
+
+                } else {
+                    addDeviceGraphicLayer(devices);
+                    setMapSidebar(devices);
+                    addFeatureGraphicLayer(agg, map.getZoom());
+                }
+
             });
 
             map.on('zoom', function (e) {
                 console.log(map.getZoom());
+                //mapSearch();
             });
-
 
             // ==============================functions=======================
             /*
@@ -88,13 +105,25 @@ function initMap() {
              *     cityFS:item.attributes.Name_CHN 和 item.geometry
              * aggregation: countryAgg/provinceAgg/cityAgg: [{name,count},]
              */
-            function addFeatureGraphicLayer(zoom) {
-                var currentFS = {};
+            function addFeatureGraphicLayer(agg, zoom) {
                 if (zoom < 4) {
                     //国家级别
+                    var countryNames = [];
+                    if (agg.hasOwnProperty('country@%city')) {
+                        var cc = agg['country@%city'];
+                        if (localStorage.countryFS) {
+                            //添加到featureLayer
+                            for (var key in cc) {
+                                countryNames.push({ke: key});
+                            }
+                        } else {
+                           //查询远程地图服务
+                        }
+
+                    }
 
                 } else if (zoom < 8) {
-                    //省份级别
+                    //省份级别,目前也按照市来做
 
                 } else {
                     //城市级别
@@ -110,6 +139,7 @@ function initMap() {
 
             }
 
+            //从地图服务器获取FeatureSets初始化
             function setFeatureSet(which) {
                 //------------↓functions---------------//
                 function executeQueryTask(url) {
@@ -127,19 +157,19 @@ function initMap() {
                             resp.features.forEach(function (item) {
                                 countryFS[item.attributes.NAME] = item;
                             });
-                            localStorage['countryFS'] = countryFS;
+                            localStorage.countryFS = countryFS;
                             break;
                         case 'province':
                             resp.features.forEach(function (item) {
                                 provinceFS[item.attributes.Name_CHN] = item;
                             });
-                            localStorage['provinceFS'] = provinceFS;
+                            localStorage.provinceFS = provinceFS;
                             break;
                         case 'city':
                             resp.features.forEach(function (item) {
                                 cityFS[item.attributes.Name_CHN] = item;
                             });
-                            localStorage['cityFS'] = cityFS;
+                            localStorage.cityFS = cityFS;
                             break;
                     }
                 }
@@ -177,21 +207,59 @@ function initMap() {
                 }
                 executeQueryTask(url);
             }
+
+            //获取地图的可视范围的经纬度
+            function getVisibleExtent() {
+                var windowHeight = $(window).height(), windowWidth = $(window).width();
+                var sLeftTop = new ScreenPoint(0, 0),
+                    sRightBottom = new ScreenPoint(windowWidth, windowHeight);
+                var mLeftTop = webMercatorUtils.webMercatorToGeographic(map.toMap(sLeftTop)),
+                    mRightBottom = webMercatorUtils.webMercatorToGeographic(map.toMap(sRightBottom));
+
+                var xL = mLeftTop.x, xR = mRightBottom.x, yT = mLeftTop.y, yB = mRightBottom.y;
+                //逆时针，4个点，首尾闭合
+                var polygonCCW = 'polygon(' +
+                    xL + ' ' + yT + ',' +             //左上
+                    xL + ' ' + yB + ',' +             //左下
+                    xR + ' ' + yB + ',' +             //右下
+                    xR + ' ' + yT + ',' +             //右上
+                    xL + ' ' + yT + ')';              //首尾闭合
+                console.log('getVisibleExtent', polygonCCW);
+                return polygonCCW;
+            }
+
+            //设置查询条件searchCriteria
+            function getSearchCriteria() {
+                var criteria = {};
+                criteria["geo"] = getVisibleExtent();             //获取并设置屏幕所在范围的经纬度geo
+                criteria["wd"] = getWd();
+                criteria["zoomlevel"] = map.getZoom();            //设置缩放级别zoomlevel
+                criteria["lossycompress"] = LOSSY_COMPRESS;    //设置压缩级别lossycompress
+                return criteria;
+            }
+
+
+            function mapSearch() {
+                var searchObj = {};
+                searchObj["geo"] = getVisibleExtent();             //获取并设置屏幕所在范围的经纬度geo
+                searchObj["wd"] = getWd();
+                searchObj["zoomlevel"] = map.getZoom();            //设置缩放级别zoomlevel
+                searchObj["lossycompress"] = LOSSY_COMPRESS;    //设置压缩级别lossycompress
+                searchObj['url'] = basePath + mapSearchURL;
+                searchObj['success'] = mapSearchSuccessHandler;
+                searchObj['criteria'] = getSearchCriteria();
+                newSearch(searchObj);
+            }
+
+            function mapSearchSuccessHandler(resp) {
+                addDeviceGraphicLayer(resp.data);
+                setMapSidebar(resp.data);
+                addFeatureGraphicLayer(resp.aggregation, map.getZoom());
+            }
         }
     );
 }
 
-/*
- * ajax查询请求
- * @param：obj为一个对象，key为url、criteria、success、error、searchButton、searchInput
- *          url：ajax请求地址(required)
- *          criteria：查询条件
- *          success：ajax成功的回调函数(required)
- *          error：ajax失败的回调函数
- *          noDataFunc:ajax成功，但返回数据为空的回调函数
- *          searchButton：搜索框提交按钮
- *          searchInput：搜索框输入按钮
- */
-function mapSearch() {
 
+function setMapSidebar(devices) {
 }

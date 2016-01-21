@@ -183,7 +183,7 @@ header .global-search-form .global-search-input {
     width: 40rem;
 }
 
-header .global-search-form .search-button {
+header .global-search-form .global-search-button {
     display: inline-block;
     margin: 0 5px;
     padding: 0 3px;
