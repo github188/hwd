@@ -69,8 +69,8 @@ function initMap() {
 
             //（3）Initialize FeatureSets,开一个web worker加载FeatureSet
             setFeatureSet('country');
-            setFeatureSet('province');
-            setFeatureSet('city');
+            //setFeatureSet('province');
+            //setFeatureSet('city');
 
             map.on("load", function () {
                 console.log("on load");
@@ -117,7 +117,7 @@ function initMap() {
                                 countryNames.push({ke: key});
                             }
                         } else {
-                           //查询远程地图服务
+                            //查询远程地图服务
                         }
 
                     }
@@ -156,6 +156,7 @@ function initMap() {
                             //将features转换为map，方便以后使用， key：名称，value：feature
                             resp.features.forEach(function (item) {
                                 countryFS[item.attributes.NAME] = item;
+                                console.log(item.attributes.NAME)
                             });
                             localStorage.countryFS = countryFS;
                             break;
