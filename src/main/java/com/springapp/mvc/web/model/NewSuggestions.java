@@ -39,7 +39,6 @@ public class NewSuggestions {
             JSONObject data = resp.getJSONObject("data");
             Set<String> keys = data.keySet();
             for (String key : keys) {
-                System.out.println("key: " + key);
                 JSONArray arrItem = data.getJSONArray(key);
                 for (int i = 0; i < arrItem.size(); i++) {
                     if ("description.port_info.device_model".equals(key)) {
@@ -52,9 +51,4 @@ public class NewSuggestions {
             }
         }
     }
-
-/*    public static void main(String[] args) {
-        NewSuggestions.initSuggestions();
-        System.out.println(suggestions);
-    }*/
 }

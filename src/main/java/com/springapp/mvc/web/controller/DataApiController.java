@@ -7,10 +7,7 @@ import com.springapp.mvc.web.model.AdvanceSearchCriteria;
 import com.springapp.mvc.web.model.MarkLineResponseBody;
 import com.springapp.mvc.web.model.ResponseBody;
 import com.springapp.mvc.web.model.SearchCriteria;
-import com.springapp.mvc.web.service.DeviceService;
-import com.springapp.mvc.web.service.MarkLinesService;
-import com.springapp.mvc.web.service.NewDeviceService;
-import com.springapp.mvc.web.service.SuggestionService;
+import com.springapp.mvc.web.service.*;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +30,17 @@ public class DataApiController {
     private final MarkLinesService markLinesService;
     private final SuggestionService suggestionService;
     private final NewDeviceService newDeviceService;
+    private final FeatureSetService featureSetService;
 
     @Autowired
-    public DataApiController(DeviceService deviceService, MarkLinesService markLinesService, SuggestionService suggestionService, NewDeviceService newDeviceService) {
+    public DataApiController(DeviceService deviceService, MarkLinesService markLinesService,
+                             SuggestionService suggestionService, NewDeviceService newDeviceService,
+                             FeatureSetService featureSetService) {
         this.deviceService = deviceService;
         this.markLinesService = markLinesService;
         this.suggestionService = suggestionService;
         this.newDeviceService = newDeviceService;
+        this.featureSetService = featureSetService;
     }
 
     @JsonView(Views.Public.class)
@@ -173,11 +174,26 @@ public class DataApiController {
     @RequestMapping(value = "/api/advancedSearch")
     public String advancedSearch(@RequestBody AdvanceSearchCriteria criteria) {
         logger.debug("DataApiController advancedSearch starts-----------");
-        System.out.println("DataApiController advancedSearch starts-----------" );
+        System.out.println("DataApiController advancedSearch starts-----------");
         String result = newDeviceService.getResponse4AdvanceSearch(criteria);
 //        System.out.println(result);
         return result;
     }
+
+    /*
+     * @function 高级搜索，接收高级搜索传入的查询对象
+     * @param advancedSearch，用户输入的搜索条件
+     * @result String，查询结果
+     */
+    @RequestMapping(value = "/api/mapSearch")
+    public String mapSearch(@RequestBody SearchCriteria criteria) {
+        logger.debug("DataApiController advancedSearch starts-----------");
+        System.out.println("DataApiController advancedSearch starts-----------");
+        String result = newDeviceService.getResponse4MapSearch(criteria);
+        System.out.println("mapSearch====" + result);
+        return result;
+    }
+
 
     /*
     * @function 高级搜索，接收高级搜索传入的查询对象
@@ -189,5 +205,10 @@ public class DataApiController {
     public String getSuggestions(@RequestParam(value = "search") String search) {
         logger.debug("DataApiController advancedSearch starts-----------");
         return suggestionService.getResponse4Suggestion(search).toString();
+    }
+
+    @RequestMapping(value = "/api/getFeatureSets")
+    public String getFeatureSets() {
+        return featureSetService.getFeatureSets();
     }
 }

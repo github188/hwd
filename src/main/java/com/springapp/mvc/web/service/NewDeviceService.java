@@ -1,8 +1,12 @@
 package com.springapp.mvc.web.service;
 
 
+import com.springapp.mvc.web.config.Constant;
 import com.springapp.mvc.web.daoLike.NewDeviceDAO;
+import com.springapp.mvc.web.listener.FeatureSetsFillerOnStartup;
 import com.springapp.mvc.web.model.AdvanceSearchCriteria;
+import com.springapp.mvc.web.model.SearchCriteria;
+import com.springapp.mvc.web.util.RestClient;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +24,7 @@ import java.util.Map;
 public class NewDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(NewDeviceService.class);
     private static final String uri4AdvsSearch = "http://10.10.12.72:8083/se/search/advanced?q={q}";
+    private static final String uri4MapSearch = "http://10.10.12.72:8083/se/search/map?q={q}";
     private final NewDeviceDAO dao;
 
     @Autowired
@@ -35,7 +40,7 @@ public class NewDeviceService {
         if (isValidSearchCriteria(search)) {
             Map<String, Object> criteria = new HashMap<String, Object>();
             criteria.put("q", mapping(search));
-            result = dao.getResult4AdvancedSearch(uri4AdvsSearch, criteria);
+            result = dao.getResult4DeviceSearch(uri4AdvsSearch, criteria);
             if ("200".equals(result.getString("statuscode")) && result.getJSONArray("data").size() <= 0) {
                 result.put("statuscode", "204");
                 result.put("errmsg", "No related data!");
@@ -49,7 +54,27 @@ public class NewDeviceService {
         return result.toString();
     }
 
-    private boolean isValidSearchCriteria(AdvanceSearchCriteria criteria) {
+    public String getResponse4MapSearch(SearchCriteria search) {
+        logger.debug("Service ==>> getResponse4AdvanceSearch starts ================");
+        JSONObject result;
+        if (isValidSearchCriteria(search)) {
+            Map<String, Object> criteria = new HashMap<String, Object>();
+            criteria.put("q", search);
+            result = dao.getResult4DeviceSearch(uri4MapSearch, criteria);
+            if ("200".equals(result.getString("statuscode")) && result.getJSONArray("data").size() <= 0) {
+                result.put("statuscode", "204");
+                result.put("errmsg", "No related data!");
+            }
+        } else {
+            result = new JSONObject();
+            result.put("statuscode", "400");
+            result.put("errmsg", "Search criteria is empty!");
+        }
+//        System.out.println("Service Advanced Search--> Result: " + result.toString());
+        return result.toString();
+    }
+
+    private boolean isValidSearchCriteria(Object criteria) {
         boolean valid = true;
         if (criteria == null) {
             valid = false;

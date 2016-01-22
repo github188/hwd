@@ -6,7 +6,9 @@ var $advsWrapper = $('.advs-wrapper'),
     $globalInput = $('.global-search-input');
 
 // global variables --> static url
-var advancedSearchURL = basePath + 'api/advancedSearch';
+var advancedSearchURL = basePath + 'api/advancedSearch',
+    imgUrl = basePath + "resources/img/",
+    getFeatureSetsURL = basePath + 'api/getFeatureSets';
 
 /* localStorage = {
  'user': '',              //用户信息，包含用户名、密码、级别
@@ -21,9 +23,11 @@ var advancedSearchURL = basePath + 'api/advancedSearch';
  'aggregation': {}      //当前的聚类信息（即左边栏列表数据）
  };*/
 /* ↑---------->>>>>>>>>>>>>>>> Global Variables <<<<<<<<<<<<<<<<< ------------------------------↑ */
-/* ↑---------->>>>>>>>>>>>>>>> 入口程序 <<<<<<<<<<<<<<<<< ------------------------------↑ */
 $(function () {
     "use strict";
+    //Init FeatureSets
+    initFeatureSets();
+
     //input suggestions
     suggestCursorToggle();
     inputSuggest($('.global-search-input'), "api/getSuggestions?search=");
@@ -44,7 +48,7 @@ $(function () {
     advancedSearch();
 });
 
-//输入框实时提示
+//------------------------------输入框实时提示-------------------------------------//
 function inputSuggest(input, sourceURL) {
     var $form = input.closest('form');
     var suggestions = function (dataSource) {
@@ -225,13 +229,7 @@ function advancedSearch() {
     }
 }
 
-//Format the date value
-Date.prototype.toDateInputValue = (function () {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0, 10);
-});
-
+//---------------------------其他------------------------
 //页面滑动,使用bootstrap的carousel和slide
 function pageSlide() {
     var $carousel = $('.carousel').carousel({"interval": false});
@@ -268,10 +266,12 @@ function pageSlide() {
     });
 }
 
+//首页显示时，隐藏header
 function onHomePageShow() {
     $header.hide();
 }
 
+//获取查询的关键词
 function getWd() {
     var wd = '';
     if (sessionStorage.wd || sessionStorage.checkedIds) {
@@ -289,6 +289,23 @@ function getWd() {
     return wd;
 }
 
+//获取所有的featureSet，保存在所有的localStorage中
+function initFeatureSets() {
+    console.log("ssssssssssssss-------------" + new Date());
+    $.ajax({
+        url: getFeatureSetsURL,
+        type: 'post'
+    }).success(function (data) {
+        console.log(data);
+        console.log("sssssssssssss done" + new Date());
+    }).error(function () {
+        console.log("Getting feature set error!");
+    }).fail(function () {
+        console.log("Getting feature set failed!");
+    });
+
+}
+
 /* --------------------------- Helper ------------------------ */
 //判断对象是否为空
 function isEmptyObject(obj) {
@@ -297,6 +314,13 @@ function isEmptyObject(obj) {
     }
     return true;
 }
+
+//Format the date value
+Date.prototype.toDateInputValue = (function () {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0, 10);
+});
 
 
 

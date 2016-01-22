@@ -12,6 +12,15 @@ public class SearchCriteria {
     int zoomlevel;//6, //当前的地图缩放级别，此参数决定聚类级别
     int lossycompress; // 0 //压缩级别，0为不压缩；1为去除部分无用字段；2为去除更多非必需字段，等等
     int page = 1;   //请求第几页，用于页面分页显示
+    int pagesize;
+
+    public int getPagesize() {
+        return pagesize;
+    }
+
+    public void setPagesize(int pagesize) {
+        this.pagesize = pagesize;
+    }
 
     public int getPage() {
         return page;

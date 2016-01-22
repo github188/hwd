@@ -50,7 +50,7 @@ function newSearch(obj) {
     }).error(function (e) {
         //（4）启用查询按钮，如果为form查询
         disableButton(button, false);
-        errHandler();
+        //errHandler();
     }).done(function () {
         //（4）启用查询按钮，如果为form查询
         disableButton(button, false);

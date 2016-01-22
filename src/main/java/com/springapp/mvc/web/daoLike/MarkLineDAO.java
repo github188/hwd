@@ -20,8 +20,6 @@ import java.util.Map;
  */
 @Repository
 public class MarkLineDAO {
-    private static final String URL4Line_Old = "http://10.10.2.84:8082/devicescan/getLines";
-    private static final String URL4Line_Old2 = "http://10.10.2.84:8082/devicescan/getLinesSegment?from=";
     private static final String URL4Line = "http://10.10.2.84:8082/devicescan/getLinesSegment?numPerPage=100&pageId=";
     private static final Logger logger = LoggerFactory.getLogger(MarkLineDAO.class);
     private RestClient rc;

@@ -25,7 +25,7 @@ public class SuggestionDAO {
                     result.add(s);
                 }
             }
-        }
+;        }
         return result;
     }
 

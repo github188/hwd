@@ -397,9 +397,9 @@ public class DeviceDAO {
     }
 
     //返回用户查询的数据，用于前端以列表的形式显示设备信息（数据访问层）高级搜素-----------------------------√
-/*    public JSONObject getResult4AdvancedSearch(String uri, Map<String, Object> criteria) {
-        logger.debug("DAO ==>> getResult4AdvancedSearch starts =================");
-        System.out.println("DAO ==>> getResult4AdvancedSearch starts =======================");
+/*    public JSONObject getResult4DeviceSearch(String uri, Map<String, Object> criteria) {
+        logger.debug("DAO ==>> getResult4DeviceSearch starts =================");
+        System.out.println("DAO ==>> getResult4DeviceSearch starts =======================");
         JSONObject result = rc.get(uri, criteria);
         if ("200".equals(result.getString("statuscode"))) {
             result = rawData2ResponseBody(result);
@@ -576,6 +576,6 @@ public class DeviceDAO {
 //        String search = "{\"geo\":\"polygon(69.9199218750096 56.629998264227424,114.04101562499787 56.629998264227424,158.1621093749862 56.629998264227424,158.1621093749862 -8.88878176349202,114.04101562499787 -8.88878176349202,69.9199218750096 -8.88878176349202)\",\"lossycompress\":1,\"page\":1,\"permitfilter\":\"\",\"typefilter\":\"\",\"wd\":\"* \",\"zoomlevel\":6}";
         //dd.getDevices4List(criteria);
         //dd.getResponse4Globe(JSONObject.fromObject(search).toString());
-        System.out.println(dd.getResult4AdvancedSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
+        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
     }*/
 }

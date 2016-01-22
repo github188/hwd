@@ -68,7 +68,6 @@ require(
             });
 
 
-            /* */
             /* var baseUrl = "http://10.10.2.81:6080/arcgis/rest/services/yiyuanyx2/MapServer";
              var tiledLayer = new TiledLayer(baseUrl);
              map.addLayer(tiledLayer);*/
@@ -78,7 +77,6 @@ require(
             var Url = "http://10.10.2.81:6080/arcgis/rest/services/China_Community_BaseMap/MapServer";
             var dynamicLayer = new DynamicLayer(Url);
             map.addLayer(dynamicLayer);
-
 
             // Home button
             home = new HomeButton({

@@ -105,9 +105,9 @@ function initMap() {
  *          searchButton：搜索框提交按钮
  *          searchInput：搜索框输入按钮
  */
-function mapSearch() {
-
-}
+//function mapSearch() {
+//
+//}
 
 /*
  *

@@ -19,7 +19,7 @@ public class NewDevice {
      * lat: description.device_location.lat
      * location : "China, Hebei, Cangzhou"  //zh_CN/country, zh_Pro/province, zh_City/city
      * tags : ["camera","video"]            //tags;description.port_info.device_type,_brand,_model;description.os_info.os;
-     * ports : [<"http:80","port.banner">,...]         //description.port_info.protocol:port
+     * ports : [<"http:80",port.banner>,...]         //description.port_info.protocol:port
      * vuls : [<vul_ID:vul_type,vulsEntity>,...],        //description.vul_info.vul_ID.CVE/CNVD:description.vul_info.vul_type
      * timestamp : 123243323                //lastModified
      * (for private use)vpsIp: description.port_info.vps_ip_external
