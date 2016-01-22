@@ -2,6 +2,7 @@ package com.springapp.mvc.web.daoLike;
 
 import com.springapp.mvc.web.model.NewDevice;
 import com.springapp.mvc.web.util.RestClient;
+import com.springapp.mvc.web.util.Tool;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -33,6 +34,7 @@ public class NewDeviceDAO {
     }
 
     private JSONObject rawData2ResponseBody(JSONObject resp) {
+        JSONObject zh2en = Tool.getCountryMapping();
         //aggregation中的country@%city的处理
         JSONObject agg = resp.getJSONObject("aggregation");
         if (agg.containsKey("country@%city")) {
@@ -61,6 +63,9 @@ public class NewDeviceDAO {
                         cities.put(city, initCount);
                         countryObj.put("count", initCount);
                         countryObj.put("cities", cities);
+                        if (zh2en.has(country)) {
+                            countryObj.put("en", zh2en.getString(country));
+                        }
                         countries.put(country, countryObj);
                     } else {
                         JSONObject tmpCountry = countries.getJSONObject(country);
@@ -78,6 +83,8 @@ public class NewDeviceDAO {
 
         //data
         JSONArray data = resp.getJSONArray("data");
+//        System.out.println("data=========" + data);
+
         if (data.size() > 0) {
             List<NewDevice> devices = new ArrayList<NewDevice>();
             for (Object obj : data) {
@@ -113,7 +120,6 @@ public class NewDeviceDAO {
                     location += ", " + city;
                 }
                 device.setLocation(location);
-
                 //(6)ports
                 if (port_info.size() > 0) {
                     List<Map<String, String>> ports = new ArrayList<Map<String, String>>();
@@ -192,7 +198,7 @@ public class NewDeviceDAO {
         return has;
     }
 
-   /* public static void main(String[] args) {
+    public static void main(String[] args) {
         NewDeviceDAO dd = new NewDeviceDAO();
         Map<String, Object> criteria = new HashMap<String, Object>();
         String json = "{\"must\":\"北\",\"should\":\"\",\"mustnot\":\"\",\"ip\":\"\",\"country\":\"\",\"province\":\"\",\"city\":\"\",\"type\":\"\",\"brand\":\"\",\"model\":\"\",\"protocol\":\"\",\"port\":\"\",\"banner\":\"\",\"vulId\":\"\",\"vulType\":\"\",\"vulName\":\"\",\"os\":\"\",\"taskId\":\"\",\"vpsIp\":\"\",\"lastModified\":\"1453248000\"}";
@@ -202,5 +208,5 @@ public class NewDeviceDAO {
         //dd.getDevices4List(criteria);
         //dd.getResponse4Globe(JSONObject.fromObject(search).toString());
         System.out.println(dd.getResult4AdvancedSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
-    }*/
+    }
 }

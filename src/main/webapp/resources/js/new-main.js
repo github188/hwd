@@ -1,7 +1,7 @@
 // global variables --> dom
 var $advsWrapper = $('.advs-wrapper'),
     $advsControl = $('.advs-link-main').find('span'),
-    $header = $('header').hide(),
+    $header = $('header'),
     $pivotsContainer = $('.pivot-bar-container').hide(),
     $globalInput = $('.global-search-input');
 
@@ -29,6 +29,7 @@ $(function () {
     inputSuggest($('.global-search-input'), "api/getSuggestions?search=");
 
     //carousel
+    localStorage.currentPage = 'map';
     pageSlide();
 
     //sidebar
@@ -160,6 +161,17 @@ function advancedSearch() {
                 console.log('success', data);
                 //generate sidebar
                 initSidebar(data.aggregation);
+                //show devices
+                if (localStorage.currentPage == 'list') {
+                    //初始化result-col
+                    console.log('list');
+                } else if (localStorage.currentPage == 'map') {
+                    //在地图上标注device，并弹出右侧列表框
+                    console.log("map", map);
+                    MyMap.render(data);
+                } else {
+                    console.log('none');
+                }
                 $advsWrapper.removeClass('active');
             },
             error = function (data) {
@@ -225,6 +237,7 @@ function pageSlide() {
     var $carousel = $('.carousel').carousel({"interval": false});
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
+        localStorage.currentPage = tag;
         var navbtns = $('.navbtn').find('div');
         navbtns.removeClass("bgd-light-blue");
         $.each(navbtns, function (id, item) {
