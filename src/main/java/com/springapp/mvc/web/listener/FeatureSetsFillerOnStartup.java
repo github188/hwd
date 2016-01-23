@@ -9,7 +9,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by lyp on 2016-01-22.
@@ -17,36 +19,56 @@ import java.util.Iterator;
  */
 @Component
 public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRefreshedEvent> {
-    public static String countryFeatureSets;
-    public static String provinceFeatureSets;
-    public static String cityFeatureSets;
-
+    private static JSONObject countryFeatureSet;
+    private static JSONObject provinceFeatureSet;
+    private static JSONObject cityFeatureSet;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        RestClient rc = new RestClient();
-        countryFeatureSets = rc.get(Constant.countryFeatureSetURL);
-        provinceFeatureSets = rc.get(Constant.provinceFeatureSetURL);
-        cityFeatureSets = rc.get(Constant.cityFeatureSetURL);
-        JSONObject countryJson = JSONObject.parseObject(countryFeatureSets);
-        JSONArray features = countryJson.getJSONArray("features");
-        JSONArray destFeatures = new JSONArray();
-        Iterator<Object> it = features.iterator();
+        countryFeatureSet = getCountryFeatureSet();
+        provinceFeatureSet = getProvinceFeatureSet();
+        cityFeatureSet = getCityFeatureSet();
     }
 
-    public static void main(String[] args) {
+    public static JSONObject getCountryFeatureSet() {
+        if (countryFeatureSet == null) {
+            countryFeatureSet = getAndFormatFeatureSet(Constant.countryFeatureSetURL);
+        }
+        return countryFeatureSet;
+    }
+
+    public static JSONObject getProvinceFeatureSet() {
+        if (provinceFeatureSet == null) {
+            provinceFeatureSet = getAndFormatFeatureSet(Constant.provinceFeatureSetURL);
+        }
+        return provinceFeatureSet;
+    }
+
+    public static JSONObject getCityFeatureSet() {
+        if (cityFeatureSet == null) {
+            cityFeatureSet = getAndFormatFeatureSet(Constant.cityFeatureSetURL);
+        }
+        return cityFeatureSet;
+    }
+
+    // 将features对象数组以其中的一个属性为key转化为map数组，更方便前端使用
+    public static JSONObject getAndFormatFeatureSet(String url) {
         RestClient rc = new RestClient();
-        countryFeatureSets = rc.get(Constant.countryFeatureSetURL);
-        provinceFeatureSets = rc.get(Constant.provinceFeatureSetURL);
-        cityFeatureSets = rc.get(Constant.cityFeatureSetURL);
-        JSONObject countryJson = JSONObject.parseObject(countryFeatureSets);
-        JSONArray features = countryJson.getJSONArray("features");
-        JSONArray destFeatures = new JSONArray();
+        JSONObject jsonObj = JSONObject.parseObject(rc.get(url));
+        JSONArray features = jsonObj.getJSONArray("features");
+        JSONArray featuresMap = new JSONArray();
         Iterator<Object> it = features.iterator();
         while (it.hasNext()) {
-            JSONObject j = (JSONObject) JSON.toJSON(it.next());
-            JSONObject attr = j.getJSONObject("attributes");
-            System.out.println(attr.getString("NAME"));
+            JSONObject feature = (JSONObject) JSON.toJSON(it.next());
+            Map<String, JSONObject> map = new HashMap<String, JSONObject>();
+            map.put(feature.getJSONObject("attributes").getString("NAME"), feature);
+            featuresMap.add(map);
         }
+        jsonObj.put("features", featuresMap);
+        return jsonObj;
     }
+
+   /* public static void main(String[] args) {
+        System.out.println(getCityFeatureSet());
+    }*/
 }
