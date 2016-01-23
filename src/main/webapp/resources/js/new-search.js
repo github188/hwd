@@ -30,20 +30,11 @@ function newSearch(obj) {
     }).success(function (data) {
         var statuscode = data['statuscode'];
         if (statuscode == 200) {
-            obj.success(data);
             //设置sessionStorage
             sessionStorage.agg = JSON.stringify(data['aggregation']);
             sessionStorage.devices = JSON.stringify(data['data']);
             sessionStorage.wd = JSON.stringify(data['wd']);
-
-            //show devices
-            if (sessionStorage.currentPage == 'list') {
-                ResultList.render(data);//初始化result-col
-            } else if (sessionStorage.currentPage == 'map') {
-                MyMap.render(data); //渲染地图
-            } else {
-                console.log('current page is not the map nor is the list.');
-            }
+            obj.success(data);
             //WEATHER TO INIT SIDEBAR IS UP TO THE CALLER
         } else if (statuscode == 204) {
             console.log("no data: " + data["errmsg"]);

@@ -1,8 +1,9 @@
 // global variables --> dom
-var $header = $('header'),
+var $header = $('header'), $footer = $('footer'), $sidebar = $('.sidebar'),
     $globalInput = $('.global-search-input');
 var CheckboxId_SEPARATOR = '_s0s_',//分隔符：key_s0s_value（s零s）
-    featureSets = {};
+    featureSets = {},
+    $carousel = $('.carousel');
 
 // global variables --> static url
 var advancedSearchURL = basePath + 'api/advancedSearch',
@@ -25,72 +26,142 @@ var advancedSearchURL = basePath + 'api/advancedSearch',
 /* ↑---------->>>>>>>>>>>>>>>> Global Variables <<<<<<<<<<<<<<<<< ------------------------------↑ */
 $(function () {
     "use strict";
+    //~~~~~~~~~~~~~~~~~~~全文必须~~~~~~~~~~~~~~~~~~~~~~~~~
+    pageSlide();//carousel页面导航
+    //初始化之后，跳转到用户当前所在页（同一个session的情况下）
+    if (sessionStorage && sessionStorage.pageIdx) {
+        console.log("current page index:" + sessionStorage.pageIdx);
+        /*$carousel.carousel({
+         interval: false
+         });*/
+        $carousel.carousel(parseInt(sessionStorage.pageIdx));
+    }
+
+    //~~~~~~~~~~~~~~~~~~~首页必须~~~~~~~~~~~~~~~~~~~~~~~~~
+    showHomePage();
+
+    //~~~~~~~~~~~~~~~~~~~listeners~~~~~~~~~~~~~~~~~~~~~~~~
     //input suggestions
     suggestCursorToggle();
+    inputSuggest($('#home_search_input'), suggestionSearchURL);
     inputSuggest($('.global-search-input'), suggestionSearchURL);
 
-    //carousel
-    pageSlide();
-
-    //hide some doms
-    $('.sidebar').hide();
-
-    /*-------------listeners-----------*/
     //global search form
     $('.global-search-form').on('submit', function (e) {
-        var success = function (data) {
-            initSidebar(data['aggregation']);
-
-        };
-        var searchObj = {};
-        searchObj['wd'] = $('.global-search-input').val();
-        console.log(e);
+        var currentPage = sessionStorage.currentPage ? sessionStorage.currentPage : $('section.active').attr('tag');
+        if (currentPage == 'list') {
+            List.search(true);//true表示更新侧栏
+        } else if (currentPage == 'map') {
+            MyMap.search(true); //true表示更新侧栏
+        }
     });
 
+    //home search form
+    $('.home-search-form').on('submit', function (e) {
+        sessionStorage.wd = $('.home-search-input').val();
+        List.search(true);
+        $carousel.carousel(1);  //滑动到list页面
+    });
 
-    //home search form -----------------------------------------------------------------?
-
-    //advanced search---------------------------↓------------------------
     //advanced search link
     $('.advs-link').on('click', function (e) {
         e.preventDefault();
-        $('#advs_wrapper').toggleClass('active');
+        var $advsWrapper = $('#advs_wrapper').toggleClass('active');
         var dirIndicator = $('.advs-link-main').find('span');
-        dirIndicator.toggleClass('glyphicon-menu-right');
-        dirIndicator.toggleClass('glyphicon-menu-left');
+        if ($advsWrapper.hasClass('active')) {
+            dirIndicator.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
+        } else {
+            dirIndicator.removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
+        }
+
     });
+
+    //advanced search form controls.close
+    $('.close-advs').on('click', function () {
+        $('#advs_wrapper').removeClass('active');
+    });
+
+    //advanced search form controls.reset
+    $('.reset-advs').on('click', function () {
+        document.getElementById("advs").reset();
+    });
+
+    //date default value
+    $('#time_to').val(new Date().toDateInputValue());
+
     //advanced search form
     $('#advs').on('submit', function (e) {
         e.preventDefault();
         advsSearch(this);
     });
-    //advanced search form controls.close
-    $('.close-advs').on('click', function () {
-        $('#advs_wrapper').removeClass('active');
-    });
-    //advanced search form controls.reset
-    $('.reset-advs').on('click', function () {
-        document.getElementById("advs").reset();
-    });
-    //advanced search form input for ip
-    $('#ip').on('blur', function () {
-        //d+.d+.d+.d+，验证ip地址的合法性，预留
-    });
-    //date default value
-    $('#time_to').val(new Date().toDateInputValue());
-
-    //初始化之后，使用session中保存的数据做用户定制
-    //session
-    if (sessionStorage && sessionStorage.pageIdx) {
-        console.log(sessionStorage.pageIdx);
-        $('.carousel').carousel({
-            interval: false
-        });
-        $('.carousel').carousel(parseInt(sessionStorage.pageIdx));
-    }
+    //~~~~~~~~~~~~~~~~~~~~~~~listener↑~~~~~~~~~~~~~~~~~~~~~~
 });
 
-//------------------------------输入框实时提示-------------------------------------//
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ functions↓~~~~~~~~~~~~~~~~~~~~~
+//页面滑动,使用bootstrap的carousel和slide
+function pageSlide() {
+    var $carousel = $('.carousel').carousel({"interval": false});
+    $carousel.on('slide.bs.carousel', function (event) {
+        var tag = $(event.relatedTarget).attr("tag");
+        sessionStorage.currentPage = tag;
+        $header.css('visibility', 'visible');
+        switch (tag) {
+            case 'home':
+                showHomePage();
+                break;
+            case 'list':
+                showListPage();
+                break;
+            case 'map':
+                showMapPage();
+                break;
+            case 'globe-point':
+                showGlobePointPage();
+                break;
+            case 'globe-line':
+                showGlobeLinePage();
+                break;
+            case 'charts':
+                showChartsPage();
+                break;
+        }
+
+
+        var navbtns = $('.navbtn').find('div');
+        navbtns.removeClass("bgd-light-blue");
+        $.each(navbtns, function (id, item) {
+            if ($(item).attr('data-target') == tag) {
+                $(item).addClass('bgd-light-blue');
+            }
+        });
+        var progress = $(event.relatedTarget).attr("tabindex") * 120;
+        $(".carousel-progress").animate({width: progress, left: (progress / 2) - 400}, 500);
+        //playAnimation(tag);
+    });
+    $("body,html").animate({
+        scrollTop: ($(".home").offset().top)
+    }, 10);
+
+    //点击切换，起到carousel control的作用
+    $('footer .navbtn').on('click', function (e) {
+        e.preventDefault();
+        var index = $(this).index();
+        sessionStorage.pageIdx = index;
+        $('.carousel').carousel(index);
+        $('#advs_wrapper').removeClass('active');
+    });
+}
+
+//修复typeahead.js的一个bug，参考：https://github.com/twitter/typeahead.js/issues/1195
+function suggestCursorToggle() {
+    $('body').on("mouseover", ".tt-suggestion", function () {
+        $('.tt-suggestion').removeClass('tt-cursor');
+        $(this).addClass('tt-cursor');
+    });
+}
+
+//输入框实时提示
 function inputSuggest(input, sourceURL) {
     var $form = input.closest('form');
     var suggestions = function (dataSource) {
@@ -178,17 +249,7 @@ function inputSuggest(input, sourceURL) {
     }
 }
 
-//修复typeahead.js的一个bug，参考：https://github.com/twitter/typeahead.js/issues/1195
-function suggestCursorToggle() {
-    $('body').on("mouseover", ".tt-suggestion", function () {
-        $('.tt-suggestion').removeClass('tt-cursor');
-        $(this).addClass('tt-cursor');
-    });
-}
-
-//------------------------Advanced Search 精确搜索----------------------------------//
-
-
+//Advanced Search 精确搜索
 function advsSearch(form) {
     var success = function (data) {
             //console.log('success', data);
@@ -252,60 +313,7 @@ function advsSearch(form) {
     newSearch(obj);
 }
 
-
-//---------------------------其他------------------------
-//页面滑动,使用bootstrap的carousel和slide
-function pageSlide() {
-    var $carousel = $('.carousel').carousel({"interval": false});
-    $carousel.on('slide.bs.carousel', function (event) {
-        var tag = $(event.relatedTarget).attr("tag");
-        sessionStorage.currentPage = tag;
-        var navbtns = $('.navbtn').find('div');
-        navbtns.removeClass("bgd-light-blue");
-        $.each(navbtns, function (id, item) {
-            if ($(item).attr('data-target') == tag) {
-                $(item).addClass('bgd-light-blue');
-            }
-        });
-        var progress = $(event.relatedTarget).attr("tabindex") * 120;
-        $(".carousel-progress").animate({width: progress, left: (progress / 2) - 400}, 500);
-        //playAnimation(tag);
-    });
-    $("body,html").animate({
-        scrollTop: ($(".home").offset().top)
-    }, 10);
-
-    //点击切换，起到carousel control的作用
-    $('footer .navbtn').on('click', function (e) {
-        e.preventDefault();
-        var index = $(this).index();
-        sessionStorage.pageIdx = index;
-        switch (index) {
-            case 0: //home
-                onHomePageShow();
-                break;
-            default:
-                $header.show();
-        }
-        $('.carousel').carousel(index);
-        $('#advs_wrapper').removeClass('active');
-    });
-}
-
-//首页显示时，隐藏header
-function onHomePageShow() {
-    $header.hide();
-}
-
-//获取查询的关键词
-function getWd() {
-    var wd = $globalInput.val(), checked = sessionStorage.checked ? JSON.parse(sessionStorage.checked) : {};
-    for (var key in checked) {
-        wd += key + ':' + checked[key].replace(CheckboxId_SEPARATOR, '');
-    }
-    return wd;
-}
-
+//设置session的checked
 function setSessionChecked(operation, checkedId) {
     var checked = sessionStorage.checked ? JSON.parse(sessionStorage.checked) : {},
         index = checkedId.indexOf(CheckboxId_SEPARATOR),
@@ -330,6 +338,40 @@ function setSessionChecked(operation, checkedId) {
         }
         sessionStorage.checked = JSON.stringify(checked);
     }
+}
+
+//show page functions
+function showHomePage() {
+    $header.css('visibility', 'hidden');
+    $sidebar.hide();
+}
+
+function showListPage() {
+    $sidebar.show();
+    List.render({
+            'aggregation': JSON.parse(sessionStorage.agg),
+            'data': JSON.parse(sessionStorage.devices),
+            'wd': sessionStorage.wd
+        }
+    );
+}
+
+function showMapPage() {
+    $sidebar.show();
+    MyMap.render({
+        'aggregation': JSON.parse(sessionStorage.agg),
+        'data': JSON.parse(sessionStorage.devices),
+        'wd': sessionStorage.wd
+    });
+}
+
+function showGlobePointPage() {
+}
+
+function showGlobeLinePage() {
+}
+
+function showChartsPage() {
 }
 
 /* --------------------------- Helper ------------------------ */

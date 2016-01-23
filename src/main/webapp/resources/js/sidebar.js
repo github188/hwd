@@ -136,7 +136,7 @@ function initSidebar(aggregation) {
             case 'add':
                 sessionStorage.wd += ' ' + key + ':' + value;
                 if (sessionStorage.currentPage == 'list') {
-                    ResultList.search();
+                    List.search();
                 } else if (sessionStorage.currentPage == 'map') {
                     MyMap.search();
                 }
@@ -144,7 +144,7 @@ function initSidebar(aggregation) {
             case 'remove':
                 sessionStorage.wd.replace(key + ':' + value, '').trim();
                 if (sessionStorage.currentPage == 'list') {
-                    ResultList.search();
+                    List.search();
                 } else if (sessionStorage.currentPage == 'map') {
                     MyMap.search();
                 }

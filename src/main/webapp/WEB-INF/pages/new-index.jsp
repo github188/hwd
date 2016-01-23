@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="resources/css/map.css">
     <link rel="stylesheet" href="resources/css/leaflet.css">
     <link rel="stylesheet" href="resources/css/footer.css">
+    <link rel="stylesheet" href="resources/css/media.css">
 
     <script src="resources/js/lib/jquery-1.11.3.min.js"></script>
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
@@ -61,7 +62,7 @@
             <section class="item home active" tag="home" tabindex="1">
                 <%--<canvas id="galaxy"></canvas>--%>
                 <div class="home-search">
-                    <form class="form-inline ">
+                    <form class="form-inline home-search-form">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search"
                                    autofocus="autofocus"

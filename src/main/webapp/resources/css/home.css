@@ -10,18 +10,21 @@
     position: absolute;
     top: 40%;
     left: 25%;
-    width: 50%;
-    margin : 0 auto;
+    width: 49%;
+    margin: 0 auto;
     color: #eee;
-
-    border: 2px solid yellow;
 }
 
 .home .home-search .form-group {
-    margin-bottom: 5px;
     width: 100%;
+    padding: 0;
+    margin-bottom: 5px;
 }
 
+.home .form-group input.form-control {
+    display: inline-block;
+    width: 70%;
+}
 
 .home .advs-link-wrapper {
     height: 2.7rem;

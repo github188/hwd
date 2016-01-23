@@ -12,7 +12,7 @@
                 <legend>使用以下条件来搜索</legend>
                 <div class="row form-group">
                     <label class="col-md-2" for="must">包含以下全部字词：</label>
-                    <input type="text" class="col-md-8" id="must" name="must" placeholder="多个字词用空格分隔">
+                    <input type="text" class="col-md-8" id="must" name="must" autofocus="autofocus" placeholder="多个字词用空格分隔">
                     <span class="col-md-2">多个字词用空格分隔</span>
                 </div>
                 <div class="row form-group">

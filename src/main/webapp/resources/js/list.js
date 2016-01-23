@@ -1,8 +1,10 @@
-var ResultList = {
+/*---------------------------------------------↓List-----------------------------------------------*/
+var List = {
     render: function (data) {
         console.log("result list render", data);
     },
     search: function () {
-        console.log("ResultList search");
+        console.log("List search");
+        var wd = sessionStorage.wd.replace(sessionStorage.currentExtent, '');
     }
 };
