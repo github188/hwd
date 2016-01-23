@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="advs-wrapper" id="advs-wrapper">
+<div class="advs-wrapper" id="advs_wrapper">
     <h3>精确搜索</h3>
 
     <div class="advs-controls">
@@ -64,7 +64,7 @@
 
                     <div class="col-lg-offset-1 col-sm-11">
                         <div class="row">
-                            <label class="col-sm-1" for="type">类型</label>
+                            <label class="col-sm-1"  for="type">类型</label>
                             <input type="text" id="type" class="col-sm-3" name="type" placeholder="Webcam">
                             <label class="col-sm-1" for="brand">品牌</label>
                             <input type="text" id="brand" class="col-sm-3" name="brand" placeholder="Hikvision">
@@ -93,8 +93,8 @@
 
                     <div class="col-lg-offset-1 col-sm-11">
                         <div class="row">
-                            <label class="col-sm-1" for="vulId">ID</label>
-                            <input type="text" id="vulId" class="col-sm-3" name="vulId" placeholder="CVE-2009_5149">
+                            <label class="col-sm-1" for="vul">ID</label>
+                            <input type="text" id="vul" class="col-sm-3" name="vul" placeholder="CVE-2009_5149">
                             <label class="col-sm-1" for="vulType">类型</label>
                             <input type="text" id="vulType" class="col-sm-3" name="vulType"
                                    placeholder="weak_password">

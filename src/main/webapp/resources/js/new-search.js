@@ -33,22 +33,33 @@ function newSearch(obj) {
             obj.success(data);
             //设置sessionStorage
             sessionStorage.agg = data['aggregation'];
-            sessionStorage.wd = data['wd'];
             sessionStorage.devices = data['data'];
-            if (obj.searchButton) {
-                //只要searchButton有值即为表单提交，所以要更新sidebar
-                initSidebar(data['aggregation']);
+            var wdArr = data['wd'].split(' ');
+            for (var i = 0; i < wdArr; i++) {
+                var wdK_V = wdArr[i].split(':'), wdK = wdK_V[0], wdV = wdK_V[1];
+                if (sessionStorage.checked[wdK] && wdK_V && sessionStorage.checked[wdK].indexOf(wdK_V) < 0) {
+                    setSessionChecked('add', wdK + CheckboxId_SEPARATOR + wdV);
+                }
             }
+            //show devices
+            if (sessionStorage.currentPage == 'list') {
+                ResultList.render();//初始化result-col
+            } else if (sessionStorage.currentPage == 'map') {
+                MyMap.render(data); //渲染地图
+            } else {
+                console.log('current page is not the map nor is the list.');
+            }
+            //WEATHER TO INIT SIDEBAR IS UP TO THE CALLER
         } else if (statuscode == 204) {
-            console.log("Error: " + data["errmsg"]);
+            console.log("no data: " + data["errmsg"]);
             noDataHandler();
         } else {
-            errHandler();
+            console.log(data['statuscode'], data['errmsg']);
+            //errHandler();
         }
-        //（3）设置搜索框数据为当前查询条件，如果为form查询
-        //setInputValue(obj.searchInput, data['wd'].trim());//不需要设置input的值
     }).error(function (e) {
         //（4）启用查询按钮，如果为form查询
+        console.log("Error", e);
         disableButton(button, false);
         //errHandler();
     }).done(function () {
@@ -63,7 +74,6 @@ function newSearch(obj) {
         }
     }
 }
-
 
 function showErrorPage() {
     window.location.href = basePath + 'error';

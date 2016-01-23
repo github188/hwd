@@ -1,12 +1,12 @@
-//分隔符：key_s0s_value（s零s）
-var SEPARATOR = '_s0s_';
-
 function initSidebar(aggregation) {
     //init pivots
     $('.pivot-bar-container').hide();
     var $pivots = $('.pivots').html('');
-
-    //sidebar list
+    //init sessionStorage.checked.
+    if (!sessionStorage.checked) {
+        sessionStorage.checked = [];
+    }
+    //set sidebar info
     $.each(aggregation, function (key, value) {
         if (key == 'country@%city') {
             var $country = $('#countryList').find('ol.facet-values').html(''); //清空之前的数据
@@ -51,7 +51,7 @@ function initSidebar(aggregation) {
     /**-----------------↓functions ---------------**/
     //生成一个聚类的一个条目 ol > li，key为搜索关键字，value为该关键字对应的值，count为查到的条数
     function genSidebarLi(key, value, count) {
-        var id = key + SEPARATOR + value,
+        var id = key + CheckboxId_SEPARATOR + value,
             li = $('<li class="facet-value"></li>'),
             input = $('<input type="checkbox">').attr({'id': id, 'name': id}),
             div = $('<div class="label-container"></div>'),
@@ -60,17 +60,29 @@ function initSidebar(aggregation) {
                 'for': id,
                 'title': id
             }).append('<bdi>' + value + '</bdi>');
+
+        //设置复选框的选中状态
+        var cd = sessionStorage.checked;
+        if (cd) {
+            if (cd[key] && cd[key].indexOf(CheckboxId_SEPARATOR + value) >= 0) {
+                input.prop('checked', true
+                );
+            }
+        }
+
         input.on('click', function () {
-            var k = this.id.substr(0, this.id.indexOf(SEPARATOR));
-            var v = this.id.substr(this.id.indexOf(SEPARATOR) + SEPARATOR.length);
+            var k = this.id.substr(0, this.id.indexOf(CheckboxId_SEPARATOR));
+            var v = this.id.substr(this.id.indexOf(CheckboxId_SEPARATOR) + CheckboxId_SEPARATOR.length);
             $('#collapse' + v).collapse('toggle');
             if (this.checked) {
                 $pivots.append(genPivot(k, v));
+                setSessionChecked('add', this.id);       //添加
                 if ($pivots.find('li').length == 1) {
                     $pivotsContainer.show();
                 }
             } else {
                 $('#' + k + '_pivot_' + v).remove();
+                setSessionChecked('remove', this.id);   //移除
                 if ($pivots.find('li').length <= 0) {
                     $pivotsContainer.hide();
                 }
@@ -92,7 +104,7 @@ function initSidebar(aggregation) {
             var k = k_v[0],
                 v = k_v[1];
             //（1）设置对应复选框为非选中状态
-            var checkbox = $('#' + key + SEPARATOR + value);
+            var checkbox = $('#' + key + CheckboxId_SEPARATOR + value);
             checkbox.prop('checked', false);
             //（2）移除对应pivot
             $(this).parent('li.pivot').remove();
@@ -107,31 +119,28 @@ function initSidebar(aggregation) {
 
     /*=============================================此处预留，以后完善代码用，现在先做功能吧----------------------------
      * 处理复选框选中和取消以及由此引发的变化
-     * checkbox为jquery对象
-     * checked为boolean，true为选中，false为取消选中
-     * pivot为对应checkbox的pivot，checkbo和pivot至少传一个
+     * obj={checkbox:,checked:,pivot:}
+     *      checkbox为jquery对象
+     *      checked为boolean，true为选中，false为取消选中
+     *      pivot为对应checkbox的pivot，checkbo和pivot至少传一个
      */
     function setCheckbox(checkbox, checked, pivot) {
-        var p, cb;
-        if (!checkbox && !pivot)return;
-        if (checkbox && pivot) {
-            p = pivot;
-            cb = checkbox;
-        } else if (checkbox) {
-            cb = checkbox;
-            p = $('#' + checkbox.attr('id').replace(SEPARATOR, '_pivot_'));
-        } else if (pivot) {
-            p = pivot;
-            cb = $('#' + pivot.attr('id').replace('_pivot_', SEPARATOR));
+        var p = obj.pivot, cb = obj.checkbox, id = cb.attr('id');
+        if (!cb && !p)return;
+        if (!p) {
+            p = $('#' + id.replace(CheckboxId_SEPARATOR, '_pivot_'));
         }
-        console.log("p", p);
-        console.log("cb", cb);
-
+        if (!cb) {
+            id = p.attr('id').replace('_pivot_', CheckboxId_SEPARATOR);
+            cb = $('#' + id);
+        }
         cb.prop('checked', checked);
         if (checked) {
-            pivotFun('add', p)
+            pivotFun('add', p);
+            setSessionChecked('add', id);
         } else {
             pivotFun('remove', p)
+            setSessionChecked('remove', id);
         }
     }
 

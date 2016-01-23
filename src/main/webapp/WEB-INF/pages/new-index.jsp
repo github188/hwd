@@ -27,6 +27,7 @@
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
     <script src="resources/js/lib/bootstrap.min.js"></script>
     <script> var basePath = '${basePath}';</script>
+    <script src="resources/js/new-main.js"></script>
 
 
 </head>
@@ -98,7 +99,6 @@
         </div>
     </div>
 </footer>
-<script src="resources/js/new-main.js"></script>
 <script src="resources/js/new-search.js"></script>
 <script src="resources/js/index.js"></script>
 <script src="resources/js/sidebar.js"></script>

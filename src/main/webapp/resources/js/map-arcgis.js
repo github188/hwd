@@ -47,8 +47,6 @@ require(
     ],
     function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, HomeButton,
               Query, QueryTask) {
-        $('.sidebar').hide();//临时隐藏侧边栏，开发时使用的
-
         //（1）Create map and add layer
         map = new Map("mapHolder", {
             //basemap: 'gray',
@@ -74,22 +72,19 @@ require(
             map: map
         }, "homeButton").startup();
 
-        //（3）Initialize FeatureSets,开3个web worker加载FeatureSet
-
         //initFeatureSet('country');
-        initFeatureSet('province');
+        //initFeatureSet('province');
         //initFeatureSet('city');
 
         map.on("load", function () {
             console.log("on load");
             var devices = sessionStorage.devices,
                 agg = sessionStorage.aggregation,
-                wd = sessionStorage.wd;
+                wd = getWd();
             if (!devices && !agg) {
-                if (wd) {
+                if (wd != '') {
                     MyMap.mapSearch();                    //ajax get data, render graphic layers and set sessionStorage
                 }
-
             } else {
                 MyMap.render({
                     data: devices,
@@ -282,6 +277,7 @@ var MyMap = {
 
     mapSearch: function () {
         console.log("this mapSearch");
+        return;
         var criteria = {
             "geo": this.getVisibleExtent(),             //获取并设置屏幕所在范围的经纬度geo
             "wd": getWd(),

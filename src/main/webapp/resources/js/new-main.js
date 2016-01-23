@@ -1,9 +1,11 @@
 // global variables --> dom
-var $advsWrapper = $('.advs-wrapper'),
+var $advsWrapper = $('#advs_wrapper'),
     $advsControl = $('.advs-link-main').find('span'),
     $header = $('header'),
     $pivotsContainer = $('.pivot-bar-container').hide(),
     $globalInput = $('.global-search-input');
+//分隔符：key_s0s_value（s零s）
+var CheckboxId_SEPARATOR = '_s0s_';
 
 // global variables --> static url
 var advancedSearchURL = basePath + 'api/advancedSearch',
@@ -17,8 +19,7 @@ var advancedSearchURL = basePath + 'api/advancedSearch',
  'cityFS': {}             //城市FeatureSet映射表
  };*/
 /* localStorage = {
- 'wd': '',               //用户输入的查询条件（不包含已选中的复选框信息）（input的值）
- 'checkedIds': [],         //用户选中的复选框id
+ 'checkedIds': [],         //用户选中的复选框的id
  'devices': [],         //当前获取到的设备信息
  'aggregation': {}      //当前的聚类信息（即左边栏列表数据）
  };*/
@@ -33,7 +34,7 @@ $(function () {
     inputSuggest($('.global-search-input'), "api/getSuggestions?search=");
 
     //carousel
-    localStorage.currentPage = 'map';
+    sessionStorage.currentPage = 'map';
     pageSlide();
 
     //sidebar
@@ -45,7 +46,41 @@ $(function () {
         console.log(e);
     });
     //advanced search
-    advancedSearch();
+    //advanced search link
+    $('.advs-link').on('click', function (e) {
+        e.preventDefault();
+        if (!($advsWrapper.hasClass('active'))) {
+            $advsWrapper.addClass('active');
+            console.log("$advsWrapper", $advsWrapper.prop('id'));
+            console.log("$advsWrapper", $advsWrapper.prop('class'));
+            console.log("$advsWrapper", $advsWrapper.hasClass('active'));
+            //console.log("$advsWrapper",$advsWrapper.class);
+            $advsControl.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
+            $advsWrapper.show();
+        } else {
+            $advsWrapper.removeClass('active');
+            $advsControl.removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
+        }
+    });
+    //advanced search form
+    $('#advs').on('submit', function (e) {
+        e.preventDefault();
+        advsSearch(this);
+    });
+    //advanced search form controls.close
+    $('.close-advs').on('click', function () {
+        $advsWrapper.removeClass('active');
+    });
+    //advanced search form controls.reset
+    $('.reset-advs').on('click', function () {
+        document.getElementById("advs").reset();
+    });
+    //advanced search form input for ip
+    $('#ip').on('blur', function () {
+        //d+.d+.d+.d+，验证ip地址的合法性，预留
+    });
+    //date default value
+    $('#time_to').val(new Date().toDateInputValue());
 });
 
 //------------------------------输入框实时提示-------------------------------------//
@@ -128,106 +163,72 @@ function suggestCursorToggle() {
 }
 
 //------------------------Advanced Search 精确搜索----------------------------------//
-function advancedSearch() {
-    //date default value
-    $('#time_to').val(new Date().toDateInputValue());
 
-    //advanced search link
-    $('.advs-link').on('click', function (e) {
-        e.preventDefault();
-        if (!($advsWrapper.hasClass('active'))) {
-            $advsWrapper.addClass('active');
-            $advsControl.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
-        } else {
+
+function advsSearch(form) {
+    var success = function (data) {
+            console.log('success', data);
+            //generate sidebar
+            initSidebar(data.aggregation);
             $advsWrapper.removeClass('active');
-            $advsControl.removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
-        }
-    });
-    //advanced search form
-    $('#advs').on('submit', function (e) {
-        e.preventDefault();
-        advsSearch(this);
-    });
-    //advanced search from controls.close
-    $('.close-advs').on('click', function () {
-        $advsWrapper.removeClass('active');
-    });
-    //advanced search from controls.reset
-    $('.reset-advs').on('click', function () {
-        document.getElementById("advs").reset();
-    });
-    //advanced search form input for ip
-    $('#ip').on('blur', function () {
-        //d+.d+.d+.d+，验证ip地址的合法性，预留
-    });
-    function advsSearch(form) {
-        var success = function (data) {
-                console.log('success', data);
-                //generate sidebar
-                initSidebar(data.aggregation);
-                //show devices
-                if (localStorage.currentPage == 'list') {
-                    //初始化result-col
-                    console.log('list');
-                } else if (localStorage.currentPage == 'map') {
-                    //在地图上标注device，并弹出右侧列表框
-                    console.log("map", map);
-                    MyMap.render(data);
-                } else {
-                    console.log('none');
+        },
+        error = function (data) {
+            console.log('error', data);
+            $advsWrapper.removeClass('active');
+        },
+        noData = function (data) {
+            console.log('nodata', data);
+            $advsWrapper.removeClass('active');
+        },
+        getCriteria = function () {
+            var criteria = {}, ipSegment = '', timeSegment = '',
+                inputs = $(form).find('fieldset').find('input');
+
+            for (var i = 0; i < inputs.length; i++) {
+                var key = inputs[i].id;
+                if (key == 'country' || key == 'city' || key == 'port' || key == 'os' || key == 'vul' || key == 'device_service' || key == 'device_type') {
+                    setSessionChecked('add', key);
                 }
-                $advsWrapper.removeClass('active');
-            },
-            error = function (data) {
-                console.log('error', data);
-                $advsWrapper.removeClass('active');
-            },
-            noData = function (data) {
-                console.log('nodata', data);
-                $advsWrapper.removeClass('active');
-            };
-        var criteria = {}, ipSegment = '', timeSegment = '',
-            inputs = $(form).find('fieldset').find('input');
 
-        for (var i = 0; i < inputs.length; i++) {
-            var key = inputs[i].id;
-            if (key.indexOf("ip_") >= 0) {
-                ipSegment += $(inputs[i]).val() + '-';
-                continue;
-            }
+                if (key.indexOf("ip_") >= 0) {
+                    ipSegment += $(inputs[i]).val() + '-';
+                    continue;
+                }
 
-            var timestamp = (Date.parse(new Date($(inputs[i]).val()))) / 1000;
-            if (key.indexOf('time_') >= 0) {
-                timeSegment += timestamp + '-';
-                continue;
+                var timestamp = (Date.parse(new Date($(inputs[i]).val()))) / 1000;
+                if (key.indexOf('time_') >= 0) {
+                    timeSegment += timestamp + '-';
+                    continue;
+                }
+                criteria[key] = $(inputs[i]).val().replace(/\s+/g, " ");//所有空白符都替换为一个空格
             }
-            criteria[key] = $(inputs[i]).val().replace(/\s+/g, " ");//所有空白符都替换为一个空格
-        }
-        if (ipSegment != '') {
-            criteria['ip'] += ' ' + ipSegment.replace(/^-|-$/g, '');//去掉首尾的“-”和空格
-        }
-        if (timeSegment != '') {
-            timeSegment = timeSegment.replace(/\s+/g, "").replace(/^-|-$/g, '');
-            if (timeSegment.indexOf('-NaN') >= 0) {
-                timeSegment = timeSegment.replace('-NaN', '-' + (Date.parse(new Date().toDateInputValue())) / 1000);
-            } else if (timeSegment.indexOf('NaN-') >= 0) {
-                timeSegment = timeSegment.replace('NaN-', '');
+            if (ipSegment != '') {
+                criteria['ip'] += ' ' + ipSegment.replace(/^-|-$/g, '');//去掉首尾的“-”和空格
             }
-            criteria['lastModified'] = timeSegment;
-        }
+            if (timeSegment != '') {
+                timeSegment = timeSegment.replace(/\s+/g, "").replace(/^-|-$/g, '');
+                if (timeSegment.indexOf('-NaN') >= 0) {
+                    timeSegment = timeSegment.replace('-NaN', '-' + (Date.parse(new Date().toDateInputValue())) / 1000);
+                } else if (timeSegment.indexOf('NaN-') >= 0) {
+                    timeSegment = timeSegment.replace('NaN-', '');
+                }
+                criteria['lastModified'] = timeSegment;
+            }
+            return criteria;
+        };
 
-        //arguments
-        var obj = {};
-        obj["url"] = advancedSearchURL;
-        obj['criteria'] = criteria;
-        obj['success'] = success;
-        obj['error'] = error;
-        obj['noDataFunc'] = noData;
-        obj['searchButton'] = $('.submit-advs');
-        console.log(obj);
-        newSearch(obj);
-    }
+    //arguments
+    var obj = {};
+    obj["url"] = advancedSearchURL;
+    obj['criteria'] = getCriteria();
+    obj['success'] = success;
+    obj['error'] = error;
+    obj['noDataFunc'] = noData;
+    obj['searchButton'] = $('.submit-advs');
+    console.log("ADVANCE SEARCH ARGUMENT==", obj);
+    newSearch(obj);
 }
+
 
 //---------------------------其他------------------------
 //页面滑动,使用bootstrap的carousel和slide
@@ -235,7 +236,7 @@ function pageSlide() {
     var $carousel = $('.carousel').carousel({"interval": false});
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
-        localStorage.currentPage = tag;
+        sessionStorage.currentPage = tag;
         var navbtns = $('.navbtn').find('div');
         navbtns.removeClass("bgd-light-blue");
         $.each(navbtns, function (id, item) {
@@ -271,39 +272,58 @@ function onHomePageShow() {
     $header.hide();
 }
 
-//获取查询的关键词
-function getWd() {
-    var wd = '';
-    if (sessionStorage.wd || sessionStorage.checkedIds) {
-        if (sessionStorage.wd) {
-            wd += sessionStorage.wd;
-        }
-        if (sessionStorage.checkedIds) {
-            sessionStorage.checkedIds.forEach(function (id) {
-                wd += id.replace(SEPARATOR, ':');
-            });
-        }
-    } else {
-        wd = $globalInput.val();
-    }
-    return wd;
-}
-
 //获取所有的featureSet，保存在所有的localStorage中
 function initFeatureSets() {
-    console.log("ssssssssssssss-------------" + new Date());
     $.ajax({
         url: getFeatureSetsURL,
         type: 'post'
     }).success(function (data) {
-        console.log(data);
-        console.log("sssssssssssss done" + new Date());
+        localStorage.countryFS = data.countryFS;
+        localStorage.provinceFS = data.provinceFS;
+        localStorage.cityFS = data.cityFS;
     }).error(function () {
         console.log("Getting feature set error!");
     }).fail(function () {
         console.log("Getting feature set failed!");
     });
 
+}
+
+//获取查询的关键词
+function getWd() {
+    if (!sessionStorage.checked) {
+        sessionStorage.checked = {};
+    }
+    var wd = $globalInput.val(), checked = sessionStorage.checked;
+    if (checked) {
+        for (var key in checked) {
+            wd += key + ':' + checked[key].replace(CheckboxId_SEPARATOR, '');
+        }
+    }
+    return wd;
+}
+
+function setSessionChecked(operation, checkedId) {
+    var checked = sessionStorage.checked, index = checkedId.indexOf(CheckboxId_SEPARATOR),
+        cK = checkedId.substring(0, index), cV = checkedId.substring(index);
+    switch (operation) {
+        case 'add':
+            if (checked[cK] && checked[cK].indexOf(cV) < 0) {
+                checked[cK] += ' ' + cV;
+            } else {
+                checked[cK] = cV;
+            }
+            break;
+        case 'remove':
+            checked[cK].replace(cV, '');
+            if (checked[cK] == '' || checked[cK].trim() == '') {
+                delete checked[cK];
+            }
+            break;
+        default :
+            break;
+    }
+    sessionStorage.checked = checked;
 }
 
 /* --------------------------- Helper ------------------------ */
