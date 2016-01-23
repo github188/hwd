@@ -12,4 +12,5 @@
     <div class="result-container"></div>
     <div class="result-pagination"></div>
 </div>
+<script src="resources/js/list.js"></script>
 <div class="clearfix"></div>

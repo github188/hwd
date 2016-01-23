@@ -30,8 +30,6 @@ var mapSearchURL = "api/mapSearch",
  * */
 
 var map, featureInfoTemplate, countryFS = {}, provinceFS = {}, cityFS = {}, featureGL, deviceGL;
-
-
 require(
     [
         "esri/map",
@@ -63,7 +61,8 @@ require(
         deviceGL = new GraphicsLayer({
             id: "deviceGraphicLayer",
             infoTemplate: new InfoTemplate("${ip}",
-                "<b>${location}<b><br><b>${tags}</b><br><b>${timestamp}</b>")
+                "<b>${location}<b><br><b>${tags}</b><br><b>${timestamp}</b>"),
+            visibleAtMapScale: true
         });
         map.addLayer(deviceGL);
 
@@ -72,25 +71,26 @@ require(
             map: map
         }, "homeButton").startup();
 
-        //initFeatureSet('country');
-        //initFeatureSet('province');
-        //initFeatureSet('city');
-
-        map.on("load", function () {
-            console.log("on load");
-            var devices = sessionStorage.devices,
-                agg = sessionStorage.aggregation,
-                wd = getWd();
-            if (!devices && !agg) {
-                if (wd != '') {
-                    MyMap.mapSearch();                    //ajax get data, render graphic layers and set sessionStorage
-                }
-            } else {
+        //(3) Init device graphic Layer
+        if (sessionStorage) {
+            var devices = sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
+                agg = sessionStorage.aggregation ? JSON.parse(sessionStorage.aggregation) : undefined,
+                wd = sessionStorage.wd;
+            if (devices && agg) {
                 MyMap.render({
                     data: devices,
-                    agg: agg
+                    aggregation: agg
                 });
+            } else {
+                if (wd || wd != '') {
+                    MyMap.search(true);                    //ajax get data, render graphic layers and set sessionStorage
+                }
             }
+        }
+
+
+        map.on("load", function () {
+
         });
 
         map.on('zoom-end', function (e) {
@@ -117,20 +117,20 @@ require(
                         resp.features.forEach(function (item) {
                             countryFS[item.attributes.NAME] = item;
                         });
-                        localStorage.countryFS = countryFS;
+                        localStorage.featureSets.countryFS = countryFS;
                         break;
                     case 'province':
                         resp.features.forEach(function (item) {
                             provinceFS[item.attributes.Name_CHN] = item;
                         });
                         console.log("province ends at---" + new Date());
-                        localStorage.provinceFS = provinceFS;
+                        localStorage.featureSets.provinceFS = provinceFS;
                         break;
                     case 'city':
                         resp.features.forEach(function (item) {
                             cityFS[item.attributes.Name_CHN] = item;
                         });
-                        localStorage.cityFS = cityFS;
+                        localStorage.featureSets.cityFS = cityFS;
                         console.log("city ends at---" + new Date());
                         break;
                 }
@@ -170,10 +170,10 @@ require(
 //=============================public function realted to map, not elegant in someway-----------------
 var MyMap = {
     render: function (data) {
-        console.log('map is rendering=============');
+        console.log("sss");
+        this.addFeatureGraphicLayer(data.aggregation, map.getZoom());
         this.addDeviceGraphicLayer(data.data);
         setMapSidebar(data.data);
-        this.addFeatureGraphicLayer(data.aggregation, map.getZoom());
     },
 
     /*
@@ -185,24 +185,52 @@ var MyMap = {
      * aggregation: countryAgg/provinceAgg/cityAgg: [{name,count},]
      */
     addFeatureGraphicLayer: function (agg, zoom) {
-        if (zoom < 5) {
-            //国家级别
-            var countryNames = [];
-            if (agg.hasOwnProperty('country@%city')) {
+        console.log("addFeatureGraphicLayer------------starts");
+        var fss = featureSets;
+        if (!featureSets) {
+            if (localStorage.featureSets && !isEmptyObject(JSON.parse(localStorage.featureSets))) {
+                fss = JSON.parse(localStorage.featureSets);
+            } else if (sessionStorage.featureSets && !isEmptyObject(JSON.parse(sessionStorage.featureSets))) {
+                fss = JSON.parse(sessionStorage.featureSets);
+            }
+        }
+        if (fss && !isEmptyObject(fss)) {
+            console.log("addFeatureGraphicLayer------------starts if");
+
+            renderFeatureLayer(agg, fss, zoom);
+        } else {
+            console.log("addFeatureGraphicLayer------------starts else");
+
+            $.ajax({
+                url: basePath + 'api/getFeatureSets',
+                type: 'post'
+            }).success(function (data) {
+                console.log("sssssssssgasdgadfa ",data);
+                renderFeatureLayer(agg, data, zoom);
+            }).error(function () {
+                console.log("Getting feature set error!");
+            }).fail(function () {
+                console.log("Getting feature set failed!");
+            });
+        }
+
+        function renderFeatureLayer(agg, fss, zoom) {
+            featureGL.clear();
+            if (agg.hasOwnProperty('country@%city') && !isEmptyObject(agg['country@%city'])) {
                 var cc = agg['country@%city'];
-                if (localStorage.countryFS) {
-                    //添加到featureGraphicLayer
+                if (zoom < 5) { //国家级别
+                    for (var country in cc) {
+                        console.log("ff===========", fss.countryFS);
+                    }
+                } else if (zoom < 7) {
+                    //省份级别,目前也按照市来做
 
                 } else {
-                    //查询远程地图服务
+                    //城市级别
                 }
             }
-        } else if (zoom < 7) {
-            //省份级别,目前也按照市来做
-
-        } else {
-            //城市级别
         }
+
         //var featureInfoTemplate = new esri.InfoTemplate("${NAME}", "Name : ${CITY_NAME}<br/> 目标数量：${STATE_NAME}<br />Population : ${POP1990}");
     },
 
@@ -239,18 +267,16 @@ var MyMap = {
                         }
                         return result;
                     }),
-                    "timestamp": dateLocalize(d.timestamp)
+                    "timestamp": dateLocalize()
                 };
                 var pt = new Point(d.lon, d.lat, map.spatialReference);
                 var graphic = new Graphic(pt, pms, attr);
-
                 deviceGL.add(graphic);//（1）添加到graphics层
-                addToSidebar(d);//（2）添加到侧栏
             });
         });
     },
 
-//获取地图的可视范围的经纬度
+    //获取地图的可视范围的经纬度
     getVisibleExtent: function () {
         require([
             "esri/geometry/ScreenPoint",
@@ -259,8 +285,10 @@ var MyMap = {
             var windowHeight = $(window).height(), windowWidth = $(window).width();
             var sLeftTop = new ScreenPoint(0, 0),
                 sRightBottom = new ScreenPoint(windowWidth, windowHeight);
-            var mLeftTop = webMercatorUtils.webMercatorToGeographic(map.toMap(sLeftTop)),
-                mRightBottom = webMercatorUtils.webMercatorToGeographic(map.toMap(sRightBottom));
+            /* var mLeftTop = webMercatorUtils.webMercatorToGeographic(map.toMap(sLeftTop)),
+             mRightBottom = webMercatorUtils.webMercatorToGeographic(map.toMap(sRightBottom));*/
+            var mLeftTop = map.toMap(sLeftTop),
+                mRightBottom = map.toMap(sRightBottom);
 
             var xL = mLeftTop.x, xR = mRightBottom.x, yT = mLeftTop.y, yB = mRightBottom.y;
             //逆时针，4个点，首尾闭合
@@ -270,38 +298,42 @@ var MyMap = {
                 xR + ' ' + yB + ',' +             //右下
                 xR + ' ' + yT + ',' +             //右上
                 xL + ' ' + yT + ')';              //首尾闭合
-            console.log('getVisibleExtent: ', polygonCCW);
             return polygonCCW;
         });
     },
 
-    mapSearch: function () {
+    //updateSidebar, boolean，如果是搜索框检索，则为true，更新sidebar，如果是用户点击某个复选框，则不改变，设为false
+    search: function (updateSidebar) {
         console.log("this mapSearch");
-        return;
+        var currentExtent = this.getVisibleExtent();//获取并设置屏幕所在范围的经纬度geo
+        sessionStorage.currentExtent = JSON.stringify(currentExtent);
+
         var criteria = {
-            "geo": this.getVisibleExtent(),             //获取并设置屏幕所在范围的经纬度geo
-            "wd": getWd(),
+            "geo": currentExtent,
+            "wd": sessionStorage.wd,
             "zoomlevel": map.getZoom()
+        };
+        var success = function (data) {
+            if (updateSidebar) {
+                initSidebar(data['aggregation']);
+            }
+            MyMap.render(data);
         };
         var noDataFunc = function () {
             console.log("map no data found!");
         };
         var searchObj = {
             "url": basePath + mapSearchURL,
-            "success": this.render,
+            "success": success,
             "noDataFunc": noDataFunc,
             "criteria": criteria
         };
         newSearch(searchObj);
-    },
-
-    mapSearchSuccessHandler: function (resp) {
-        this.render(resp);
     }
 
 };
 function setMapSidebar(devices) {
-    console.log(devices);
+    console.log("set map sidebar", devices);
 }
 
 //将一个设备添加到地图的右侧边栏

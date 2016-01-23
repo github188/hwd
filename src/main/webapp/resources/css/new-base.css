@@ -263,8 +263,8 @@ header .advs-link-wrapper a:hover {
     position: absolute;
     top: 7rem;
     width: 0;
-    max-height: 90%;
-    padding: 0 0 2rem 0;
+    max-height: 86%;
+    padding: 0 0 1rem 0;
     white-space: nowrap;
     color: #666;
     background-color: hsla(0, 0%, 85%, 1);
@@ -317,9 +317,9 @@ header .advs-link-wrapper a:hover {
     box-sizing: content-box;
 }
 
-#advs fieldset {
+/*#advs fieldset {
     margin-bottom: 1rem;
-}
+}*/
 
 #advs fieldset legend {
     padding-bottom: .4rem;
@@ -369,7 +369,7 @@ header .advs-link-wrapper a:hover {
 
 #advs .form-controls {
     float: right;
-    padding: 1.5rem 16% 0 0;
+    padding: .5rem 16% 0 0;
 }
 
 #advs .form-controls .submit-advs {
@@ -465,11 +465,18 @@ header .advs-link-wrapper a:hover {
 @media (min-width: 768px) and (max-width: 991px) {
     form {
         font-size: 10rem;
-        font-weight: 500;
+        font-weight: normal;
     }
 
-    header .global-search-form .global-search-input {
+    .advs-wrapper {
+        font-size: 1.3rem;
+    }
+
+    header .global-search-form .global-search-input,header .global-search-form button {
         width: 33rem;
+        height: 2.6rem;
+        font-size: 2rem;
+        font-weight: normal;
     }
 }
 

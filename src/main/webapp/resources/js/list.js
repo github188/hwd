@@ -1,5 +1,8 @@
 var ResultList = {
-    render: function (devices) {
-        console.log("result list render", devices);
+    render: function (data) {
+        console.log("result list render", data);
+    },
+    search: function () {
+        console.log("ResultList search");
     }
 };

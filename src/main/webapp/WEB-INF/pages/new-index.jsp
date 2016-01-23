@@ -27,6 +27,7 @@
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
     <script src="resources/js/lib/bootstrap.min.js"></script>
     <script> var basePath = '${basePath}';</script>
+    <script src="resources/js/initFeatureSets.js"></script>
     <script src="resources/js/new-main.js"></script>
 
 
@@ -57,13 +58,13 @@
     <%@include file="sidebar.jsp" %>
     <div id="content" class="carousel slide full-height">
         <div class="carousel-inner full_height" role="listboxt">
-            <section class="home item" tag="home" tabindex="1">
+            <section class="home item active" tag="home" tabindex="1">
                 <canvas id="galaxy"></canvas>
             </section>
             <section class="list-wrapper item" tag="list" tabindex="2">
                 <%@include file="list.jsp" %>
             </section>
-            <section class="map-wrapper item active" tag="map" tabindex="3">
+            <section class="map-wrapper item" tag="map" tabindex="3">
                 <%@include file="map.jsp" %>
             </section>
             <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">point</section>
@@ -73,7 +74,7 @@
     </div>
     <div class="processing-overlay"></div>
 </div>
-<footer class="navbar-fixed-bottom" style="display: none;">
+<footer class="navbar-fixed-bottom">
     <div id="navbar">
         <div class="dash"></div>
         <div class="carousel-progress"></div>

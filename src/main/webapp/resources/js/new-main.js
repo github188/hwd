@@ -1,16 +1,15 @@
 // global variables --> dom
-var $advsWrapper = $('#advs_wrapper'),
-    $advsControl = $('.advs-link-main').find('span'),
-    $header = $('header'),
-    $pivotsContainer = $('.pivot-bar-container').hide(),
+var $header = $('header'),
     $globalInput = $('.global-search-input');
-//分隔符：key_s0s_value（s零s）
-var CheckboxId_SEPARATOR = '_s0s_';
+var CheckboxId_SEPARATOR = '_s0s_',//分隔符：key_s0s_value（s零s）
+    featureSets = {};
 
 // global variables --> static url
 var advancedSearchURL = basePath + 'api/advancedSearch',
-    imgUrl = basePath + "resources/img/",
-    getFeatureSetsURL = basePath + 'api/getFeatureSets';
+    listSearchURL = basePath + '/api/getResponse4List',
+    suggestionSearchURL = 'api/getSuggestions?search=',
+    getFeatureSetsURL = basePath + 'api/getFeatureSets',
+    imgUrl = basePath + "resources/img/";
 
 /* localStorage = {
  'user': '',              //用户信息，包含用户名、密码、级别
@@ -26,41 +25,39 @@ var advancedSearchURL = basePath + 'api/advancedSearch',
 /* ↑---------->>>>>>>>>>>>>>>> Global Variables <<<<<<<<<<<<<<<<< ------------------------------↑ */
 $(function () {
     "use strict";
-    //Init FeatureSets
-    initFeatureSets();
-
     //input suggestions
     suggestCursorToggle();
-    inputSuggest($('.global-search-input'), "api/getSuggestions?search=");
+    inputSuggest($('.global-search-input'), suggestionSearchURL);
 
     //carousel
-    sessionStorage.currentPage = 'map';
     pageSlide();
 
-    //sidebar
+    //hide some doms
     $('.sidebar').hide();
 
     /*-------------listeners-----------*/
     //global search form
     $('.global-search-form').on('submit', function (e) {
+        var success = function (data) {
+            initSidebar(data['aggregation']);
+
+        };
+        var searchObj = {};
+        searchObj['wd'] = $('.global-search-input').val();
         console.log(e);
     });
-    //advanced search
+
+
+    //home search form -----------------------------------------------------------------?
+
+    //advanced search---------------------------↓------------------------
     //advanced search link
     $('.advs-link').on('click', function (e) {
         e.preventDefault();
-        if (!($advsWrapper.hasClass('active'))) {
-            $advsWrapper.addClass('active');
-            console.log("$advsWrapper", $advsWrapper.prop('id'));
-            console.log("$advsWrapper", $advsWrapper.prop('class'));
-            console.log("$advsWrapper", $advsWrapper.hasClass('active'));
-            //console.log("$advsWrapper",$advsWrapper.class);
-            $advsControl.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
-            $advsWrapper.show();
-        } else {
-            $advsWrapper.removeClass('active');
-            $advsControl.removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
-        }
+        $('#advs_wrapper').toggleClass('active');
+        var dirIndicator = $('.advs-link-main').find('span');
+        dirIndicator.toggleClass('glyphicon-menu-right');
+        dirIndicator.toggleClass('glyphicon-menu-left');
     });
     //advanced search form
     $('#advs').on('submit', function (e) {
@@ -69,7 +66,7 @@ $(function () {
     });
     //advanced search form controls.close
     $('.close-advs').on('click', function () {
-        $advsWrapper.removeClass('active');
+        $('#advs_wrapper').removeClass('active');
     });
     //advanced search form controls.reset
     $('.reset-advs').on('click', function () {
@@ -81,6 +78,16 @@ $(function () {
     });
     //date default value
     $('#time_to').val(new Date().toDateInputValue());
+
+    //初始化之后，使用session中保存的数据做用户定制
+    //session
+    if (sessionStorage && sessionStorage.pageIdx) {
+        console.log(sessionStorage.pageIdx);
+        $('.carousel').carousel({
+            interval: false
+        });
+        $('.carousel').carousel(parseInt(sessionStorage.pageIdx));
+    }
 });
 
 //------------------------------输入框实时提示-------------------------------------//
@@ -93,21 +100,38 @@ function inputSuggest(input, sourceURL) {
             //Prefetched data is fetched and processed on initialization. If the browser supports local storage,
             // the processed data will be cached there to prevent additional network requests on subsequent page loads.
             prefetch: {
-                //url: 'resources/data/countries.json',
-                url: dataSource,
+                url: 'resources/data/suggestions.json',
+                //url: dataSource,
                 limit: 10,
                 //ttl: 10000,//The time (in milliseconds) the prefetched data should be cached in local storage. Defaults to 86400000 (1 day).
                 filter: function (resp) {
-                    return $.map(resp.data, function (item) {
-                        return $.isArray(item) && item.length == 2 ? {
-                            title: item[0],
-                            desc: item[1],
-                            value: item[0]
-                        } : {
-                            title: item,
-                            value: item
+                    if (resp[input.attr('id')]) {
+                        return $.map(resp[input.attr('id')], function (item) {
+                            return $.isArray(item) && item.length == 2 ? {
+                                title: item[0],
+                                desc: item[1],
+                                value: item[0]
+                            } : {
+                                title: item,
+                                value: item
+                            }
+                        })
+                    } else {
+                        var suggestions = [];
+                        for (var key in resp) {
+                            suggestions = suggestions.concat(resp[key]);
                         }
-                    })
+                        return $.map(suggestions, function (item) {
+                            return $.isArray(item) && item.length == 2 ? {
+                                title: item[0],
+                                desc: item[1],
+                                value: item[0]
+                            } : {
+                                title: item,
+                                value: item
+                            }
+                        })
+                    }
                 }
             },
             remote: {
@@ -167,18 +191,18 @@ function suggestCursorToggle() {
 
 function advsSearch(form) {
     var success = function (data) {
-            console.log('success', data);
+            //console.log('success', data);
             //generate sidebar
             initSidebar(data.aggregation);
-            $advsWrapper.removeClass('active');
+            $('#advs_wrapper').removeClass('active');
         },
         error = function (data) {
             console.log('error', data);
-            $advsWrapper.removeClass('active');
+            $('#advs_wrapper').removeClass('active');
         },
         noData = function (data) {
             console.log('nodata', data);
-            $advsWrapper.removeClass('active');
+            $('#advs_wrapper').removeClass('active');
         },
         getCriteria = function () {
             var criteria = {}, ipSegment = '', timeSegment = '',
@@ -186,7 +210,7 @@ function advsSearch(form) {
 
             for (var i = 0; i < inputs.length; i++) {
                 var key = inputs[i].id;
-                if (key == 'country' || key == 'city' || key == 'port' || key == 'os' || key == 'vul' || key == 'device_service' || key == 'device_type') {
+                if ($(inputs[i]).val() != '' && (key == 'country' || key == 'city' || key == 'port' || key == 'os' || key == 'vul' || key == 'device_service' || key == 'device_type')) {
                     setSessionChecked('add', key);
                 }
 
@@ -225,7 +249,6 @@ function advsSearch(form) {
     obj['error'] = error;
     obj['noDataFunc'] = noData;
     obj['searchButton'] = $('.submit-advs');
-    console.log("ADVANCE SEARCH ARGUMENT==", obj);
     newSearch(obj);
 }
 
@@ -256,6 +279,7 @@ function pageSlide() {
     $('footer .navbtn').on('click', function (e) {
         e.preventDefault();
         var index = $(this).index();
+        sessionStorage.pageIdx = index;
         switch (index) {
             case 0: //home
                 onHomePageShow();
@@ -264,6 +288,7 @@ function pageSlide() {
                 $header.show();
         }
         $('.carousel').carousel(index);
+        $('#advs_wrapper').removeClass('active');
     });
 }
 
@@ -272,85 +297,67 @@ function onHomePageShow() {
     $header.hide();
 }
 
-//获取所有的featureSet，保存在所有的localStorage中
-function initFeatureSets() {
-    $.ajax({
-        url: getFeatureSetsURL,
-        type: 'post'
-    }).success(function (data) {
-        localStorage.countryFS = data.countryFS;
-        localStorage.provinceFS = data.provinceFS;
-        localStorage.cityFS = data.cityFS;
-    }).error(function () {
-        console.log("Getting feature set error!");
-    }).fail(function () {
-        console.log("Getting feature set failed!");
-    });
-
-}
-
 //获取查询的关键词
 function getWd() {
-    if (!sessionStorage.checked) {
-        sessionStorage.checked = {};
-    }
-    var wd = $globalInput.val(), checked = sessionStorage.checked;
-    if (checked) {
-        for (var key in checked) {
-            wd += key + ':' + checked[key].replace(CheckboxId_SEPARATOR, '');
-        }
+    var wd = $globalInput.val(), checked = sessionStorage.checked ? JSON.parse(sessionStorage.checked) : {};
+    for (var key in checked) {
+        wd += key + ':' + checked[key].replace(CheckboxId_SEPARATOR, '');
     }
     return wd;
 }
 
 function setSessionChecked(operation, checkedId) {
-    var checked = sessionStorage.checked, index = checkedId.indexOf(CheckboxId_SEPARATOR),
+    var checked = sessionStorage.checked ? JSON.parse(sessionStorage.checked) : {},
+        index = checkedId.indexOf(CheckboxId_SEPARATOR),
         cK = checkedId.substring(0, index), cV = checkedId.substring(index);
-    switch (operation) {
-        case 'add':
-            if (checked[cK] && checked[cK].indexOf(cV) < 0) {
-                checked[cK] += ' ' + cV;
-            } else {
-                checked[cK] = cV;
-            }
-            break;
-        case 'remove':
-            checked[cK].replace(cV, '');
-            if (checked[cK] == '' || checked[cK].trim() == '') {
-                delete checked[cK];
-            }
-            break;
-        default :
-            break;
+    if (checked[cK]) {
+        switch (operation) {
+            case 'add':
+                if (checked[cK] && checked[cK].indexOf(cV) < 0) {
+                    checked[cK] += ' ' + cV;
+                } else {
+                    checked[cK] = cV;
+                }
+                break;
+            case 'remove':
+                checked[cK].replace(cV, '');
+                if (checked[cK] == '' || checked[cK].trim() == '') {
+                    delete checked[cK];
+                }
+                break;
+            default :
+                break;
+        }
+        sessionStorage.checked = JSON.stringify(checked);
     }
-    sessionStorage.checked = checked;
 }
 
 /* --------------------------- Helper ------------------------ */
 //判断对象是否为空
 function isEmptyObject(obj) {
+    var flag = true;
     for (var n in obj) {
-        return false
+        return flag;
     }
-    return true;
+    for (var n in obj) {
+        if (obj[n]) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
 }
 
-//Format the date value
+//Format the date value for input
 Date.prototype.toDateInputValue = (function () {
     var local = new Date(this);
     local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
     return local.toJSON().slice(0, 10);
 });
 
+//时间格式化
+function dateLocalize(timestamp) {
+    if (timestamp)  return (new Date(parseInt(timestamp))).toLocaleDateString();
+    return timestamp;
 
-
-
-
-
-
-
-
-
-
-
-
+}

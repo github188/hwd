@@ -176,7 +176,7 @@ public class DataApiController {
         logger.debug("DataApiController advancedSearch starts-----------");
         System.out.println("DataApiController advancedSearch starts-----------");
         String result = newDeviceService.getResponse4AdvanceSearch(criteria);
-//        System.out.println(result);
+//        System.out.println("advancedSearch====" + result);
         return result;
     }
 

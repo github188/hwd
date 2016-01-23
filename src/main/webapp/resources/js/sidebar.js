@@ -1,11 +1,11 @@
 function initSidebar(aggregation) {
-    //init pivots
-    $('.pivot-bar-container').hide();
-    var $pivots = $('.pivots').html('');
-    //init sessionStorage.checked.
-    if (!sessionStorage.checked) {
-        sessionStorage.checked = [];
+    if (sessionStorage.currentPage == 'map') {
+        $('.sidebar').addClass('map').show();
     }
+    //init pivots
+    var $pivotsContainer = $('.pivot-bar-container').hide();
+    var $pivots = $('.pivots').html('');
+
     //set sidebar info
     $.each(aggregation, function (key, value) {
         if (key == 'country@%city') {
@@ -48,7 +48,7 @@ function initSidebar(aggregation) {
         }
     });
 
-    /**-----------------↓functions ---------------**/
+    /**--------------------------------------↓functions ----------------------------------**/
     //生成一个聚类的一个条目 ol > li，key为搜索关键字，value为该关键字对应的值，count为查到的条数
     function genSidebarLi(key, value, count) {
         var id = key + CheckboxId_SEPARATOR + value,
@@ -62,30 +62,42 @@ function initSidebar(aggregation) {
             }).append('<bdi>' + value + '</bdi>');
 
         //设置复选框的选中状态
-        var cd = sessionStorage.checked;
+        var cd = sessionStorage.checked ? JSON.parse(sessionStorage.checked) : {};
         if (cd) {
             if (cd[key] && cd[key].indexOf(CheckboxId_SEPARATOR + value) >= 0) {
-                input.prop('checked', true
-                );
+                input.prop('checked', true);
             }
         }
 
         input.on('click', function () {
+            //pivot show
             var k = this.id.substr(0, this.id.indexOf(CheckboxId_SEPARATOR));
             var v = this.id.substr(this.id.indexOf(CheckboxId_SEPARATOR) + CheckboxId_SEPARATOR.length);
             $('#collapse' + v).collapse('toggle');
             if (this.checked) {
-                $pivots.append(genPivot(k, v));
+                //（1）设置sessionStorage
                 setSessionChecked('add', this.id);       //添加
+
+                //（2）显示对应的pivot
+                $pivots.append(genPivot(k, v));
                 if ($pivots.find('li').length == 1) {
                     $pivotsContainer.show();
                 }
+
+                //（3）设置wd的值，并重新搜索
+                searchOnCheckboxChange(k, v, 'add');
             } else {
-                $('#' + k + '_pivot_' + v).remove();
+                //（1）设置sessionStorage
                 setSessionChecked('remove', this.id);   //移除
+
+                //（2）删除对应的pivot
+                $('#' + k + '_pivot_' + v).remove();
                 if ($pivots.find('li').length <= 0) {
                     $pivotsContainer.hide();
                 }
+
+                //（3）设置wd的值，并重新搜索
+                searchOnCheckboxChange(k, v, 'remove');
             }
         });
         div.append(span).append(label);
@@ -112,9 +124,32 @@ function initSidebar(aggregation) {
                 $pivotsContainer.hide();
             }
             //（3）设置wd的值，并重新搜索
-            // wd.replace(key+':'+value,'');→SEARCH AGAIN-------------
+            searchOnCheckboxChange(k, v, 'remove');
         });
         return $pivot;
+    }
+
+    //key为checkbox id的前一部分，value为后一部分，也是查询条件
+//operation目前支持add和remove
+    function searchOnCheckboxChange(key, value, operation) {
+        switch (operation) {
+            case 'add':
+                sessionStorage.wd += ' ' + key + ':' + value;
+                if (sessionStorage.currentPage == 'list') {
+                    ResultList.search();
+                } else if (sessionStorage.currentPage == 'map') {
+                    MyMap.search();
+                }
+                break;
+            case 'remove':
+                sessionStorage.wd.replace(key + ':' + value, '').trim();
+                if (sessionStorage.currentPage == 'list') {
+                    ResultList.search();
+                } else if (sessionStorage.currentPage == 'map') {
+                    MyMap.search();
+                }
+                break;
+        }
     }
 
     /*=============================================此处预留，以后完善代码用，现在先做功能吧----------------------------
@@ -139,7 +174,7 @@ function initSidebar(aggregation) {
             pivotFun('add', p);
             setSessionChecked('add', id);
         } else {
-            pivotFun('remove', p)
+            pivotFun('remove', p);
             setSessionChecked('remove', id);
         }
     }
@@ -161,5 +196,4 @@ function initSidebar(aggregation) {
                 break;
         }
     }
-
 }
