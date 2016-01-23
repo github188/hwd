@@ -1,0 +1,44 @@
+@charset "UTF-8";
+.home {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.home .home-search {
+    position: absolute;
+    top: 40%;
+    left: 25%;
+    width: 50%;
+    margin : 0 auto;
+    color: #eee;
+
+    border: 2px solid yellow;
+}
+
+.home .home-search .form-group {
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+
+.home .advs-link-wrapper {
+    height: 2.7rem;
+    line-height: 2.5rem;
+    margin: 0 5px;
+    text-align: left;
+    word-break: break-all;
+    /*float: right;*/
+}
+
+#main .advs-link-wrapper a:hover {
+    color: #287bbc;
+}
+
+
+
+
+
+
+

@@ -17,6 +17,7 @@
     <title>Hooray World Device</title>
     <link rel="stylesheet" href="resources/css/bootstrap.min.css">
     <link rel="stylesheet" href="resources/css/new-base.css">
+    <link rel="stylesheet" href="resources/css/home.css">
     <link rel="stylesheet" href="resources/css/sidebar.css">
     <link rel="stylesheet" href="resources/css/list.css">
     <link rel="stylesheet" href="resources/css/map.css">
@@ -27,9 +28,8 @@
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
     <script src="resources/js/lib/bootstrap.min.js"></script>
     <script> var basePath = '${basePath}';</script>
-    <script src="resources/js/initFeatureSets.js"></script>
     <script src="resources/js/new-main.js"></script>
-
+    <script src="resources/js/initFeatureSets.js"></script>
 
 </head>
 <body>
@@ -58,8 +58,23 @@
     <%@include file="sidebar.jsp" %>
     <div id="content" class="carousel slide full-height">
         <div class="carousel-inner full_height" role="listboxt">
-            <section class="home item active" tag="home" tabindex="1">
-                <canvas id="galaxy"></canvas>
+            <section class="item home active" tag="home" tabindex="1">
+                <%--<canvas id="galaxy"></canvas>--%>
+                <div class="home-search">
+                    <form class="form-inline ">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search"
+                                   autofocus="autofocus"
+                                   id="home_search_input" name="home_search_input">
+                            <button type="submit" class="btn btn-default">搜索一下</button>
+                        </div>
+
+                        <div class="advs-link-wrapper">
+                            <a href="#" class="advs-link" id="advanced-search">精确搜索</a>
+                        </div>
+
+                    </form>
+                </div>
             </section>
             <section class="list-wrapper item" tag="list" tabindex="2">
                 <%@include file="list.jsp" %>
@@ -101,7 +116,7 @@
     </div>
 </footer>
 <script src="resources/js/new-search.js"></script>
-<script src="resources/js/index.js"></script>
+<%--<script src="resources/js/index.js"></script>--%>
 <script src="resources/js/sidebar.js"></script>
 </body>
 </html>
