@@ -5,7 +5,7 @@ var mapSearchURL = "api/mapSearch",
     countryURL = 'http://10.10.2.81:6080/arcgis/rest/services/world/MapServer/0',
     provinceURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/0',
     cityURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1';
-
+var MAP_PAGE_SIZE = 5;
 /*
  *
 
@@ -32,57 +32,89 @@ var mapSearchURL = "api/mapSearch",
  * */
 
 var map, countryFS = {}, provinceFS = {}, cityFS = {}, featureGL, deviceGL;
-require(
-    [
-        "esri/map",
-        "esri/layers/ArcGISTiledMapServiceLayer",
-        "esri/layers/GraphicsLayer",
-        "esri/InfoTemplate",
-        "esri/dijit/HomeButton",
+initMap();
+function initMap() {
+    require(
+        [
+            "esri/map",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+            "esri/layers/GraphicsLayer",
+            "esri/InfoTemplate",
+            "esri/dijit/HomeButton"
 
-        "dojo/domReady!"
-    ],
-    function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, HomeButton) {
-        //（1）Create map and add layer
-        map = new Map("mapHolder", {
-            //basemap: 'gray',
-            //center: [114.25, 24.1167],
-            minZoom: 4,
-            zoom: 4,
-            sliderPosition: "top-right",
-            logo: false
+            //"dojo/domReady!"
+        ],
+        function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, HomeButton) {
+            //（1）Create map and add layer
+            map = new Map("mapHolder", {
+                //basemap: 'gray',
+                //center: [114.25, 24.1167],
+                minZoom: 1,
+                zoom: 4,
+                sliderPosition: "top-right",
+                logo: false
+            });
+            //（1）添加底图
+            var basemap = new ArcGISTiledMapServiceLayer(baseURL);
+            map.addLayer(basemap);
+            //（2）添加区域层
+            featureGL = new GraphicsLayer({
+                id: "deviceGraphicLayer",
+                infoTemplate: new InfoTemplate("${Name_CHN}",
+                    "国家：<b>${Name_CHN}<b><br>共发现目标：<b>${count}</b>个"),
+                visibleAtMapScale: true
+            });
+            featureGL.on('mouse-move', function (e) {
+                //console.log(e);
+                //map.infoWindow.show(e.mapPoint);
+            });
+            featureGL.on('mouse-out', function (e) {
+                //console.log(e);
+                //map.infoWindow.hide();
+            });
+            map.addLayer(featureGL);
+            //（3）添加设备点层
+            deviceGL = new GraphicsLayer({
+                id: "deviceGraphicLayer",
+                infoTemplate: new InfoTemplate("${ip}",
+                    "<b>${location}<b><br><b>${tags}</b><br><b>${timestamp}</b>"),
+                visibleAtMapScale: true
+            });
+            map.addLayer(deviceGL);
+            deviceGL.on('click', function (e) {
+                map.infoWindow.show(e.mapPoint);
+            });
+
+            //（2）Init Home button
+            home = new HomeButton({
+                map: map
+            }, "homeButton").startup();
+
+
+            map.on("load", function () {
+                console.log("map loaded");
+            });
+
+            map.on('zoom-end', function (e) {
+                //mapSearch();
+                console.log("zoom: " + map.getZoom());
+            });
         });
-        var basemap = new ArcGISTiledMapServiceLayer(baseURL);
-        map.addLayer(basemap);
-        featureGL = new GraphicsLayer();
-        map.addLayer(featureGL);
-        deviceGL = new GraphicsLayer({
-            id: "deviceGraphicLayer",
-            infoTemplate: new InfoTemplate("${ip}",
-                "<b>${location}<b><br><b>${tags}</b><br><b>${timestamp}</b>"),
-            visibleAtMapScale: true
-        });
-        map.addLayer(deviceGL);
-
-        //（2）Init Home button
-        home = new HomeButton({
-            map: map
-        }, "homeButton").startup();
-
-
-        map.on("load", function () {
-            console.log("map loaded");
-        });
-
-        map.on('zoom-end', function (e) {
-            //mapSearch();
-            console.log("zoom: " + map.getZoom());
-        });
-    });
-
+}
 //=============================public function related to map, not elegant at some point-----------------
 var MyMap = {
+    map: {},
     render: function (data) {
+        console.log("map render function starts--", data);
+        if (isEmptyObject(data)) {
+            //console.log(data);
+            return;
+        }
+        if (!map) {
+            console.log('map is undefined');
+            return;
+        }
+
         addFeatureGraphicLayer(data.aggregation, map.getZoom());
         addDeviceGraphicLayer(data.data);
         this.setMapSidebar(data.data);
@@ -95,25 +127,29 @@ var MyMap = {
          * aggregation: countryAgg/provinceAgg/cityAgg: [{name,count},]
          */
         function addFeatureGraphicLayer(agg, zoom) {
-            console.log("addFeatureGraphicLayer------------starts");
-            var fss = featureSets;
-            if (!featureSets) {
-                if (localStorage.featureSets && !isEmptyObject(JSON.parse(localStorage.featureSets))) {
-                    fss = JSON.parse(localStorage.featureSets);
-                } else if (sessionStorage.featureSets && !isEmptyObject(JSON.parse(sessionStorage.featureSets))) {
-                    fss = JSON.parse(sessionStorage.featureSets);
-                }
+            if (!agg) {
+                console.log("aggg is null");
+                return;
             }
-            if (fss && !isEmptyObject(fss)) {
-                console.log("addFeatureGraphicLayer------------starts if");
-                renderFeatureLayer(agg, fss, zoom);
+            console.log("addFeatureGraphicLayer------------starts");
+            if (!featureSets) {
+                console.log("feature set is empty");
+                /*if (localStorage.featureSets && !isEmptyObject(JSON.parse(localStorage.featureSets))) {
+                 fss = JSON.parse(localStorage.featureSets);
+                 } else if (sessionStorage.featureSets && !isEmptyObject(JSON.parse(sessionStorage.featureSets))) {
+                 fss = JSON.parse(sessionStorage.featureSets);
+                 }*/
+            }
+            if (featureSets && !isEmptyObject(featureSets)) {
+                renderFeatureLayer(agg, featureSets, zoom);
             } else {
-                console.log("addFeatureGraphicLayer------------starts else");
                 $.ajax({
-                    url: basePath + 'api/getFeatureSets',
-                    type: 'post'
+                    url: getFeatureSetsURL ? getFeatureSetsURL : basePath + 'api/getFeatureSets',
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: "application/json"
                 }).success(function (data) {
-                    console.log("ajax get feature sets succeed ", data);
+                    //console.log("ajax get feature sets succeed ", data);
                     renderFeatureLayer(agg, data, zoom);
                 }).error(function () {
                     console.log("Getting feature set error!");
@@ -123,27 +159,28 @@ var MyMap = {
             }
 
             function renderFeatureLayer(agg, fss, zoom) {
+                console.log("renderFeatureLayer starts================");
                 require([
+                    "esri/graphic",
                     "esri/renderers/SimpleRenderer", "esri/Color",
                     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol"
-                ], function (SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
+                ], function (Graphic, SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
                     featureGL.clear();
                     if (agg.hasOwnProperty('country@%city') && !isEmptyObject(agg['country@%city'])) {
                         var countries = agg['country@%city'], min = Number.MAX_VALUE, max = 0;
-                        if (zoom < 5) { //国家级别
-                            for (var key in countries) {    //key=country name
+                        if (zoom < 50) { //国家级别
+                            for (var key in countries) {
                                 var features = fss.countryFS.features;
-                                if (features.hasOwnProperty(key)) {
-                                    var count = countries[key].count;
-                                    var graphic = features[key];
-                                    var attr = graphic.attributes;
-                                    attr.count = count;
-                                    graphic.setAttribute(attr);
-                                    featureGL.add(graphic);
-                                    setMinMax(count);
+                                var country = countries[key];
+                                if (features.hasOwnProperty(country.en)) {
+                                    var f = features[country.en];
+                                    f.attributes.count = country.count;
+                                    f.attributes.Name_CHN = key;
+                                    var g = new Graphic(f);
+                                    featureGL.add(g);
+                                    setMinMax(country.count);
                                 }
                             }
-
                         } else if (zoom < 7) {
                             //省份级别,目前也按照市来做
                             console.log("5<zoom<7", zoom);
@@ -156,6 +193,8 @@ var MyMap = {
                             min = 0;
                             max = 999999;
                         }
+                        //调整min和max ，防止max过大、min过小造成显示太难看
+                        min = (max.length - 2) > 0 ? (max.length - 2) * 10 : min;
                         var sfs = new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128])));
                         var renderer = new SimpleRenderer(sfs);
                         renderer.setColorInfo({
@@ -163,8 +202,9 @@ var MyMap = {
                             minDataValue: min,
                             maxDataValue: max,
                             colors: [
-                                new Color([255, 255, 255]),
-                                new Color([127, 127, 0])
+                                new Color([220, 199, 224]),
+                                new Color([172, 120, 180]),
+                                new Color([120, 37, 134])
                             ]
                         });
                         featureGL.setRenderer(renderer);
@@ -188,6 +228,7 @@ var MyMap = {
          * devices: [{ lon:10.2, lat:1.2, country:'china', tags:[], timestamp:''},..]
          */
         function addDeviceGraphicLayer(devices) {
+            if (!devices)return;
             require([
                 "esri/symbols/PictureMarkerSymbol",
                 "esri/graphic",
@@ -196,6 +237,7 @@ var MyMap = {
                 "esri/renderers/SimpleRenderer"
             ], function (PictureMarkerSymbol, Graphic, Point) {
                 console.log("add device graphic layer=========");
+                deviceGL.clear();
                 var pms = new PictureMarkerSymbol(imgUrl + "red.png", 72, 72).setOffset(0, 15);
                 devices.forEach(function (d) {
                     var attr = {
@@ -219,9 +261,10 @@ var MyMap = {
                         "timestamp": dateLocalize()
                     };
                     var pt = new Point(d.lon, d.lat, map.spatialReference);
-                    console.log("lng-- " + d.lon, "lat-- " + d.lat);
-                    var graphic = new Graphic(pt, pms, attr);
-                    deviceGL.add(graphic);//（1）添加到graphics层
+                    //console.log("lng-- " + d.lon, "lat-- " + d.lat);
+                    var gc = new Graphic(pt, pms, attr);
+                    //console.log(gc);
+                    deviceGL.add(gc);//（1）添加到graphics层
                 });
             });
         }
@@ -229,15 +272,17 @@ var MyMap = {
 
     //updateSidebar, boolean，如果是搜索框检索，则为true，更新sidebar，如果是用户点击某个复选框，则不改变，设为false
     search: function (updateSidebar) {
-        console.log("MyMap search");
+        console.log("map search function starts--");
         var currentExtent = getVisibleExtent();//获取并设置屏幕所在范围的经纬度geo
         sessionStorage.currentExtent = currentExtent;
 
         var criteria = {
             "geo": currentExtent,
-            "wd": sessionStorage.wd,
-            "zoomlevel": map.getZoom()
+            "wd": sessionStorage.wd ? sessionStorage : getWd(),
+            "zoomlevel": map.getZoom(),
+            "pagesize": MAP_PAGE_SIZE
         };
+        console.log("map search function starts", criteria);
         var success = function (data) {
             if (updateSidebar) {
                 initSidebar(data['aggregation']);
@@ -255,6 +300,15 @@ var MyMap = {
             "criteria": criteria
         };
         newSearch(searchObj);
+
+        //获取当前查询条件
+        function getWd() {
+            var wd = $('.global-search-input').val();
+            if (sessionStorage.checked) {
+                wd += ' ' + JSON.stringify(sessionStorage.checked.replace(CheckboxId_SEPARATOR, ''));
+            }
+            return wd;
+        }
 
         //获取地图的可视范围的经纬度
         function getVisibleExtent() {

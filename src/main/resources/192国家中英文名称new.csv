@@ -1,255 +1,218 @@
-arcgis,,es,,,,,,
-Albania,阿尔巴尼亚,阿尔巴尼亚,TRUE,,,,,
-Algeria,阿尔及利亚,阿尔及利亚,TRUE,,,,,
-Afghanistan,阿富汗,阿富汗,TRUE,,,,,
-Argentina,阿根廷,阿根廷,TRUE,,,,,
-United Arab Emirates,阿联酋,阿联酋,TRUE,,,,,
-,,阿鲁巴,FALSE,,,,,
-Oman,阿曼,阿曼,TRUE,,,,,
-Azerbaijan,阿塞拜疆,阿塞拜疆,TRUE,,,,,
-Egypt,埃及,埃及,TRUE,,,,,
-Ethiopia,埃塞俄比亚,埃塞俄比亚,TRUE,,,,,
-Ireland,爱尔兰,爱尔兰,TRUE,,,,,
-Estonia,爱沙尼亚,爱沙尼亚,TRUE,,,,,
-Andorra,安道尔,安道尔,TRUE,,,,,
-Angola,安哥拉,安哥拉,TRUE,,,,,
-,,安圭拉,FALSE,,,,,
-Antigua and Barbuda,安提瓜和巴布达,安提瓜和巴布达,TRUE,,,,,
-Austria,奥地利,奥地利,TRUE,,,,,
-Australia,澳大利亚,澳大利亚,TRUE,,,,,
-,,奥兰群岛,FALSE,,,,,
-Barbados,巴巴多斯,巴巴多斯,TRUE,,,,,
-Papua New Guinea,巴布亚新几内亚,巴布亚新几内亚,TRUE,,,,,
-"Bahamas, The",巴哈马,巴哈马,TRUE,,,,,
-Pakistan,巴基斯坦,巴基斯坦,TRUE,,,,,
-Paraguay,巴拉圭,巴拉圭,TRUE,,,,,
-,,巴勒斯坦,FALSE,,,,,
-Bahrain,巴林,巴林,TRUE,,,,,
-Panama,巴拿马,巴拿马,TRUE,,,,,
-Brazil,巴西,巴西,TRUE,,,,,
-,,白俄罗斯,FALSE,,,,,
-Bermuda,百慕大,百慕大,TRUE,,,,,
-Bulgaria,保加利亚,保加利亚,TRUE,,,,,
-,,北马里亚纳群岛,FALSE,,,,,
-Benin,贝宁,贝宁,TRUE,,,,,
-Belgium,比利时,比利时,TRUE,,,,,
-Iceland,冰岛,冰岛,TRUE,,,,,
-Puerto Rico,波多黎各,波多黎各,TRUE,,,,,
-Poland,波兰,波兰,TRUE,,,,,
-,,波斯尼亚和黑塞哥维那,FALSE,,,,,
-Bolivia,玻利维亚,玻利维亚,TRUE,,,,,
-Belize,伯利兹,伯利兹,TRUE,,,,,
-Botswana,博茨瓦纳,博茨瓦纳,TRUE,,,,,
-,,不丹,FALSE,,,,,
-Burundi,布隆迪,布隆迪,TRUE,,,,,
-Denmark,丹麦,丹麦,TRUE,,,,,
-Germany,德国,德国,TRUE,,,,,
-,,东帝汶,FALSE,,,,,
-Togo,多哥,多哥,TRUE,,,,,
-Dominican Republic,多米尼克,多米尼克,TRUE,,,,,
-Dominica,多米尼加,多米尼加,TRUE,,,,,
-Russia,俄罗斯,俄罗斯,TRUE,,,,,
-Ecuador,厄瓜多尔,厄瓜多尔,TRUE,,,,,
-France,法国,法国,TRUE,,,,,
-,,法罗群岛,FALSE,,,,,
-French Polynesia,法属波利尼西亚,法属波利尼西亚,TRUE,,,,,
-,,梵蒂冈,FALSE,,,,,
-Philippines,菲律宾,菲律宾,TRUE,,,,,
-Fiji,斐济,斐济,TRUE,,,,,
-Finland,芬兰,芬兰,TRUE,,,,,
-,,刚果(布),FALSE,,,,,
-Congo,刚果(金),刚果(金),TRUE,,,,,
-Colombia,哥伦比亚,哥伦比亚,TRUE,,,,,
-Costa Rica,哥斯达黎加,哥斯达黎加,TRUE,,,,,
-Grenada,格林纳达,格林纳达,TRUE,,,,,
-Greenland,格陵兰,格陵兰,TRUE,,,,,
-Georgia,格鲁吉亚,格鲁吉亚,TRUE,,,,,
-,,根西岛,FALSE,,,,,
-Cuba,古巴,古巴,TRUE,,,,,
-,,瓜德罗普,FALSE,,,,,
-,,关岛,FALSE,,,,,
-Kazakhstan,哈萨克斯坦,哈萨克斯坦,TRUE,,,,,
-Haiti,海地,海地,TRUE,,,,,
-"Korea, Peoples Republic of",韩国,韩国,TRUE,,,,,
-Netherlands,荷兰,荷兰,TRUE,,,,,
-,,荷属圣马丁,FALSE,,,,,
-,,黑山,FALSE,,,,,
-Honduras,洪都拉斯,洪都拉斯,TRUE,,,,,
-Djibouti,吉布提,吉布提,TRUE,,,,,
-Kyrgyzstan,吉尔吉斯斯坦,吉尔吉斯斯坦,TRUE,,,,,
-Canada,加拿大,加拿大,TRUE,,,,,
-Ghana,加纳,加纳,TRUE,,,,,
-Gabon,加蓬,加蓬,TRUE,,,,,
-,,柬埔寨,FALSE,,,,,
-Czech Republic,捷克,捷克,TRUE,,,,,
-Cameroon,喀麦隆,喀麦隆,TRUE,,,,,
-Qatar,卡塔尔,卡塔尔,TRUE,,,,,
-,,开曼群岛,FALSE,,,,,
-,,科索沃,FALSE,,,,,
-Ivory Coast,科特迪瓦,科特迪瓦,TRUE,,,,,
-Kuwait,科威特,科威特,TRUE,,,,,
-,,克罗地亚,FALSE,,,,,
-Kenya,肯尼亚,肯尼亚,TRUE,,,,,
-,,库克群岛,FALSE,,,,,
-,,库拉索,FALSE,,,,,
-Latvia,拉脱维亚,拉脱维亚,TRUE,,,,,
-Lesotho,莱索托,莱索托,TRUE,,,,,
-Laos,老挝,老挝,TRUE,,,,,
-Lebanon,黎巴嫩,黎巴嫩,TRUE,,,,,
-Lithuania,立陶宛,立陶宛,TRUE,,,,,
-Liechtenstein,列支敦士登,列支敦士登,TRUE,,,,,
-Reunion,留尼汪岛,留尼汪岛,TRUE,,,,,
-Luxembourg,卢森堡,卢森堡,TRUE,,,,,
-,,卢旺达,FALSE,,,,,
-Romania,罗马尼亚,罗马尼亚,TRUE,,,,,
-Madagascar,马达加斯加,马达加斯加,TRUE,,,,,
-,,马恩岛,FALSE,,,,,
-Maldives,马尔代夫,马尔代夫,TRUE,,,,,
-Malta,马耳他,马耳他,TRUE,,,,,
-Malaysia,马来西亚,马来西亚,TRUE,,,,,
-Mali,马里,马里,TRUE,,,,,
-,,马其顿,FALSE,,,,,
-,,马绍尔群岛,FALSE,,,,,
-Martinique,马提尼克岛,马提尼克岛,TRUE,,,,,
-Mauritius,毛里求斯,毛里求斯,TRUE,,,,,
-,,毛里塔尼亚,FALSE,,,,,
-United States,美国,美国,TRUE,,,,,
-,,美属萨摩亚,FALSE,,,,,
-,,美属维尔京群岛,FALSE,,,,,
-Mongolia,蒙古,蒙古,TRUE,,,,,
-Bangladesh,孟加拉,孟加拉,TRUE,,,,,
-Peru,秘鲁,秘鲁,TRUE,,,,,
-,,密克罗尼西亚联邦,FALSE,,,,,
-,,缅甸,FALSE,,,马里亚那群岛,FALSE,Mariana Is
-,,摩尔多瓦,FALSE,,,,,
-Morocco,摩洛哥,摩洛哥,TRUE,,,,,
-Monaco,摩纳哥,摩纳哥,TRUE,,,,,
-Mozambique,莫桑比克,莫桑比克,TRUE,,,,,
-Mexico,墨西哥,墨西哥,TRUE,,,,,
-Namibia,纳米比亚,纳米比亚,TRUE,,,,,
-South Africa,南非,南非,TRUE,,,,,
-,,南苏丹,FALSE,,,,,
-Nepal,尼泊尔,尼泊尔,TRUE,,,,,
-Nicaragua,尼加拉瓜,尼加拉瓜,TRUE,,,,,
-Niger,尼日尔,尼日尔,TRUE,,,,,
-Nigeria,尼日利亚,尼日利亚,TRUE,,,,,
-Norway,挪威,挪威,TRUE,,,,,
-,,帕劳,FALSE,,,,,
-Portugal,葡萄牙,葡萄牙,TRUE,,,,,
-Japan,日本,日本,TRUE,,,,,
-Sweden,瑞典,瑞典,TRUE,,,,,
-Switzerland,瑞士,瑞士,TRUE,,,,,
-El Salvador,萨尔瓦多,萨尔瓦多,TRUE,,,,,
-,,萨摩亚,FALSE,,,,,
-,,塞尔维亚,FALSE,,,,,
-Senegal,塞内加尔,塞内加尔,TRUE,,,,,
-Cyprus,塞浦路斯,塞浦路斯,TRUE,,,,,
-Seychelles,塞舌尔,塞舌尔,TRUE,,,,,
-Saudi Arabia,沙特阿拉伯,沙特阿拉伯,TRUE,,,,,
-,,圣诞岛,FALSE,,,,,
-,,圣基茨和尼维斯,FALSE,,,,,
-San Marino,圣马力诺,圣马力诺,TRUE,,,,,
-St. Vincent and the Grenadines,圣文森特和格林纳丁斯,圣文森特和格林纳丁斯,TRUE,,,,,
-Sri Lanka,斯里兰卡,斯里兰卡,TRUE,,,,,
-Slovakia,斯洛伐克,斯洛伐克,TRUE,,,,,
-Slovenia,斯洛文尼亚,斯洛文尼亚,TRUE,,,,,
-Swaziland,斯威士兰,斯威士兰,TRUE,,,,,
-Sudan,苏丹,苏丹,TRUE,,,,,
-Tajikistan,塔吉克斯坦,塔吉克斯坦,TRUE,,,,,
-Thailand,泰国,泰国,TRUE,,,,,
-"Tanzania, United Republic of",坦桑尼亚,坦桑尼亚,TRUE,,,,,
-Trinidad and Tobago,特立尼达和多巴哥,特立尼达和多巴哥,TRUE,,,,,
-Tunisia,突尼斯,突尼斯,TRUE,,,,,
-Turkey,土耳其,土耳其,TRUE,,,,,
-,,托克劳群岛,FALSE,,,,,
-,,瓦利斯和富图纳群岛,FALSE,,,,,
-,,瓦努阿图,FALSE,,,,,
-Guatemala,危地马拉,危地马拉,TRUE,,,,,
-Venezuela,委内瑞拉,委内瑞拉,TRUE,,,,,
-Brunei,文莱,文莱,TRUE,,,,,
-Uganda,乌干达,乌干达,TRUE,,,,,
-Ukraine,乌克兰,乌克兰,TRUE,,,,,
-Uruguay,乌拉圭,乌拉圭,TRUE,,,,,
-Uzbekistan,乌兹别克斯坦,乌兹别克斯坦,TRUE,,,,,
-Spain,西班牙,西班牙,TRUE,,,,,
-Greece,希腊,希腊,TRUE,,,,,
-Singapore,新加坡,新加坡,TRUE,,,,,
-,,新喀里多尼亚,FALSE,,,,,
-New Zealand,新西兰,新西兰,TRUE,,,,,
-Hungary,匈牙利,匈牙利,TRUE,,,,,
-Syria,叙利亚,叙利亚,TRUE,,,,,
-Jamaica,牙买加,牙买加,TRUE,,,,,
-Armenia,亚美尼亚,亚美尼亚,TRUE,,,,,
-Yemen,也门,也门,TRUE,,,,,
-Iraq,伊拉克,伊拉克,TRUE,,,,,
-Iran,伊朗,伊朗,TRUE,,,,,
-Israel,以色列,以色列,TRUE,,,,,
-Italy,意大利,意大利,TRUE,,,,,
-India,印度,印度,TRUE,,,,,
-Indonesia,印度尼西亚,印度尼西亚,TRUE,,,,,
-United Kingdom,英国,英国,TRUE,,,,,
-,,英属维尔京群岛,FALSE,,,,,
-Jordan,约旦,约旦,TRUE,,,,,
-Vietnam,越南,越南,TRUE,,,,,
-Zambia,赞比亚,赞比亚,TRUE,,,,,
-,,直布罗陀,FALSE,,,,,
-Chile,智利,智利,TRUE,,,,,
-China,中国,中国,TRUE,,,,,
-Antarctica,,,,,,,,
-Bhutan,,,,,,,,
-Bosnia and Herzegovina,,,,,,,,
-Byelarus,,,,,,,,
-Cambodia,,,,,,,,
-Cape Verde,,,,,,,,
-Comoros,,,,,,,,
-Croatia,,,,,,,,
-Equatorial Guinea,,,,,,,,
-Eritrea,,,,,,,,
-Falkland Islands (Islas Malvinas),,,,,,,,
-Faroe Islands,,,,,,,,
-Gaza Strip,,,,,,,,
-Guadeloupe,,,,,,,,
-Guinea-Bissau,,,,,,,,
-Iraq-Saudi Arabia Neutral Zone,,,,,,,,
-Isle of Man,,,,,,,,
-Jan Mayen,,,,,,,,
-Kerguelen,,,,,,,,
-Kiribati,,,,,,,,
-"Korea, Republic of",,,,,,,,
-Macedonia,,,,,,,,
-Mauritania,,,,,,,,
-Moldova,,,,,,,,
-Myanmar (Burma),,,,,,,,
-New Caledonia,,,,,,,,
-Northern Mariana Islands,,,,,,,,
-St. Christopher-Nevis,,,,,,,,
-Svalbard,,,,,,,,
-Turks and Caicos Islands,,,,,,,,
-Vanuatu,,,,,,,,
-Western Sahara,,,,,,,,
-Western Samoa,,,,,,,,
-Burkina Faso,布基纳法索,,,,,,,
-French Guiana,法属圭亚那,,,,,,,
-"Gambia, The",冈比亚,,,,,,,
-Guyana,圭亚那,,,,,,,
-Guinea,几内亚,,,,,,,
-Zimbabwe,津巴布韦,,,,,,,
-Liberia,利比里亚,,,,,,,
-Libya,利比亚,,,,,,,
-Malawi,马拉维,,,,,,,
-Yugoslavia,南斯拉夫,,,,,,,
-Sierra Leone,塞拉利昂,,,,,,,
-Sao Tome and Principe,圣多美和普林西比,,,,,,,
-Rwanda,,,,,,,,
-St. Lucia,圣卢西亚,,,,,,,
-Suriname,苏里南,,,,,,,
-Solomon Islands,所罗门群岛,,,,,,,
-Somalia,索马里,,,,,,,
-Taiwan,台湾省,,,,,,,
-Tonga,汤加,,,,,,,
-Turkmenistan,土库曼斯坦,,,,,,,
-Hong Kong,香港,,,,,,,
-Zaire,扎伊尔,,,,,,,
-Chad,乍得,,,,,,,
-Central African Republic,中非共和国,,,,,,,
-Macau,澳门,,,,,,,
+Arcgis,ES
+Albania,阿尔巴尼亚
+Algeria,阿尔及利亚
+Afghanistan,阿富汗
+Argentina,阿根廷
+United Arab Emirates,阿联酋
+Oman,阿曼
+Azerbaijan,阿塞拜疆
+Egypt,埃及
+Ethiopia,埃塞俄比亚
+Ireland,爱尔兰
+Estonia,爱沙尼亚
+Andorra,安道尔
+Angola,安哥拉
+Antigua and Barbuda,安提瓜和巴布达
+Austria,奥地利
+Australia,澳大利亚
+Barbados,巴巴多斯
+Papua New Guinea,巴布亚新几内亚
+"Bahamas, The",巴哈马
+Pakistan,巴基斯坦
+Paraguay,巴拉圭
+Bahrain,巴林
+Panama,巴拿马
+Brazil,巴西
+Bermuda,百慕大
+Bulgaria,保加利亚
+Benin,贝宁
+Belgium,比利时
+Iceland,冰岛
+Puerto Rico,波多黎各
+Poland,波兰
+Bolivia,玻利维亚
+Belize,伯利兹
+Botswana,博茨瓦纳
+Burundi,布隆迪
+Denmark,丹麦
+Germany,德国
+Togo,多哥
+Dominica,多米尼加
+Dominican Republic,多米尼克
+Russia,俄罗斯
+Ecuador,厄瓜多尔
+France,法国
+Faroe Islands,法罗群岛
+French Polynesia,法属波利尼西亚
+Philippines,菲律宾
+Fiji,斐济
+Finland,芬兰
+Congo,刚果(金)
+Colombia,哥伦比亚
+Costa Rica,哥斯达黎加
+Grenada,格林纳达
+Greenland,格陵兰
+Georgia,格鲁吉亚
+Cuba,古巴
+Guadeloupe,瓜德罗普
+Kazakhstan,哈萨克斯坦
+Haiti,海地
+"Korea, Peoples Republic of",韩国
+Netherlands,荷兰
+Honduras,洪都拉斯
+Djibouti,吉布提
+Kyrgyzstan,吉尔吉斯斯坦
+Canada,加拿大
+Ghana,加纳
+Gabon,加蓬
+Cambodia,柬埔寨
+Czech Republic,捷克
+Cameroon,喀麦隆
+Qatar,卡塔尔
+Ivory Coast,科特迪瓦
+Kuwait,科威特
+Croatia,克罗地亚
+Kenya,肯尼亚
+Latvia,拉脱维亚
+Lesotho,莱索托
+Laos,老挝
+Lebanon,黎巴嫩
+Lithuania,立陶宛
+Liechtenstein,列支敦士登
+Reunion,留尼汪岛
+Luxembourg,卢森堡
+Rwanda,卢旺达
+Romania,罗马尼亚
+Madagascar,马达加斯加
+Isle of Man,马恩岛
+Maldives,马尔代夫
+Malta,马耳他
+Malaysia,马来西亚
+Mali,马里
+Macedonia,马其顿
+Martinique,马提尼克岛
+Mauritius,毛里求斯
+Mauritania,毛里塔尼亚
+United States,美国
+Western Samoa,美属萨摩亚
+Mongolia,蒙古
+Bangladesh,孟加拉
+Peru,秘鲁
+Myanmar (Burma),缅甸
+Moldova,摩尔多瓦
+Morocco,摩洛哥
+Monaco,摩纳哥
+Mozambique,莫桑比克
+Mexico,墨西哥
+Namibia,纳米比亚
+South Africa,南非
+Nepal,尼泊尔
+Nicaragua,尼加拉瓜
+Niger,尼日尔
+Nigeria,尼日利亚
+Norway,挪威
+Portugal,葡萄牙
+Japan,日本
+Sweden,瑞典
+Switzerland,瑞士
+El Salvador,萨尔瓦多
+Senegal,塞内加尔
+Cyprus,塞浦路斯
+Seychelles,塞舌尔
+Saudi Arabia,沙特阿拉伯
+St. Christopher-Nevis,圣基茨和尼维斯
+San Marino,圣马力诺
+St. Vincent and the Grenadines,圣文森特和格林纳丁斯
+Sri Lanka,斯里兰卡
+Slovakia,斯洛伐克
+Slovenia,斯洛文尼亚
+Swaziland,斯威士兰
+Sudan,苏丹
+Tajikistan,塔吉克斯坦
+Thailand,泰国
+"Tanzania, United Republic of",坦桑尼亚
+Trinidad and Tobago,特立尼达和多巴哥
+Tunisia,突尼斯
+Turkey,土耳其
+Vanuatu,瓦努阿图
+Guatemala,危地马拉
+Venezuela,委内瑞拉
+Brunei,文莱
+Uganda,乌干达
+Ukraine,乌克兰
+Uruguay,乌拉圭
+Uzbekistan,乌兹别克斯坦
+Spain,西班牙
+Greece,希腊
+Singapore,新加坡
+New Caledonia,新喀里多尼亚
+New Zealand,新西兰
+Hungary,匈牙利
+Syria,叙利亚
+Jamaica,牙买加
+Armenia,亚美尼亚
+Yemen,也门
+Iraq,伊拉克
+Iran,伊朗
+Israel,以色列
+Italy,意大利
+India,印度
+Indonesia,印度尼西亚
+United Kingdom,英国
+Jordan,约旦
+Vietnam,越南
+Zambia,赞比亚
+Chile,智利
+China,中国
+Antarctica,
+Bhutan,
+Bosnia and Herzegovina,
+Byelarus,
+Cape Verde,
+Comoros,
+Equatorial Guinea,
+Eritrea,
+Falkland Islands (Islas Malvinas),
+Faroe Islands,
+Gaza Strip,
+Guinea-Bissau,
+Iraq-Saudi Arabia Neutral Zone,
+Jan Mayen,
+Kerguelen,
+Kiribati,
+"Korea, Republic of",
+Northern Mariana Islands,
+Svalbard,
+Turks and Caicos Islands,
+Western Sahara,
+,阿鲁巴
+,安圭拉
+,奥兰群岛
+,巴勒斯坦
+,白俄罗斯
+,北马里亚纳群岛
+,波斯尼亚和黑塞哥维那
+,不丹
+,东帝汶
+,梵蒂冈
+,刚果(布)
+,根西岛
+,关岛
+,荷属圣马丁
+,黑山
+,开曼群岛
+,科索沃
+,库克群岛
+,库拉索
+,马绍尔群岛
+,美属维尔京群岛
+,密克罗尼西亚联邦
+,南苏丹
+,帕劳
+,萨摩亚
+,塞尔维亚
+,圣诞岛
+,托克劳群岛
+,瓦利斯和富图纳群岛
+,英属维尔京群岛
+,直布罗陀

@@ -11,5 +11,5 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:application.properties")
 public class AppConfig {
     @Value("${suggestionURL}")
-    public static String suggestionURL;
+    public String suggestionURL;
 }

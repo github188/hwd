@@ -3,7 +3,7 @@ package com.springapp.mvc.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.gson.Gson;
 import com.springapp.mvc.web.jsonView.Views;
-import com.springapp.mvc.web.model.AdvanceSearchCriteria;
+import com.springapp.mvc.web.model.AdvancedSearchCriteria;
 import com.springapp.mvc.web.model.MarkLineResponseBody;
 import com.springapp.mvc.web.model.ResponseBody;
 import com.springapp.mvc.web.model.SearchCriteria;
@@ -172,7 +172,7 @@ public class DataApiController {
      * @result String，查询结果
      */
     @RequestMapping(value = "/api/advancedSearch")
-    public String advancedSearch(@RequestBody AdvanceSearchCriteria criteria) {
+    public String advancedSearch(@RequestBody AdvancedSearchCriteria criteria) {
         logger.debug("DataApiController advancedSearch starts-----------");
         System.out.println("DataApiController advancedSearch starts-----------");
         String result = newDeviceService.getResponse4AdvanceSearch(criteria);
@@ -186,11 +186,11 @@ public class DataApiController {
      * @result String，查询结果
      */
     @RequestMapping(value = "/api/mapSearch")
-    public String mapSearch(@RequestBody SearchCriteria criteria) {
+    public String mapSearch(@RequestBody SearchCriteria search) {
         logger.debug("DataApiController advancedSearch starts-----------");
-        System.out.println("DataApiController advancedSearch starts-----------");
-        String result = newDeviceService.getResponse4MapSearch(criteria);
-        System.out.println("mapSearch====" + result);
+        System.out.println("DataApiController advancedSearch starts-----------" + JSONObject.fromObject(search));
+        String result = newDeviceService.getResponse4MapSearch(search);
+//        System.out.println("mapSearch====" + result);
         return result;
     }
 

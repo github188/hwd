@@ -1,12 +1,9 @@
 package com.springapp.mvc.web.service;
 
 
-import com.springapp.mvc.web.config.Constant;
 import com.springapp.mvc.web.daoLike.NewDeviceDAO;
-import com.springapp.mvc.web.listener.FeatureSetsFillerOnStartup;
-import com.springapp.mvc.web.model.AdvanceSearchCriteria;
+import com.springapp.mvc.web.model.AdvancedSearchCriteria;
 import com.springapp.mvc.web.model.SearchCriteria;
-import com.springapp.mvc.web.util.RestClient;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +31,7 @@ public class NewDeviceService {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //返回用户查询的数据，用于前端以列表的形式显示设备信息（高级搜索）
-    public String getResponse4AdvanceSearch(AdvanceSearchCriteria search) {
+    public String getResponse4AdvanceSearch(AdvancedSearchCriteria search) {
         logger.debug("Service ==>> getResponse4AdvanceSearch starts ================");
         JSONObject result;
         if (isValidSearchCriteria(search)) {
@@ -56,10 +53,12 @@ public class NewDeviceService {
 
     public String getResponse4MapSearch(SearchCriteria search) {
         logger.debug("Service ==>> getResponse4AdvanceSearch starts ================");
+        System.out.println("Service ==>> getResponse4AdvanceSearch starts ================");
         JSONObject result;
         if (isValidSearchCriteria(search)) {
             Map<String, Object> criteria = new HashMap<String, Object>();
-            criteria.put("q", search);
+            criteria.put("q", JSONObject.fromObject(search));
+            System.out.println("Service ==>> getResponse4AdvanceSearch starts ================" + criteria);
             result = dao.getResult4DeviceSearch(uri4MapSearch, criteria);
             if ("200".equals(result.getString("statuscode")) && result.getJSONArray("data").size() <= 0) {
                 result.put("statuscode", "204");
@@ -86,7 +85,7 @@ public class NewDeviceService {
         return valid;
     }
 
-    private JSONObject mapping(AdvanceSearchCriteria asc) {
+    private JSONObject mapping(AdvancedSearchCriteria asc) {
         JSONObject result = new JSONObject();
         result.put("wd.must", asc.getMust());
         result.put("wd.should", asc.getShould());

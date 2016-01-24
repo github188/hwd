@@ -1,10 +1,13 @@
 package com.springapp.mvc.web.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * Created by lyp on 2015/12/10.
  * The “json data” will be converted into this object, via @RequestBody.
  */
 public class SearchCriteria {
+
     String wd;    //对应请求中的wd字段
     String geo;//"polygon(lat1 lon1,lat2 lon2,lat3 lon3)", //地理过滤范围，为空则不过滤（全球），可使用polygon、circle
     String typefilter;//camera", //3D地球中的设备类型1级菜单过滤维度
@@ -14,66 +17,82 @@ public class SearchCriteria {
     int page = 1;   //请求第几页，用于页面分页显示
     int pagesize;
 
+    @JSONField(name = "pagesize")
     public int getPagesize() {
         return pagesize;
     }
 
+    @JSONField(name = "pagesize")
     public void setPagesize(int pagesize) {
         this.pagesize = pagesize;
     }
 
+    @JSONField(name = "page")
     public int getPage() {
         return page;
     }
 
+    @JSONField(name = "pagesize")
     public void setPage(int page) {
         this.page = page;
     }
 
+    @JSONField(name = "geo")
     public String getGeo() {
         return geo;
     }
 
+    @JSONField(name = "geo")
     public void setGeo(String geo) {
         this.geo = geo;
     }
 
+    @JSONField(name = "typefilter")
     public String getTypefilter() {
         return typefilter;
     }
 
+    @JSONField(name = "typefilter")
     public void setTypefilter(String typefilter) {
         this.typefilter = typefilter;
     }
 
+    @JSONField(name = "permitfilter")
     public String getPermitfilter() {
         return permitfilter;
     }
 
+    @JSONField(name = "permitfilter")
     public void setPermitfilter(String permitfilter) {
         this.permitfilter = permitfilter;
     }
 
+    @JSONField(name = "zoomlevel")
     public int getZoomlevel() {
         return zoomlevel;
     }
 
+    @JSONField(name = "zoomlevel")
     public void setZoomlevel(int zoomlevel) {
         this.zoomlevel = zoomlevel;
     }
 
+    @JSONField(name = "lossycompress")
     public int getLossycompress() {
         return lossycompress;
     }
 
+    @JSONField(name = "lossycompress")
     public void setLossycompress(int lossycompress) {
         this.lossycompress = lossycompress;
     }
 
+    @JSONField(name = "wd")
     public String getWd() {
         return wd;
     }
 
+    @JSONField(name = "wd")
     public void setWd(String wd) {
         this.wd = wd;
     }

@@ -30,7 +30,7 @@
     <script src="resources/js/lib/bootstrap.min.js"></script>
     <script> var basePath = '${basePath}';</script>
     <script src="resources/js/new-main.js"></script>
-    <script src="resources/js/initFeatureSets.js"></script>
+    <%--<script src="resources/js/initFeatureSets.js"></script>--%>
 
 </head>
 <body>
@@ -68,11 +68,11 @@
                                    autofocus="autofocus"
                                    id="home_search_input" name="home_search_input">
                             <button type="submit" class="btn btn-default">搜索一下</button>
+                            <div class="advs-link-wrapper">
+                                <a href="#" class="advs-link" id="advanced-search">精确搜索</a>
+                            </div>
                         </div>
 
-                        <div class="advs-link-wrapper">
-                            <a href="#" class="advs-link" id="advanced-search">精确搜索</a>
-                        </div>
 
                     </form>
                 </div>

@@ -10,7 +10,7 @@
 <script type="text/javascript" src="http://localhost:8080/arcgis_js_api/library/3.15/3.15/init.js"></script>
 <div>
     <div class="mapHolder" id="mapHolder"></div>
-    <div id="homeButton"></div>
+    <%--<div id="homeButton"></div>--%>
     <div id="info">
         <div id="legend"></div>
     </div>

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="sidebar hidden-xs">
-    <a class="advs-link advs-link-main" href="#" role="button" aria-controls="advs-wrapper">精确搜索
+<div class="sidebar hidden-xs full_height">
+    <a class=" advs-link advs-link-main" href="#" role="button" aria-controls="advs-wrapper">精确搜索
         <span class="glyphicon glyphicon-menu-right"></span>
     </a>
 

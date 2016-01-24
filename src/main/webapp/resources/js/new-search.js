@@ -15,7 +15,6 @@ function newSearch(obj) {
         requestData = obj.criteria ? JSON.stringify(obj.criteria) : input.val(),
         errHandler = obj.error ? obj.error : showErrorPage,
         noDataHandler = obj.noDataFunc ? obj.noDataFunc : showNoDataInfo;
-
     //（1）禁用查询按钮，如果是form查询
     disableButton(button, true);
     //（2）查询数据
@@ -38,7 +37,7 @@ function newSearch(obj) {
             //WEATHER TO INIT SIDEBAR IS UP TO THE CALLER
         } else if (statuscode == 204) {
             console.log("no data: " + data["errmsg"]);
-            noDataHandler();
+            //noDataHandler();
         } else {
             console.log("ajax success but " + data['statuscode'], data['errmsg']);
             //errHandler();
@@ -47,7 +46,7 @@ function newSearch(obj) {
         //（4）启用查询按钮，如果为form查询
         console.log("Error", e);
         disableButton(button, false);
-        errHandler();
+        //errHandler();
     }).done(function () {
         //（4）启用查询按钮，如果为form查询
         disableButton(button, false);

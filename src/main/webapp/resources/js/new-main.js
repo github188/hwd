@@ -2,7 +2,6 @@
 var $header = $('header'), $footer = $('footer'), $sidebar = $('.sidebar'),
     $globalInput = $('.global-search-input');
 var CheckboxId_SEPARATOR = '_s0s_',//分隔符：key_s0s_value（s零s）
-    featureSets = {},
     $carousel = $('.carousel');
 
 // global variables --> static url
@@ -11,6 +10,8 @@ var advancedSearchURL = basePath + 'api/advancedSearch',
     suggestionSearchURL = 'api/getSuggestions?search=',
     getFeatureSetsURL = basePath + 'api/getFeatureSets',
     imgUrl = basePath + "resources/img/";
+
+var featureSets = {};
 
 /* localStorage = {
  'user': '',              //用户信息，包含用户名、密码、级别
@@ -27,15 +28,44 @@ var advancedSearchURL = basePath + 'api/advancedSearch',
 $(function () {
     "use strict";
     //~~~~~~~~~~~~~~~~~~~全文必须~~~~~~~~~~~~~~~~~~~~~~~~~
+    //Init FeatureSets
+    /* if (localStorage) {
+     if (!localStorage.featureSets || isEmptyObject((eval(localStorage.featureSets)))) {
+     initFeatureSets();
+     }
+     } else if (sessionStorage) {
+     if (!sessionStorage.featureSets || isEmptyObject((JSON.parse(sessionStorage.featureSets)))) {
+     initFeatureSets();
+     }
+     }*/
+    initFeatureSets();
     pageSlide();//carousel页面导航
     //初始化之后，跳转到用户当前所在页（同一个session的情况下）
-    if (sessionStorage && sessionStorage.pageIdx) {
-        console.log("current page index:" + sessionStorage.pageIdx);
-        /*$carousel.carousel({
-         interval: false
-         });*/
-        $carousel.carousel(parseInt(sessionStorage.pageIdx));
-    }
+    /*if (sessionStorage) {
+     $('section.item').removeClass('active');
+     $('section[tag="' + sessionStorage.currentPage + '"]').addClass('active');
+     $header.css('visibility', 'visible');
+     switch (sessionStorage.currentPage) {
+     case 'home':
+     showHomePage();
+     break;
+     case 'list':
+     showListPage();
+     break;
+     case 'map':
+     showMapPage();
+     break;
+     case 'globe-point':
+     showGlobePointPage();
+     break;
+     case 'globe-line':
+     showGlobeLinePage();
+     break;
+     case 'charts':
+     showChartsPage();
+     break;
+     }
+     }*/
 
     //~~~~~~~~~~~~~~~~~~~首页必须~~~~~~~~~~~~~~~~~~~~~~~~~
     showHomePage();
@@ -48,6 +78,7 @@ $(function () {
 
     //global search form
     $('.global-search-form').on('submit', function (e) {
+        e.preventDefault();
         var currentPage = sessionStorage.currentPage ? sessionStorage.currentPage : $('section.active').attr('tag');
         if (currentPage == 'list') {
             List.search(true);//true表示更新侧栏
@@ -99,6 +130,29 @@ $(function () {
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ functions↓~~~~~~~~~~~~~~~~~~~~~
+
+
+//获取所有的featureSet，保存在所有的localStorage中
+function initFeatureSets() {
+    $.ajax({
+        url: getFeatureSetsURL,
+        type: 'post',
+        dataType: 'json',
+        contentType: "application/json"
+    }).success(function (data) {
+        /* if (localStorage) {
+         localStorage.featureSets = JSON.stringify(data.data);
+         } else if (sessionStorage) {
+         sessionStorage.featureSets = JSON.stringify(data.data);
+         }*/
+        featureSets = data.data;
+    }).error(function () {
+        console.log("Getting feature set error!");
+    }).fail(function () {
+        console.log("Getting feature set failed!");
+    });
+}
+
 //页面滑动,使用bootstrap的carousel和slide
 function pageSlide() {
     var $carousel = $('.carousel').carousel({"interval": false});
@@ -251,8 +305,9 @@ function inputSuggest(input, sourceURL) {
 
 //Advanced Search 精确搜索
 function advsSearch(form) {
+    console.log("aaaa");
     var success = function (data) {
-            //console.log('success', data);
+            console.log('success', data);
             //generate sidebar
             initSidebar(data.aggregation);
             $('#advs_wrapper').removeClass('active');
@@ -347,20 +402,22 @@ function showHomePage() {
 }
 
 function showListPage() {
-    $sidebar.show();
+    $('.sidebar').show();
+    console.log(List);
     List.render({
-            'aggregation': JSON.parse(sessionStorage.agg),
-            'data': JSON.parse(sessionStorage.devices),
+            'aggregation': sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
+            'data': sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
             'wd': sessionStorage.wd
         }
     );
 }
 
 function showMapPage() {
-    $sidebar.show();
+    $('header').show();
+    //console.log(sessionStorage);
     MyMap.render({
-        'aggregation': JSON.parse(sessionStorage.agg),
-        'data': JSON.parse(sessionStorage.devices),
+        'aggregation': sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
+        'data': sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
         'wd': sessionStorage.wd
     });
 }
@@ -375,18 +432,16 @@ function showChartsPage() {
 }
 
 /* --------------------------- Helper ------------------------ */
-//判断对象是否为空
+//判断对象是否为空（无属性、有属性但值都为undefined，则为空）
 function isEmptyObject(obj) {
     var flag = true;
-    for (var n in obj) {
-        return flag;
-    }
     for (var n in obj) {
         if (obj[n]) {
             flag = false;
             break;
         }
     }
+
     return flag;
 }
 
@@ -401,5 +456,4 @@ Date.prototype.toDateInputValue = (function () {
 function dateLocalize(timestamp) {
     if (timestamp)  return (new Date(parseInt(timestamp))).toLocaleDateString();
     return timestamp;
-
 }

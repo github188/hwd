@@ -38,7 +38,7 @@ public class NewDeviceDAO {
         //aggregation中的country@%city的处理
         JSONObject agg = resp.getJSONObject("aggregation");
         if (agg.containsKey("country@%city")) {
-            JSONObject countries = new JSONObject();    //处理后的countries
+            JSONObject countries = new JSONObject();    //用于存储处理后的countries
             JSONObject cc = agg.getJSONObject("country@%city");
             Iterator<String> it = cc.keySet().iterator();
             while (it.hasNext()) {
@@ -103,7 +103,7 @@ public class NewDeviceDAO {
                 //(3)lon
                 device.setLon(device_location.getDouble("lon"));
                 //(4)lat
-                device.setLon(device_location.getDouble("lon"));
+                device.setLat(device_location.getDouble("lat"));
                 //(5)location
                 String location = "", country, city, province;
 

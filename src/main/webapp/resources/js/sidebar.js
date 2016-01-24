@@ -1,6 +1,6 @@
 function initSidebar(aggregation) {
     if (sessionStorage.currentPage == 'map') {
-        $('.sidebar').addClass('map').show();
+        $('.sidebar').addClass('mapSidebar').show();
     }
     //init pivots
     var $pivotsContainer = $('.pivot-bar-container').hide();
@@ -9,9 +9,10 @@ function initSidebar(aggregation) {
     //set sidebar info
     $.each(aggregation, function (key, value) {
         if (key == 'country@%city') {
+            console.log(value);
+
             var $country = $('#countryList').find('ol.facet-values').html(''); //清空之前的数据
             if (!isEmptyObject(value)) {
-                var countryIdx = 1;
                 $.each(value, function (name, countryObj) {
                     var total = countryObj['count'],
                         countryLi = genSidebarLi('country', name, total).appendTo($country),
@@ -22,8 +23,11 @@ function initSidebar(aggregation) {
                         $cities.append(genSidebarLi('city', name, count));
                     });
                 });
+                console.log("in if");
 
             } else {
+                console.log("in else");
+
                 $country.closest('div.panel').hide();
             }
         } else {

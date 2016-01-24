@@ -1,6 +1,7 @@
 //Init FeatureSets
 if (localStorage) {
-    if (!localStorage.featureSets || isEmptyObject(JSON.parse(localStorage.featureSets))) {
+    //console.log(eval(localStorage.getItem("featureSets")));
+    if (!localStorage.featureSets) {
         initFeatureSets();
     }
 } else if (sessionStorage) {
@@ -19,6 +20,7 @@ function initFeatureSets() {
         featureSets.provinceFS = data.provinceFS;
         featureSets.cityFS = data.cityFS;
         if (localStorage) {
+            console.log(JSON.stringify(featureSets));
             localStorage.featureSets = JSON.stringify(featureSets);
         } else if (sessionStorage) {
             sessionStorage.featureSets = JSON.stringify(featureSets);

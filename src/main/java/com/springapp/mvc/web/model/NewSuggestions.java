@@ -42,7 +42,7 @@ public class NewSuggestions {
                 JSONArray arrItem = data.getJSONArray(key);
                 for (int i = 0; i < arrItem.size(); i++) {
                     if ("description.port_info.device_model".equals(key)) {
-                        System.out.println(key);
+//                        System.out.println(key);
                         continue;
                     }
                     suggestions.add(arrItem.get(i).toString());

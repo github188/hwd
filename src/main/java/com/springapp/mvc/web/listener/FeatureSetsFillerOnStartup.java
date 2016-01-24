@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.springapp.mvc.web.config.Constant;
 import com.springapp.mvc.web.util.RestClient;
+import com.springapp.mvc.web.util.Tool;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -45,26 +46,32 @@ public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRe
     }
 
     public static JSONObject getCityFeatureSet() {
-        if (cityFeatureSet == null) {
+        /*if (cityFeatureSet == null) {
             cityFeatureSet = getAndFormatFeatureSet(Constant.cityFeatureSetURL);
-        }
-        return cityFeatureSet;
+        }*/
+        return new JSONObject();
     }
 
     // 将features对象数组以其中的一个属性为key转化为map数组，更方便前端使用
     public static JSONObject getAndFormatFeatureSet(String url) {
+        JSONObject zh2enMapping = JSON.parseObject(Tool.getCountryMappingStr());//待后续优化，现在先不改
         RestClient rc = new RestClient();
         JSONObject jsonObj = JSONObject.parseObject(rc.get(url));
         JSONArray features = jsonObj.getJSONArray("features");
-        JSONArray featuresMap = new JSONArray();
-        Iterator<Object> it = features.iterator();
-        while (it.hasNext()) {
-            JSONObject feature = (JSONObject) JSON.toJSON(it.next());
-            Map<String, JSONObject> map = new HashMap<String, JSONObject>();
-            map.put(feature.getJSONObject("attributes").getString("NAME"), feature);
-            featuresMap.add(map);
+        Map<String, JSONObject> map = new HashMap<String, JSONObject>();
+        if (features != null) {
+            Iterator<Object> it = features.iterator();
+            while (it.hasNext()) {
+                JSONObject feature = (JSONObject) JSON.toJSON(it.next());
+                if (feature.getJSONObject("attributes").containsKey("NAME")) {
+                    map.put(feature.getJSONObject("attributes").getString("NAME"), feature);
+                } else if (feature.getJSONObject("attributes").containsKey("Name_CHN")) {
+                    map.put(feature.getJSONObject("attributes").getString("Name_CHN"), feature);
+                }
+//            System.out.println(feature.getJSONObject("attributes").getString("NAME"));
+            }
         }
-        jsonObj.put("features", featuresMap);
+        jsonObj.put("features", map);
         return jsonObj;
     }
 
