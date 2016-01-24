@@ -25,7 +25,7 @@ public class NewDeviceDAO {
         logger.debug("NewDAO ==>> getResult4DeviceSearch starts =================");
         System.out.println("NewDAO ==>> getResult4DeviceSearch starts =======================");
         JSONObject result = JSONObject.fromObject(rc.get(uri, criteria));
-//        System.out.println("before: " + result);
+        System.out.println("before: " + result);
 
         if ("200".equals(result.getString("statuscode"))) {
             result = rawData2ResponseBody(result);
@@ -202,11 +202,13 @@ public class NewDeviceDAO {
         NewDeviceDAO dd = new NewDeviceDAO();
         Map<String, Object> criteria = new HashMap<String, Object>();
         String json = "{\"must\":\"北\",\"should\":\"\",\"mustnot\":\"\",\"ip\":\"\",\"country\":\"\",\"province\":\"\",\"city\":\"\",\"type\":\"\",\"brand\":\"\",\"model\":\"\",\"protocol\":\"\",\"port\":\"\",\"banner\":\"\",\"vulId\":\"\",\"vulType\":\"\",\"vulName\":\"\",\"os\":\"\",\"taskId\":\"\",\"vpsIp\":\"\",\"lastModified\":\"1453248000\"}";
-        criteria.put("q", JSONObject.fromObject(json));
-
+//        criteria.put("q", JSONObject.fromObject(json));
+        String mapSearch = "{\"geo\":\"polygon(4745210.7159425225 6799838.036247503,4745210.7159425225 567468.4979890296,17268653.430182472 567468.4979890296,17268653.430182472 6799838.036247503,4745210.7159425225 6799838.036247503)\",\"lossycompress\":0,\"page\":1,\"pagesize\":5,\"permitfilter\":\"\",\"typefilter\":\"\",\"wd\":\"\\\"d\\\" country:日本\",\"zoomlevel\":4}";
+        criteria.put("q", JSONObject.fromObject(mapSearch));
 //        String search = "{\"geo\":\"polygon(69.9199218750096 56.629998264227424,114.04101562499787 56.629998264227424,158.1621093749862 56.629998264227424,158.1621093749862 -8.88878176349202,114.04101562499787 -8.88878176349202,69.9199218750096 -8.88878176349202)\",\"lossycompress\":1,\"page\":1,\"permitfilter\":\"\",\"typefilter\":\"\",\"wd\":\"* \",\"zoomlevel\":6}";
         //dd.getDevices4List(criteria);
         //dd.getResponse4Globe(JSONObject.fromObject(search).toString());
-        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
+//        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
+        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/map?q={q}", criteria));
     }
 }

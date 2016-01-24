@@ -6,7 +6,7 @@
  *          success：ajax成功的回调函数(required)
  *          error：ajax失败的回调函数（如果不填，则显示出错界面showErrorPage()）
  *          noDataFunc:ajax成功，但返回数据为空的回调函数（如果不填，则在header的input下方提示没有搜到相关数据）
- *          searchButton：搜索框提交按钮（如果不填，则为$('.global-search-button)
+ *          searchButton：搜索框提交按钮（如果不填，则为$('.global-search-button)和$('#home_search_btn')
  *          searchInput：搜索框输入按钮(如果不填，则为$('.global-search-input'))
  */
 function newSearch(obj) {
@@ -17,6 +17,7 @@ function newSearch(obj) {
         noDataHandler = obj.noDataFunc ? obj.noDataFunc : showNoDataInfo;
     //（1）禁用查询按钮，如果是form查询
     disableButton(button, true);
+    disableButton($('#home_search_btn'), true);
     //（2）查询数据
     //console.log("requestData: ", requestData);
     $.ajax({
@@ -46,10 +47,12 @@ function newSearch(obj) {
         //（4）启用查询按钮，如果为form查询
         console.log("Error", e);
         disableButton(button, false);
+        disableButton($('#home_search_btn'), false);
         //errHandler();
     }).done(function () {
         //（4）启用查询按钮，如果为form查询
         disableButton(button, false);
+        disableButton($('#home_search_btn'), false);
     });
 
     //启用/禁用指定的按钮

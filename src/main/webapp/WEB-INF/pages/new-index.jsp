@@ -67,7 +67,7 @@
                             <input type="text" class="form-control" placeholder="Search"
                                    autofocus="autofocus"
                                    id="home_search_input" name="home_search_input">
-                            <button type="submit" class="btn btn-default">搜索一下</button>
+                            <button type="submit" class="btn btn-default" id="home_search_btn">搜索一下</button>
                             <div class="advs-link-wrapper">
                                 <a href="#" class="advs-link" id="advanced-search">精确搜索</a>
                             </div>

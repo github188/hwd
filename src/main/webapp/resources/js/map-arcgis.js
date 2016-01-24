@@ -378,10 +378,10 @@ var MyMap = {
                 map.addLayer(clusterLayer);
 
                 /*var center = devicesInfo.data[0];
-                map.centerAndZoom(new Point(center.x, center.y, wgs), 8);*/
+                 map.centerAndZoom(new Point(center.x, center.y, wgs), 8);*/
 
                 // close the info window when the map is clicked
-                map.on("click", cleanUp);
+                //map.on("click", cleanUp);
                 // close the info window when esc is pressed
                 map.on("key-down", function (e) {
                     if (e.keyCode === 27) {
@@ -406,13 +406,14 @@ var MyMap = {
         sessionStorage.currentExtent = currentExtent;
 
         var criteria = {
-            "geo": currentExtent,
-            "wd": sessionStorage.wd ? sessionStorage : getWd(),
+            //"geo": currentExtent,
+            "wd":getWd(),
             "zoomlevel": map.getZoom(),
             "pagesize": MAP_PAGE_SIZE
         };
         console.log("map search function starts", criteria);
         var success = function (data) {
+            console.log("map search succeed", data);
             if (updateSidebar) {
                 initSidebar(data['aggregation']);
             }
@@ -429,15 +430,6 @@ var MyMap = {
             "criteria": criteria
         };
         newSearch(searchObj);
-
-        //获取当前查询条件
-        function getWd() {
-            var wd = $('.global-search-input').val();
-            if (sessionStorage.checked) {
-                wd += ' ' + JSON.stringify(sessionStorage.checked.replace(CheckboxId_SEPARATOR, ''));
-            }
-            return wd;
-        }
 
         //获取地图的可视范围的经纬度
         function getVisibleExtent() {
@@ -463,9 +455,8 @@ var MyMap = {
                 xR + ' ' + yT + ',' +             //右上
                 xL + ' ' + yT + ')';              //首尾闭合
             });
+            return polygonCCW;
         }
-
-        return polygonCCW;
     },
 
     setMapSidebar: function (devices) {//-------------------------------------遗留

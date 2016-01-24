@@ -211,4 +211,14 @@ public class DataApiController {
     public String getFeatureSets() {
         return featureSetService.getFeatureSets();
     }
+
+
+    @JsonView(Views.Public.class)
+    @RequestMapping(value = "/api/listSearch")
+    public String listSearch(@RequestBody SearchCriteria search) {
+        logger.debug("DataApiController --> listSearch starts-----------");
+        String result = newDeviceService.getResponse4ListSearch(search);
+//        System.out.println("Controller-->Result for list: " + result);
+        return result;
+    }
 }

@@ -2,11 +2,10 @@
 var $header = $('header'), $footer = $('footer'), $sidebar = $('.sidebar'),
     $globalInput = $('.global-search-input');
 var CheckboxId_SEPARATOR = '_s0s_',//分隔符：key_s0s_value（s零s）
-    $carousel = $('.carousel');
+    $carousel = $('.carousel').carousel({"interval": false});
 
 // global variables --> static url
 var advancedSearchURL = basePath + 'api/advancedSearch',
-    listSearchURL = basePath + '/api/getResponse4List',
     suggestionSearchURL = 'api/getSuggestions?search=',
     getFeatureSetsURL = basePath + 'api/getFeatureSets',
     imgUrl = basePath + "resources/img/";
@@ -80,6 +79,7 @@ $(function () {
     $('.global-search-form').on('submit', function (e) {
         e.preventDefault();
         var currentPage = sessionStorage.currentPage ? sessionStorage.currentPage : $('section.active').attr('tag');
+        console.log(currentPage);
         if (currentPage == 'list') {
             List.search(true);//true表示更新侧栏
         } else if (currentPage == 'map') {
@@ -89,9 +89,11 @@ $(function () {
 
     //home search form
     $('.home-search-form').on('submit', function (e) {
-        sessionStorage.wd = $('.home-search-input').val();
-        List.search(true);
-        $carousel.carousel(1);  //滑动到list页面
+        e.preventDefault();
+        sessionStorage.wd = $('#home_search_input').val();
+        console.log("form search", sessionStorage.wd);
+        $('.carousel').carousel(1);  //滑动到list页面
+        //List.search(true, 1);   //查询，更新sidebar，显示第一页
     });
 
     //advanced search link
@@ -402,6 +404,40 @@ function setSessionChecked(operation, checkedId) {
     }
 }
 
+//获取用户已选择的checkbox，返回值为[(key:value),...]
+function getChecked() {
+    var checkedArr = [];
+    if (sessionStorage.checked) {
+        var checked = JSON.toJSON(sessionStorage.checked);
+        for (var key in checked) {
+            var arr = checked[key].split(' ' + CheckboxId_SEPARATOR);
+            for (var i = 0; i < arr.length; i++) {
+                checkedArr.push(key + ":" + arr[i]);
+            }
+        }
+    }
+    return checkedArr;
+}
+
+//获取当前查询条件
+function getWd() {
+    var wd = '';
+    if (sessionStorage.wd) {
+        wd = sessionStorage.wd;
+    } else if ($('.global-search-input').val() != '') {
+        wd = $('.global-search-input').val();
+    } else if ($('.home-search-input').val() != '') {
+        $('.home-search-input').val()
+    }
+    var checked = getChecked();
+    for (var i = 0; i < checked.length; i++) {
+        if (wd.indexOf(checked[i]) < 0) {
+            wd += checked[i];
+        }
+    }
+    return wd.replace(/\"/g, "");//去掉双引号
+}
+
 //show page functions
 function showHomePage() {
     $header.css('visibility', 'hidden');
@@ -410,13 +446,19 @@ function showHomePage() {
 
 function showListPage() {
     $('.sidebar').show();
-    console.log(List);
-    List.render({
-            'aggregation': sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
-            'data': sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
-            'wd': sessionStorage.wd
-        }
-    );
+    var agg = sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
+        devices = sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
+        wd = sessionStorage.wd;
+    if (agg == undefined && devices == undefined) {
+        List.search(true, 1);
+    } else {
+        List.render({
+                "aggregation": agg,
+                "data": devices,
+                "wd": wd
+            }
+        );
+    }
 }
 
 function showMapPage() {
@@ -428,7 +470,7 @@ function showMapPage() {
     MyMap.render({
         'aggregation': sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
         'data': sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
-        'wd': sessionStorage.wd
+        'wd': getWd()
     });
 }
 
