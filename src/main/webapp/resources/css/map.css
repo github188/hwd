@@ -12,7 +12,7 @@
 }
 
 #mapSidebar {
-    display: none;
+    /*display: none;*/
     position: absolute;
     width: 20rem;
     padding-top: .5rem;

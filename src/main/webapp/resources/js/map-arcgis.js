@@ -99,7 +99,7 @@ function initMap() {
             });
 
             map.on('zoom-end', function (e) {
-                //mapSearch();
+                //MyMap.search(false, 1);
                 console.log("zoom: " + map.getZoom());
             });
         });
@@ -400,14 +400,14 @@ var MyMap = {
     },
 
     //updateSidebar, boolean，如果是搜索框检索，则为true，更新sidebar，如果是用户点击某个复选框，则不改变，设为false
-    search: function (updateSidebar) {
+    search: function (updateSidebar, page) {
         console.log("map search function starts--");
         var currentExtent = getVisibleExtent();//获取并设置屏幕所在范围的经纬度geo
         sessionStorage.currentExtent = currentExtent;
 
         var criteria = {
             //"geo": currentExtent,
-            "wd":getWd(),
+            "wd": getWd(),
             "zoomlevel": map.getZoom(),
             "pagesize": MAP_PAGE_SIZE
         };

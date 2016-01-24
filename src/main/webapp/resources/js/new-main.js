@@ -81,9 +81,9 @@ $(function () {
         var currentPage = sessionStorage.currentPage ? sessionStorage.currentPage : $('section.active').attr('tag');
         console.log(currentPage);
         if (currentPage == 'list') {
-            List.search(true);//true表示更新侧栏
+            List.search(true, 1);//true表示更新侧栏
         } else if (currentPage == 'map') {
-            MyMap.search(true); //true表示更新侧栏
+            MyMap.search(true, 1); //true表示更新侧栏
         }
     });
 
@@ -316,9 +316,13 @@ function advsSearch(form) {
             if (sessionStorage.currentPage = 'list') {
                 console.log('rending list form advs search');
                 List.render(data);
+                console.log('rending map form advs search');
+                MyMap.render(data);
             } else if (sessionStorage.currentPage == 'map') {
                 console.log('rending map form advs search');
                 MyMap.render(data);
+                console.log('rending list form advs search');
+                List.render(data);
             }
         },
         error = function (data) {
@@ -379,40 +383,57 @@ function advsSearch(form) {
 
 //设置session的checked
 function setSessionChecked(operation, checkedId) {
-    var checked = sessionStorage.checked ? JSON.parse(sessionStorage.checked) : {},
-        index = checkedId.indexOf(CheckboxId_SEPARATOR),
-        cK = checkedId.substring(0, index), cV = checkedId.substring(index);
-    if (checked[cK]) {
-        switch (operation) {
-            case 'add':
-                if (checked[cK] && checked[cK].indexOf(cV) < 0) {
-                    checked[cK] += ' ' + cV;
-                } else {
-                    checked[cK] = cV;
-                }
-                break;
-            case 'remove':
-                checked[cK].replace(cV, '');
-                if (checked[cK] == '' || checked[cK].trim() == '') {
-                    delete checked[cK];
-                }
-                break;
-            default :
-                break;
-        }
-        sessionStorage.checked = JSON.stringify(checked);
+    var checked = {};
+    if (sessionStorage.checked) {
+        checked = JSON.parse(sessionStorage.checked);
     }
+    var index = checkedId.indexOf(CheckboxId_SEPARATOR),
+        cK = checkedId.substring(0, index), cV = checkedId.substring(index);
+    if (!checked[cK]) {
+        checked[cK] = cV;
+    }
+    switch (operation) {
+        case 'add':
+            console.log(checked[cK]);
+            console.log(cV);
+            if (checked[cK].search(new RegExp("\\s" + cV + "\\s", "gim")) < 0) {
+                console.log(checked[cK]);
+                checked[cK] += ' ' + cV;
+            }
+            if (checked[cK] && checked[cK].indexOf(cV) < 0) {
+                checked[cK] += ' ' + cV;
+            } else {
+                checked[cK] = cV;
+            }
+            break;
+        case 'remove':
+            checked[cK].replace(cV, '');
+            if (checked[cK] == '' || checked[cK].trim() == '') {
+                delete checked[cK];
+            }
+            break;
+        default :
+            break;
+    }
+
+    sessionStorage.checked = JSON.stringify(checked);
+    console.log(sessionStorage.checked);
+
+
 }
 
 //获取用户已选择的checkbox，返回值为[(key:value),...]
 function getChecked() {
     var checkedArr = [];
+    console.log("sessionSTAORGET CHECKED", sessionStorage.checked);
+
     if (sessionStorage.checked) {
-        var checked = JSON.toJSON(sessionStorage.checked);
+        var checked = JSON.parse(sessionStorage.checked);
+        console.log("sessionSTAORGET CHECKED", checked);
         for (var key in checked) {
             var arr = checked[key].split(' ' + CheckboxId_SEPARATOR);
             for (var i = 0; i < arr.length; i++) {
-                checkedArr.push(key + ":" + arr[i]);
+                checkedArr.push(' ' + key + ":" + arr[i]);
             }
         }
     }
@@ -430,12 +451,15 @@ function getWd() {
         $('.home-search-input').val()
     }
     var checked = getChecked();
+    console.log(checked);
     for (var i = 0; i < checked.length; i++) {
         if (wd.indexOf(checked[i]) < 0) {
-            wd += checked[i];
+            console.log(checked[i]);
+            wd += ' ' + checked[i];
         }
     }
-    return wd.replace(/\"/g, "");//去掉双引号
+    //new RegExp("\\s" + cV + "\\s", "gim"
+    return wd.replace(/\"/g, "").replace('undefined', '').replace(new RegExp(CheckboxId_SEPARATOR, "gim"), '');//去掉双引号
 }
 
 //show page functions

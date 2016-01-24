@@ -81,8 +81,8 @@ function initSidebar(aggregation) {
             $('#collapse' + v).collapse('toggle');
             if (this.checked) {
                 //（1）设置sessionStorage
-                setSessionChecked('add', this.id);       //添加
-
+                //setSessionChecked('add', this.id);       //添加
+                //console.log("setSessionChecked('add', this.id);", this.id);
                 //（2）显示对应的pivot
                 $pivots.append(genPivot(k, v));
                 if ($pivots.find('li').length == 1) {
@@ -137,21 +137,28 @@ function initSidebar(aggregation) {
     //key为checkbox id的前一部分，value为后一部分，也是查询条件
 //operation目前支持add和remove
     function searchOnCheckboxChange(key, value, operation) {
+        console.log("searchOnCheckboxChange", key + value + operation);
         switch (operation) {
             case 'add':
-                sessionStorage.wd += ' ' + key + ':' + value;
+                //sessionStorage.wd += ' ' + key + ':' + value;
+                setSessionChecked('add', key + CheckboxId_SEPARATOR + value);
                 if (sessionStorage.currentPage == 'list') {
-                    List.search();
+                    List.search(false, 1);
+                    MyMap.search(false, 1);
                 } else if (sessionStorage.currentPage == 'map') {
-                    MyMap.search();
+                    List.search(false, 1);
+                    MyMap.search(false, 1);
                 }
                 break;
             case 'remove':
                 sessionStorage.wd.replace(key + ':' + value, '').trim();
+                setSessionChecked('remove', key + CheckboxId_SEPARATOR + value);
                 if (sessionStorage.currentPage == 'list') {
-                    List.search();
+                    List.search(false, 1);
+                    MyMap.search(false, 1);
                 } else if (sessionStorage.currentPage == 'map') {
-                    MyMap.search();
+                    List.search(false, 1);
+                    MyMap.search(false, 1);
                 }
                 break;
         }

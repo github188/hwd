@@ -21,7 +21,7 @@
             <ul></ul>
         </div>
     </div>
-    <div class="menu-wrap">
+    <%--<div class="menu-wrap">
         <nav class="menu">
             <div class="icon-list">
                 <a href="#"><i class="fa fa-fw fa-star-o"></i><span>Favorites</span></a>
@@ -33,7 +33,7 @@
             </div>
         </nav>
         <button class="close-button" id="close-button">Close Menu</button>
-    </div>
+    </div>--%>
 
     <button class="menu-button" id="open-button">Open Menu</button>
 </div>
