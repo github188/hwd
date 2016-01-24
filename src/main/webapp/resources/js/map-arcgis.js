@@ -50,6 +50,7 @@ function initMap() {
                 //basemap: 'gray',
                 //center: [114.25, 24.1167],
                 minZoom: 1,
+                maxZoom: 8,
                 zoom: 4,
                 sliderPosition: "top-right",
                 logo: false
@@ -73,16 +74,18 @@ function initMap() {
                 //map.infoWindow.hide();
             });
             map.addLayer(featureGL);
+
             //（3）添加设备点层
             deviceGL = new GraphicsLayer({
-                id: "deviceGraphicLayer",
+                //id: "deviceGraphicLayer",
                 infoTemplate: new InfoTemplate("${ip}",
                     "<b>${location}<b><br><b>${tags}</b><br><b>${timestamp}</b>"),
                 visibleAtMapScale: true
             });
             map.addLayer(deviceGL);
+
             deviceGL.on('click', function (e) {
-                map.infoWindow.show(e.mapPoint);
+                //map.infoWindow.show(e.mapPoint);
             });
 
             //（2）Init Home button
@@ -116,7 +119,8 @@ var MyMap = {
         }
 
         addFeatureGraphicLayer(data.aggregation, map.getZoom());
-        addDeviceGraphicLayer(data.data);
+        //addDeviceGraphicLayer(data.data);
+        addClusters(data.data);
         this.setMapSidebar(data.data);
         /*
          * 分布图，根据区域中存在设备的数量来填充颜色
@@ -202,9 +206,9 @@ var MyMap = {
                             minDataValue: min,
                             maxDataValue: max,
                             colors: [
-                                new Color([220, 199, 224]),
-                                new Color([172, 120, 180]),
-                                new Color([120, 37, 134])
+                                new Color([220, 199, 224, 0.75]),
+                                new Color([172, 120, 180, 0.75]),
+                                new Color([120, 37, 134, 0.75])
                             ]
                         });
                         featureGL.setRenderer(renderer);
@@ -238,7 +242,7 @@ var MyMap = {
             ], function (PictureMarkerSymbol, Graphic, Point) {
                 console.log("add device graphic layer=========");
                 deviceGL.clear();
-                var pms = new PictureMarkerSymbol(imgUrl + "red.png", 72, 72).setOffset(0, 15);
+                var pms = new PictureMarkerSymbol(imgUrl + "red.png", 40, 40).setOffset(0, 15);
                 devices.forEach(function (d) {
                     var attr = {
                         "ip": d.ip,
@@ -267,6 +271,131 @@ var MyMap = {
                     deviceGL.add(gc);//（1）添加到graphics层
                 });
             });
+        }
+
+        function addClusters(devices) {
+            require([
+                "esri/SpatialReference",
+                "esri/dijit/PopupTemplate",
+                "esri/geometry/Point",
+                "esri/geometry/webMercatorUtils",
+
+                "extras/ClusterLayer",
+                "esri/symbols/SimpleLineSymbol",
+                "esri/symbols/SimpleMarkerSymbol",
+                "esri/symbols/PictureMarkerSymbol",
+                "esri/renderers/ClassBreaksRenderer",
+                "esri/symbols/SimpleFillSymbol"
+
+            ], function (SpatialReference, PopupTemplate, Point, webMercatorUtils, ClusterLayer,
+                         SimpleLineSymbol, SimpleMarkerSymbol, PictureMarkerSymbol, ClassBreaksRenderer, SimpleFillSymbol) {
+
+                var devicesInfo = {};
+                var wgs = new SpatialReference({
+                    "wkid": 4326
+                });
+                devicesInfo.data = $.map(devices, function (d) {
+                    var latlng = new Point(parseFloat(d.lon), parseFloat(d.lat), wgs);
+                    var webMercator = webMercatorUtils.geographicToWebMercator(latlng);
+                    var attributes = {
+                        "IP": d.ip,
+                        "Location": d.location,
+                        "Ports": d.ports,
+                        "Tags": d.tags,
+                        "Vuls": d.vuls,
+                        "Timestamp": d.timestamp,
+                        "Image": basePath + "resources/img/home.png",
+                        "Link": d.link
+                    };
+                    return {
+                        "x": webMercator.x,
+                        "y": webMercator.y,
+                        "attributes": attributes
+                    };
+                });
+
+                // popupTemplate to work with attributes specific to this dataset
+                var popupTemplate = new PopupTemplate({
+                    "title": "",
+                    "fieldInfos": [{
+                        "fieldName": "Ip",
+                        visible: true
+                    }, {
+                        "fieldName": "Location",
+                        "label": "@",
+                        visible: true
+                    }, {
+                        "fieldName": "Ports",
+                        "label": "服务：",
+                        visible: true
+                    }, {
+                        "fieldName": "Vuls",
+                        "label": "漏洞：",
+                        visible: true
+                    }, {
+                        "fieldName": "Tags",
+                        "label": "标签：",
+                        visible: true
+                    }, {
+                        "fieldName": "Timestamp",
+                        "label": "更新时间：",
+                        visible: true
+                    }],
+                    "mediaInfos": [{
+                        "title": "",
+                        "caption": "",
+                        "type": "image",
+                        "value": {
+                            "sourceURL": "{Image}",
+                            "linkURL": "{Image}"
+                        }
+                    }]
+                });
+
+                // cluster layer that uses OpenLayers style clustering
+                clusterLayer = new ClusterLayer({
+                    "data": devicesInfo.data,
+                    "distance": 100,
+                    "id": "clusters",
+                    "labelColor": "#fff",
+                    "labelOffset": 10,
+                    "resolution": map.extent.getWidth() / map.width,
+                    "singleColor": "#888",
+                    "singleTemplate": popupTemplate
+                });
+                var defaultSym = new SimpleMarkerSymbol().setSize(4);
+                var renderer = new ClassBreaksRenderer(defaultSym, "clusterCount");
+
+                var picBaseUrl = imgUrl;
+                //var blue = new PictureMarkerSymbol(picBaseUrl + "blue.png", 32, 32).setOffset(0, 15);
+                var green = new PictureMarkerSymbol(picBaseUrl + "green.png", 64, 64).setOffset(0, 15);
+                var red = new PictureMarkerSymbol(picBaseUrl + "red.png", 72, 72).setOffset(0, 15);
+                //renderer.addBreak(0, 2, blue);
+                renderer.addBreak(0, 200, green);
+                renderer.addBreak(200, 1001, red);
+
+                clusterLayer.setRenderer(renderer);
+                map.addLayer(clusterLayer);
+
+                /*var center = devicesInfo.data[0];
+                map.centerAndZoom(new Point(center.x, center.y, wgs), 8);*/
+
+                // close the info window when the map is clicked
+                map.on("click", cleanUp);
+                // close the info window when esc is pressed
+                map.on("key-down", function (e) {
+                    if (e.keyCode === 27) {
+                        cleanUp();
+                    }
+                });
+
+            });
+        }
+
+        function cleanUp() {
+            console.log("zoom ");
+            map.infoWindow.hide();
+            clusterLayer.clearSingles();
         }
     },
 
@@ -312,6 +441,7 @@ var MyMap = {
 
         //获取地图的可视范围的经纬度
         function getVisibleExtent() {
+            var polygonCCW;
             require([
                 "esri/geometry/ScreenPoint",
                 "esri/geometry/webMercatorUtils"
@@ -326,15 +456,16 @@ var MyMap = {
 
                 var xL = mLeftTop.x, xR = mRightBottom.x, yT = mLeftTop.y, yB = mRightBottom.y;
                 //逆时针，4个点，首尾闭合
-                var polygonCCW = 'polygon(' +
-                    xL + ' ' + yT + ',' +             //左上
-                    xL + ' ' + yB + ',' +             //左下
-                    xR + ' ' + yB + ',' +             //右下
-                    xR + ' ' + yT + ',' +             //右上
-                    xL + ' ' + yT + ')';              //首尾闭合
-                return polygonCCW;
+                polygonCCW = 'polygon(' +
+                xL + ' ' + yT + ',' +             //左上
+                xL + ' ' + yB + ',' +             //左下
+                xR + ' ' + yB + ',' +             //右下
+                xR + ' ' + yT + ',' +             //右上
+                xL + ' ' + yT + ')';              //首尾闭合
             });
         }
+
+        return polygonCCW;
     },
 
     setMapSidebar: function (devices) {//-------------------------------------遗留

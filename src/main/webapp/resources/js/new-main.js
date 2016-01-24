@@ -158,8 +158,8 @@ function pageSlide() {
     var $carousel = $('.carousel').carousel({"interval": false});
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
-        sessionStorage.currentPage = tag;
         $header.css('visibility', 'visible');
+        sessionStorage.currentPage = tag;
         switch (tag) {
             case 'home':
                 showHomePage();
@@ -305,12 +305,19 @@ function inputSuggest(input, sourceURL) {
 
 //Advanced Search 精确搜索
 function advsSearch(form) {
-    console.log("aaaa");
     var success = function (data) {
             console.log('success', data);
             //generate sidebar
             initSidebar(data.aggregation);
+            //show result
             $('#advs_wrapper').removeClass('active');
+            if (sessionStorage.currentPage = 'list') {
+                console.log('rending list form advs search');
+                List.render(data);
+            } else if (sessionStorage.currentPage == 'map') {
+                console.log('rending map form advs search');
+                MyMap.render(data);
+            }
         },
         error = function (data) {
             console.log('error', data);
@@ -415,6 +422,9 @@ function showListPage() {
 function showMapPage() {
     $('header').show();
     //console.log(sessionStorage);
+    if (sessionStorage.agg) {
+        initSidebar(JSON.parse(sessionStorage.agg));
+    }
     MyMap.render({
         'aggregation': sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
         'data': sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,

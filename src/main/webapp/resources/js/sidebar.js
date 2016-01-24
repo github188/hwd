@@ -1,6 +1,7 @@
 function initSidebar(aggregation) {
     if (sessionStorage.currentPage == 'map') {
-        $('.sidebar').addClass('mapSidebar').show();
+        $('.sidebar').show();
+        //$('.sidebar').addClass('mapSidebar').show();
     }
     //init pivots
     var $pivotsContainer = $('.pivot-bar-container').hide();
