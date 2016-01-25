@@ -25,7 +25,7 @@ function newSearch(obj) {
         type: "post",
         contentType: "application/json",
         dataType: "json",
-        timeout: 50000,
+        timeout: 5000000,
         data: requestData
     }).success(function (data) {
         var statuscode = data['statuscode'];

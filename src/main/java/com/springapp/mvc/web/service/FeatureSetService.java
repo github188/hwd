@@ -4,6 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.springapp.mvc.web.listener.FeatureSetsFillerOnStartup;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by lyp on 2016-01-22.
  * 请求地理服务器的FeatureSet
@@ -19,6 +23,26 @@ public class FeatureSetService {
         result.put("errmsg", "");
         result.put("statuscode", "200");
         result.put("data", featureSets);
+        System.out.println(featureSets.getJSONObject("cityFS"));
         return result.toString();
     }
+
+    public String getFeatureSetsByNames(String names) {
+        JSONObject featureSets = new JSONObject();
+        List<String> list = new ArrayList<String>();
+        //Collections.addAll(userList, userid);
+        Collections.addAll(list, names.split("_"));
+        featureSets.put("cityFS", FeatureSetsFillerOnStartup.getCityFeatureSetByNames(list));
+        JSONObject result = new JSONObject();
+        result.put("errmsg", "");
+        result.put("statuscode", "200");
+        result.put("data", featureSets);
+        System.out.println(featureSets.getJSONObject("cityFS"));
+        return result.toString();
+    }
+
+/*    public static void main(String[] args) {
+        FeatureSetService f = new FeatureSetService();
+        f.getFeatureSets();
+    }*/
 }

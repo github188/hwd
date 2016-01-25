@@ -92,7 +92,8 @@ $(function () {
         e.preventDefault();
         sessionStorage.wd = $('#home_search_input').val();
         console.log("form search", sessionStorage.wd);
-        $('.carousel').carousel(1);  //滑动到list页面
+        //$('.carousel').carousel(1);  //滑动到list页面
+        $('.carousel').carousel(2);  //滑动到list页面
         //List.search(true, 1);   //查询，更新sidebar，显示第一页
     });
 
@@ -127,6 +128,12 @@ $(function () {
         e.preventDefault();
         advsSearch(this);
     });
+
+    $('.map-sidebar-link').on('click', function (e) {
+        e.preventDefault();
+        $('#mapSidebar').toggleClass('active');
+    });
+
     //~~~~~~~~~~~~~~~~~~~~~~~listener↑~~~~~~~~~~~~~~~~~~~~~~
 });
 
@@ -383,6 +390,7 @@ function advsSearch(form) {
 
 //设置session的checked
 function setSessionChecked(operation, checkedId) {
+    console.log(checkedId);
     var checked = {};
     if (sessionStorage.checked) {
         checked = JSON.parse(sessionStorage.checked);
@@ -394,10 +402,7 @@ function setSessionChecked(operation, checkedId) {
     }
     switch (operation) {
         case 'add':
-            console.log(checked[cK]);
-            console.log(cV);
             if (checked[cK].search(new RegExp("\\s" + cV + "\\s", "gim")) < 0) {
-                console.log(checked[cK]);
                 checked[cK] += ' ' + cV;
             }
             if (checked[cK] && checked[cK].indexOf(cV) < 0) {
@@ -418,8 +423,6 @@ function setSessionChecked(operation, checkedId) {
 
     sessionStorage.checked = JSON.stringify(checked);
     console.log(sessionStorage.checked);
-
-
 }
 
 //获取用户已选择的checkbox，返回值为[(key:value),...]
@@ -452,12 +455,12 @@ function getWd() {
     }
     var checked = getChecked();
     console.log(checked);
-    for (var i = 0; i < checked.length; i++) {
-        if (wd.indexOf(checked[i]) < 0) {
+ /*   for (var i = 0; i < checked.length; i++) {
+        if (checked[i] != '' && checked[i] != ' ' && wd.indexOf(checked[i]) < 0) {
             console.log(checked[i]);
             wd += ' ' + checked[i];
         }
-    }
+    }*/
     //new RegExp("\\s" + cV + "\\s", "gim"
     return wd.replace(/\"/g, "").replace('undefined', '').replace(new RegExp(CheckboxId_SEPARATOR, "gim"), '');//去掉双引号
 }

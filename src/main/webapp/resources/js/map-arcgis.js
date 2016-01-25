@@ -3,7 +3,7 @@
 var mapSearchURL = "api/mapSearch",
     baseURL = 'http://10.10.2.81:6080/arcgis/rest/services/China_Community_BaseMap/MapServer',
     countryURL = 'http://10.10.2.81:6080/arcgis/rest/services/world/MapServer/0',
-    provinceURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/0',
+    provinceURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1',
     cityURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1';
 var MAP_PAGE_SIZE = 5;
 /*
@@ -40,11 +40,15 @@ function initMap() {
             "esri/layers/ArcGISTiledMapServiceLayer",
             "esri/layers/GraphicsLayer",
             "esri/InfoTemplate",
-            "esri/dijit/HomeButton"
+            "esri/dijit/HomeButton",
+            "esri/tasks/query",
+            "esri/tasks/QueryTask",
+            "esri/TimeExtent",
+            "esri/layers/FeatureLayer"
 
             //"dojo/domReady!"
         ],
-        function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, HomeButton) {
+        function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, HomeButton, Query, QueryTask, TimeExtent, FeatureLayer) {
             //（1）Create map and add layer
             map = new Map("mapHolder", {
                 //basemap: 'gray',
@@ -58,6 +62,7 @@ function initMap() {
             //（1）添加底图
             var basemap = new ArcGISTiledMapServiceLayer(baseURL);
             map.addLayer(basemap);
+
             //（2）添加区域层
             featureGL = new GraphicsLayer({
                 id: "deviceGraphicLayer",
@@ -93,9 +98,95 @@ function initMap() {
                 map: map
             }, "homeButton").startup();
 
+            var sheng = "http://10.10.2.81:6080/arcgis/rest/services/sheng/MapServer/0";
+            var featureLayer = new FeatureLayer(sheng, {
+                infoTemplate: new InfoTemplate("${Name_CHN}",
+                    "国家：<b>${Name_CHN}<b><br>共发现目标：<b>${count}</b>个"),
+                outFields: ['*'],
+                mode: FeatureLayer.MODE_SNAPSHOT,
+                visible: false
+            });
+            map.addLayer(featureLayer);
+
 
             map.on("load", function () {
                 console.log("map loaded");
+                var capabilities = featureLayer.getEditCapabilities();
+                console.log("This layer can be updated:" , capabilities);
+                console.log("this layer is editable? " + featureLayer.isEditable());
+
+
+                /*//initFeatureSet('city');
+                 function initFeatureSet(which) {
+                 console.log(which + "starts-------");
+                 function executeQueryTask(url) {
+                 console.log("task starts at---" + new Date());
+
+                 var qt = new QueryTask(url);
+                 qt.execute(query, queryTaskComplete, queryTaskError);
+                 }
+
+                 //callback
+                 function queryTaskComplete(resp) {
+                 //console.log(which + " complete：" + new Date(), resp.features);
+                 //init data
+                 switch (which) {
+                 case 'country':
+                 //将features转换为map，方便以后使用， key：名称，value：feature
+                 resp.features.forEach(function (item) {
+                 countryFS[item.attributes.NAME] = item;
+                 });
+                 localStorage.featureSets.countryFS = countryFS;
+                 break;
+                 case 'province':
+                 resp.features.forEach(function (item) {
+                 provinceFS[item.attributes.Name_CHN] = item;
+                 });
+                 console.log("province ends at---" + new Date());
+                 localStorage.featureSets.provinceFS = provinceFS;
+                 break;
+                 case 'city':
+                 resp.features.forEach(function (item) {
+                 cityFS[item.attributes.Name_CHN] = item;
+                 });
+                 localStorage.featureSets.cityFS = cityFS;
+                 console.log("city ends at---" + new Date());
+                 break;
+                 }
+                 }
+
+                 //errorback
+                 function queryTaskError(err) {
+                 console.log('Oops, something goes wrong with feature layer. ', err);
+                 }
+
+                 //（setFeatureSet --> 1）initialize query
+                 var query = new Query();
+                 query.returnGeometry = true;
+                 query.outSpatialReference = map.spatialReference;
+                 query.outFields = ["Name_CHN", "Name_ENG"];
+                 //query.where = "'OBJECTID'>'0'";
+                 var url;
+                 switch (which) {
+                 case 'country':
+                 url = countryURL;   //（setFeatureSet --> 2）initialize query task (not yet start, just using this parameter)
+                 query.where = "'Shape'='面'";
+                 query.outFields = ["NAME", "REGION"];
+                 break;
+                 case 'province':
+                 url = provinceURL;
+                 break;
+                 case 'city':
+                 url = cityURL;
+                 query.objectIds = [1, 2];
+                 //query.where = "'OBJECTID'='[1,2]'";
+                 query.outFields = ["*"];
+                 break;
+                 default:
+                 break;
+                 }
+                 executeQueryTask(url);
+                 }*/
             });
 
             map.on('zoom-end', function (e) {
@@ -109,7 +200,7 @@ var MyMap = {
     map: {},
     render: function (data) {
         console.log("map render function starts--", data);
-        if (isEmptyObject(data)) {
+        if (data && isEmptyObject(data)) {
             //console.log(data);
             return;
         }
@@ -167,12 +258,13 @@ var MyMap = {
                 require([
                     "esri/graphic",
                     "esri/renderers/SimpleRenderer", "esri/Color",
-                    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol"
-                ], function (Graphic, SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
+                    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+                    "esri/dijit/Legend"
+                ], function (Graphic, SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol, Legend) {
                     featureGL.clear();
                     if (agg.hasOwnProperty('country@%city') && !isEmptyObject(agg['country@%city'])) {
                         var countries = agg['country@%city'], min = Number.MAX_VALUE, max = 0;
-                        if (zoom < 50) { //国家级别
+                        if (zoom < 4) { //国家级别
                             for (var key in countries) {
                                 var features = fss.countryFS.features;
                                 var country = countries[key];
@@ -185,18 +277,71 @@ var MyMap = {
                                     setMinMax(country.count);
                                 }
                             }
-                        } else if (zoom < 7) {
+                        } else if (zoom < 10) {
+                            var map = '{"福建省":558,"西藏自治区":62,"贵州省":115,"上海市":616,"广东省":824,"湖北省":325,"湖南省":471,"澳门特别行政区":30,"香港特别行政区":30,"四川省":358,"安徽省":260,"新疆维吾尔自治区":560,"江苏省":456,"吉林省":337,"宁夏回族自治区":78,"河北省":670,"河南省":325,"广西壮族自治区":148,"海南省":34,"江西省":366,"重庆市":463,"云南省":207,"北京市":887,"甘肃省":275,"山东省":476,"陕西省":55,"浙江省":741,"内蒙古自治区":228,"青海省":98,"天津市":443,"辽宁省":424,"台湾省":1022,"黑龙江省":316,"山西省":279}';
+                            map = JSON.parse(map);
+                            var ff = featureSets.provinceFS.features;
                             //省份级别,目前也按照市来做
-                            console.log("5<zoom<7", zoom);
-                            min = 0;
-                            max = 999999;
+                            console.log("4<zoom<10", ff);
+                            var i = 1;
+                            for (var p in ff) {
+                                i++;
+                                console.log(p, ff[p]);
+                                var count = map[ff[p].attributes.Name_CHN];
+                                ff[p].attributes.count = count;
+                                var g = new Graphic(ff[p]);
+                                featureGL.add(g);
+                                setMinMax(count);
+                            }
+                            /* if (features.hasOwnProperty(country.en)) {
+                             var f = features[country.en];
+                             f.attributes.count = country.count;
+                             f.attributes.Name_CHN = key;
+                             var g = new Graphic(f);
+                             featureGL.add(g);
+                             setMinMax(country.count);
+                             }*/
 
                         } else {
                             //城市级别
-                            console.log("zoom>=7", zoom);
-                            min = 0;
-                            max = 999999;
+                            var names = "北京郊县";
+                            console.log("zoom>=6", zoom);
+                            var cityFeatures = fss.cityFS.features;
+                            $.ajax({
+                                url: basePath + 'api/getFeatureSetsByNames',
+                                type: "post",
+                                contentType: "application/json",
+                                dataType: "json",
+                                timeout: 5000000,
+                                data: names
+                            }).success(function (data) {
+                                console.log(data);
+                            });
+
+                            //console.log("city features : ", cityFeatures);
+                            for (var c in countries) {
+                                var cities = countries[c]['cities'];
+                                console.log("cities in agg: " + cities);
+                                for (var ck in cities) {
+                                    console.log("city name: " + ck + ", count:" + cities[ck]);
+                                    if (cityFeatures.hasOwnProperty(ck)) {
+                                        console.log("in if" + ck);
+                                        var cf = cityFeatures[ck];
+                                        cf.attributes.count = cities[ck];
+                                        var cg = new Graphic(cf);
+                                        featureGL.add(cg);
+                                        console.log(cg);
+                                        setMinMax(cities[ck]);
+                                    }
+                                }
+                            }
                         }
+                        var legend = new Legend({
+                            map: map,
+                            layerInfos: [{layer: featureGL}]
+                        }, "legend");
+
+
                         //调整min和max ，防止max过大、min过小造成显示太难看
                         min = (max.length - 2) > 0 ? (max.length - 2) * 10 : min;
                         var sfs = new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128])));
@@ -206,12 +351,22 @@ var MyMap = {
                             minDataValue: min,
                             maxDataValue: max,
                             colors: [
-                                new Color([220, 199, 224, 0.75]),
-                                new Color([172, 120, 180, 0.75]),
-                                new Color([120, 37, 134, 0.75])
+                                /*new Color([220, 199, 224, 0.75]),
+                                 new Color([166, 110, 175, 0.75]),
+                                 new Color([172, 120, 180, 0.75]),
+                                 new Color([120, 37, 134, 0.75]),
+                                 new Color([244, 238, 245, 0.75])*/
+                                //new Color([247, 247, 247]),
+                                new Color([153, 209, 244, 0.75]),
+                                new Color([0, 110, 221, 0.75])
+                                //rgb(220, 198, 223)
+                                /*new Color([244, 238, 246, 0.75]),
+                                 new Color([121, 37, 135, 0.75])*/
+
                             ]
                         });
                         featureGL.setRenderer(renderer);
+                        legend.startup();
                     }
 
                     function setMinMax(count) {
@@ -289,7 +444,9 @@ var MyMap = {
 
             ], function (SpatialReference, PopupTemplate, Point, webMercatorUtils, ClusterLayer,
                          SimpleLineSymbol, SimpleMarkerSymbol, PictureMarkerSymbol, ClassBreaksRenderer, SimpleFillSymbol) {
-
+                if (!devices) {
+                    return;
+                }
                 var devicesInfo = {};
                 var wgs = new SpatialReference({
                     "wkid": 4326
@@ -460,17 +617,57 @@ var MyMap = {
     },
 
     setMapSidebar: function (devices) {//-------------------------------------遗留
+        return;
         console.log("set map sidebar", devices);
+        $('#mapSidebar').show();
+        $('.map-device-list').html('');
+    },
+    addDevice2Sidebar: function (device) {
+        var $li = $('<li id="' + device.ip + '"></li>').appendTo($('.map-device-list'));
+        var $title = $('<a href="#" class="title">' + device.ip + '</a>').appendTo($li);
+        var $info = $('<div class="info"></div>').appendTo($li);
+        var loc = device.location, time = device.timestamp, tags = device.tags, ports = device.ports, vuls = device.vuls;
+        if (loc && loc != '') {
+            $info.append($('<span class="label label-default location">' + loc + '</span>'));
+        }
+        if (time && time != '') {
+            $info.append($('<span class="label label-default timestamp">' + dateLocalize(time) + '</span>'));
+        }
+        if (tags && tags != '') {
+            $info.append($('<span class="label label-default tags">' + tags + '</span>'));
+        }
+
+        if (ports && ports != '' & ports.length > 0) {
+            for (var p in ports) {
+
+            }
+        }
+        if (vuls && vuls != '') {
+            for (var p in vuls) {
+
+            }
+        }
+        /*
+         *
+         <div class="info">
+         <span class="label label-default ports">redlion:789</span>
+         <span class="label label-default vuls"></span>
+         <span class="label label-default tags">ICS</span>
+         </div>
+         * */
+
     },
     //将一个设备添加到地图的右侧边栏
     deviceOnClick: function (device) {//--------------------------------------遗留
         console.log('add to side bar');
+
     }
 };
 
 
 //------------------------------↓ functions not in use currently-------------------
-function initFeatureSet(which) {
+function initFeatureSetByNames(which, names) {
+    console.log(which + "starts-------");
     function executeQueryTask(url) {
         console.log("task starts at---" + new Date());
 
@@ -517,7 +714,7 @@ function initFeatureSet(which) {
     query.returnGeometry = true;
     query.outSpatialReference = map.spatialReference;
     query.outFields = ["Name_CHN", "Name_ENG"];
-    query.where = "'OBJECTID'>'0'";
+    //query.where = "'OBJECTID'>'0'";
     var url;
     switch (which) {
         case 'country':
@@ -530,6 +727,9 @@ function initFeatureSet(which) {
             break;
         case 'city':
             url = cityURL;
+            query.objectIds = [1, 2];
+            //query.where = "'OBJECTID'='[1,2]'";
+            query.outFields = ["*"];
             break;
         default:
             break;

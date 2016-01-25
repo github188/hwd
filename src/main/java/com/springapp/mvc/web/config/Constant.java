@@ -13,6 +13,7 @@ public class Constant {
     public static final String marklineSearchURL = "http://10.10.2.84:8082/devicescan/getLinesSegment?numPerPage=100&pageId=";
 
     public static final String countryFeatureSetURL = "http://10.10.2.81:6080/arcgis/rest/services/world/MapServer/0/query?f=json&where='Shape'='面'&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=NAME,REGION&callback=";
-    public static final String provinceFeatureSetURL = "http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/0/query?f=json&where='OBJECTID'>'0'&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&callback=";
-    public static final String cityFeatureSetURL = "http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1/query?f=json&where='OBJECTID'>'0'&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&callback=";
+    public static final String provinceFeatureSetURL = "http://10.10.2.81:6080/arcgis/rest/services/sheng/MapServer/0/query?f=json&where='OBJECTID'>'0'&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&callback=";
+    public static final String cityFeatureSetURL = "http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1/query?where=OBJECTID+>+1+AND+OBJECTID+<+40&returnGeometry=true&returnIdsOnly=false&returnCountOnly=false&returnZ=false&returnM=false&f=pjson";
+
 }

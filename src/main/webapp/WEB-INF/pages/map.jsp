@@ -11,14 +11,31 @@
 <div>
     <div class="mapHolder" id="mapHolder"></div>
     <%--<div id="homeButton"></div>--%>
-    <div id="info">
+    <div id="legend-wrapper">
         <div id="legend"></div>
     </div>
     <div id="mapSidebar">
-        <div class="tool-bar"></div>
+        <div class="tool-bar">
+            <a class="map-sidebar-link advs-link-main" href="#" role="button" aria-controls="advs-wrapper">
+                <span class="glyphicon glyphicon-menu-right"></span>
+
+            </a>
+        </div>
         <div class="clearfix"></div>
         <div class="content">
-            <ul></ul>
+            <ul class="map-device-list">
+                <li>
+                        <a href="#" class="title">71.17.11.163</a>
+
+                        <div class="info">
+                            <span class="label label-default timestamp">123</span>
+                            <span class="label label-default location">加拿大, 加拿大</span>
+                            <span class="label label-default ports">redlion:789</span>
+                            <span class="label label-default vuls"></span>
+                            <span class="label label-default tags">ICS</span>
+                        </div>
+                </li>
+            </ul>
         </div>
     </div>
     <%--<div class="menu-wrap">
@@ -35,7 +52,7 @@
         <button class="close-button" id="close-button">Close Menu</button>
     </div>--%>
 
-    <button class="menu-button" id="open-button">Open Menu</button>
+    <%--<button class="menu-button" id="open-button">Open Menu</button>--%>
 </div>
 <div class="clearfix"></div>
 <script src="resources/js/map-arcgis.js"></script>

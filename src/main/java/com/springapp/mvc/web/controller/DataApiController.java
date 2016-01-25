@@ -212,6 +212,11 @@ public class DataApiController {
         return featureSetService.getFeatureSets();
     }
 
+    @RequestMapping(value = "/api/getFeatureSetsByNames")
+    public String getFeatureSetsByNames(@RequestParam(value = "names") String names) {
+        return featureSetService.getFeatureSetsByNames(names);
+    }
+
 
     @JsonView(Views.Public.class)
     @RequestMapping(value = "/api/listSearch")
@@ -221,4 +226,5 @@ public class DataApiController {
 //        System.out.println("Controller-->Result for list: " + result);
         return result;
     }
+
 }
