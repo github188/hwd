@@ -2,6 +2,7 @@
 var $header = $('header'), $footer = $('footer'), $sidebar = $('.sidebar'),
     $globalInput = $('.global-search-input');
 var CheckboxId_SEPARATOR = '_s0s_',//分隔符：key_s0s_value（s零s）
+    PivotId_SEPARATOR = '_pivot_',
     $carousel = $('.carousel').carousel({"interval": false});
 
 // global variables --> static url
@@ -40,31 +41,33 @@ $(function () {
     initFeatureSets();
     pageSlide();//carousel页面导航
     //初始化之后，跳转到用户当前所在页（同一个session的情况下）
-    /*if (sessionStorage) {
-     $('section.item').removeClass('active');
-     $('section[tag="' + sessionStorage.currentPage + '"]').addClass('active');
-     $header.css('visibility', 'visible');
-     switch (sessionStorage.currentPage) {
-     case 'home':
-     showHomePage();
-     break;
-     case 'list':
-     showListPage();
-     break;
-     case 'map':
-     showMapPage();
-     break;
-     case 'globe-point':
-     showGlobePointPage();
-     break;
-     case 'globe-line':
-     showGlobeLinePage();
-     break;
-     case 'charts':
-     showChartsPage();
-     break;
-     }
-     }*/
+    if (sessionStorage) {
+        var currentPage = MySessionStorage.get('currentPage');
+        $('section.item').removeClass('active');
+        $('section[tag="' + currentPage + '"]').addClass('active');
+
+        //$header.css('visibility', 'visible');
+        switch (currentPage) {
+            case 'home':
+                showHomePage();
+                break;
+            case 'list':
+                List.show();
+                break;
+            case 'map':
+                MyMap.show();
+                break;
+            case 'globe-point':
+                showGlobePointPage();
+                break;
+            case 'globe-line':
+                showGlobeLinePage();
+                break;
+            case 'charts':
+                showChartsPage();
+                break;
+        }
+    }
 
     //~~~~~~~~~~~~~~~~~~~首页必须~~~~~~~~~~~~~~~~~~~~~~~~~
     showHomePage();
@@ -78,8 +81,9 @@ $(function () {
     //global search form
     $('.global-search-form').on('submit', function (e) {
         e.preventDefault();
-        var currentPage = sessionStorage.currentPage ? sessionStorage.currentPage : $('section.active').attr('tag');
-        console.log(currentPage);
+        //var currentPage = sessionStorage.currentPage ? sessionStorage.currentPage : $('section.active').attr('tag');
+        var currentPage = MySessionStorage.get('currentPage') ? MySessionStorage.get('currentPage') : $('section.active').attr('tag');
+        console.log("search in global form, currentPage = " + currentPage);
         if (currentPage == 'list') {
             List.search(true, 1);//true表示更新侧栏
         } else if (currentPage == 'map') {
@@ -90,11 +94,12 @@ $(function () {
     //home search form
     $('.home-search-form').on('submit', function (e) {
         e.preventDefault();
-        sessionStorage.wd = $('#home_search_input').val();
-        console.log("form search", sessionStorage.wd);
-        //$('.carousel').carousel(1);  //滑动到list页面
+        MySessionStorage.set('wd', $('#home_search_input').val());
+        console.log("home form search, wd = " + MySessionStorage.get('wd'));
+        /*$('.carousel').carousel(1);  //滑动到list页面
+         List.show();*/
         $('.carousel').carousel(2);  //滑动到list页面
-        //List.search(true, 1);   //查询，更新sidebar，显示第一页
+        //MyMap.show();
     });
 
     //advanced search link
@@ -168,16 +173,18 @@ function pageSlide() {
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
         $header.css('visibility', 'visible');
-        sessionStorage.currentPage = tag;
+        MySessionStorage.set('currentPage', tag);
         switch (tag) {
             case 'home':
                 showHomePage();
                 break;
             case 'list':
-                showListPage();
+                console.log('show in pageSlide()');
+                List.show();
                 break;
             case 'map':
-                showMapPage();
+                console.log('show in pageSlide()');
+                MyMap.show();
                 break;
             case 'globe-point':
                 showGlobePointPage();
@@ -210,7 +217,6 @@ function pageSlide() {
     $('footer .navbtn').on('click', function (e) {
         e.preventDefault();
         var index = $(this).index();
-        sessionStorage.pageIdx = index;
         $('.carousel').carousel(index);
         $('#advs_wrapper').removeClass('active');
     });
@@ -315,29 +321,26 @@ function inputSuggest(input, sourceURL) {
 //Advanced Search 精确搜索
 function advsSearch(form) {
     var success = function (data) {
-            console.log('success', data);
+            console.log('advanced search success', data);
             //generate sidebar
-            initSidebar(data.aggregation);
-            //show result
+            Sidebar.init(data.aggregation);
+            //hide advs page
             $('#advs_wrapper').removeClass('active');
-            if (sessionStorage.currentPage = 'list') {
-                console.log('rending list form advs search');
+            //render page
+            if (MySessionStorage.get('currentPage') == 'list') {
+                console.log('rending list from advs search');
                 List.render(data);
-                console.log('rending map form advs search');
+            } else if (MySessionStorage.get('currentPage') == 'map') {
+                console.log('rending map from advs search');
                 MyMap.render(data);
-            } else if (sessionStorage.currentPage == 'map') {
-                console.log('rending map form advs search');
-                MyMap.render(data);
-                console.log('rending list form advs search');
-                List.render(data);
             }
         },
         error = function (data) {
-            console.log('error', data);
+            console.log('advs search error', data);
             $('#advs_wrapper').removeClass('active');
         },
         noData = function (data) {
-            console.log('nodata', data);
+            console.log('advs search noData', data);
             $('#advs_wrapper').removeClass('active');
         },
         getCriteria = function () {
@@ -345,9 +348,12 @@ function advsSearch(form) {
                 inputs = $(form).find('fieldset').find('input');
 
             for (var i = 0; i < inputs.length; i++) {
-                var key = inputs[i].id;
-                if ($(inputs[i]).val() != '' && (key == 'country' || key == 'city' || key == 'port' || key == 'os' || key == 'vul' || key == 'device_service' || key == 'device_type')) {
-                    setSessionChecked('add', key);
+                var key = inputs[i].id, values = $(inputs[i]).val().replace(/\s+/g, " ");//所有空白符都替换为一个空格
+
+                var timestamp = (Date.parse(new Date($(inputs[i]).val()))) / 1000;
+                if (key.indexOf('time_') >= 0) {
+                    timeSegment += timestamp + '-';
+                    continue;
                 }
 
                 if (key.indexOf("ip_") >= 0) {
@@ -355,12 +361,16 @@ function advsSearch(form) {
                     continue;
                 }
 
-                var timestamp = (Date.parse(new Date($(inputs[i]).val()))) / 1000;
-                if (key.indexOf('time_') >= 0) {
-                    timeSegment += timestamp + '-';
-                    continue;
+                //set 查询条件
+                criteria[key] = values;
+
+                //set sessionStorage checked
+                if (values != '' && (key == 'country' || key == 'city' || key == 'port' || key == 'os' || key == 'vul' || key == 'device_service' || key == 'device_type')) {
+                    var valueArr = values.split(' ');
+                    for (var j = 0; j < valueArr.length; j++) {
+                        MySessionStorage.set('checked', valueArr[j], 'add');
+                    }
                 }
-                criteria[key] = $(inputs[i]).val().replace(/\s+/g, " ");//所有空白符都替换为一个空格
             }
             if (ipSegment != '') {
                 criteria['ip'] += ' ' + ipSegment.replace(/^-|-$/g, '');//去掉首尾的“-”和空格
@@ -388,7 +398,7 @@ function advsSearch(form) {
     newSearch(obj);
 }
 
-//设置session的checked
+//设置session的checked - --废弃
 function setSessionChecked(operation, checkedId) {
     console.log(checkedId);
     var checked = {};
@@ -425,7 +435,7 @@ function setSessionChecked(operation, checkedId) {
     console.log(sessionStorage.checked);
 }
 
-//获取用户已选择的checkbox，返回值为[(key:value),...]
+//获取用户已选择的checkbox，返回值为[(key:value),...]---废弃
 function getChecked() {
     var checkedArr = [];
     console.log("sessionSTAORGET CHECKED", sessionStorage.checked);
@@ -443,7 +453,7 @@ function getChecked() {
     return checkedArr;
 }
 
-//获取当前查询条件
+//获取当前查询条件----废弃
 function getWd() {
     var wd = '';
     if (sessionStorage.wd) {
@@ -455,12 +465,12 @@ function getWd() {
     }
     var checked = getChecked();
     console.log(checked);
- /*   for (var i = 0; i < checked.length; i++) {
-        if (checked[i] != '' && checked[i] != ' ' && wd.indexOf(checked[i]) < 0) {
-            console.log(checked[i]);
-            wd += ' ' + checked[i];
-        }
-    }*/
+    /*   for (var i = 0; i < checked.length; i++) {
+     if (checked[i] != '' && checked[i] != ' ' && wd.indexOf(checked[i]) < 0) {
+     console.log(checked[i]);
+     wd += ' ' + checked[i];
+     }
+     }*/
     //new RegExp("\\s" + cV + "\\s", "gim"
     return wd.replace(/\"/g, "").replace('undefined', '').replace(new RegExp(CheckboxId_SEPARATOR, "gim"), '');//去掉双引号
 }
@@ -471,6 +481,7 @@ function showHomePage() {
     $sidebar.hide();
 }
 
+//显示列表页---废弃
 function showListPage() {
     $('.sidebar').show();
     var agg = sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,

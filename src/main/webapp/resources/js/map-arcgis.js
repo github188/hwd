@@ -112,7 +112,7 @@ function initMap() {
             map.on("load", function () {
                 console.log("map loaded");
                 var capabilities = featureLayer.getEditCapabilities();
-                console.log("This layer can be updated:" , capabilities);
+                console.log("This layer can be updated:", capabilities);
                 console.log("this layer is editable? " + featureLayer.isEditable());
 
 
@@ -198,6 +198,19 @@ function initMap() {
 //=============================public function related to map, not elegant at some point-----------------
 var MyMap = {
     map: {},
+    show: function () {
+
+        $('header').show();
+        //console.log(sessionStorage);
+        if (sessionStorage.agg) {
+            initSidebar(JSON.parse(sessionStorage.agg));
+        }
+        MyMap.render({
+            'aggregation': sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
+            'data': sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
+            'wd': getWd()
+        });
+    },
     render: function (data) {
         console.log("map render function starts--", data);
         if (data && isEmptyObject(data)) {

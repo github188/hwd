@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="result-col for-sidebar-margin">
     <div class="result-count-duration">
-        <p>搜索到约 <strong class="badge">0</strong> 条结果，共用时 <strong class="badge">0</strong> ms</p>
+        <p>搜索到约 <strong class="badge resultCount">0</strong> 条结果，共用时 <strong class="badge duration">0</strong> ms</p>
     </div>
     <div class="pivot-bar-container">
         <div id="pivot-bar" class="pivot-bar">
