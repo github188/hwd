@@ -25,23 +25,23 @@ function newSearch(obj) {
         type: "post",
         contentType: "application/json",
         dataType: "json",
-        timeout: 5000000,
+        timeout: 50000,
         data: requestData
     }).success(function (data) {
         var statuscode = data['statuscode'];
         if (statuscode == 200) {
             //设置sessionStorage
-            sessionStorage.agg = JSON.stringify(data['aggregation']);
-            sessionStorage.devices = JSON.stringify(data['data']);
-            sessionStorage.wd = JSON.stringify(data['wd']);
+            var wd = data['wd'] ? data['wd'] : data['q'];
+            MySessionStorage.set('wd', wd);
+            MySessionStorage.set('data', data);
             obj.success(data);
-            //WEATHER TO INIT SIDEBAR IS UP TO THE CALLER
         } else if (statuscode == 204) {
-            console.log("no data: " + data["errmsg"]);
-            //noDataHandler();
+            alert("no data found");
+            noDataHandler();
         } else {
             console.log("ajax success but " + data['statuscode'], data['errmsg']);
-            //errHandler();
+            alert("ajax search error");
+            errHandler();
         }
     }).error(function (e) {
         //（4）启用查询按钮，如果为form查询
@@ -50,7 +50,7 @@ function newSearch(obj) {
         disableButton($('#home_search_btn'), false);
         //errHandler();
     }).done(function () {
-        //（4）启用查询按钮，如果为form查询
+        //（4）启用查询按钮
         disableButton(button, false);
         disableButton($('#home_search_btn'), false);
     });

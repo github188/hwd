@@ -42,30 +42,38 @@ $(function () {
     pageSlide();//carousel页面导航
     //初始化之后，跳转到用户当前所在页（同一个session的情况下）
     if (sessionStorage) {
+        var activeTag = $('section.active').attr('tag');
+        console.log("active tag", activeTag);
         var currentPage = MySessionStorage.get('currentPage');
-        $('section.item').removeClass('active');
-        $('section[tag="' + currentPage + '"]').addClass('active');
+        console.log("current page on page load", currentPage);
+        if (currentPage && activeTag != currentPage) {
+            $('section.item').removeClass('active');
+            $('section[tag="' + currentPage + '"]').addClass('active');
 
-        //$header.css('visibility', 'visible');
-        switch (currentPage) {
-            case 'home':
-                showHomePage();
-                break;
-            case 'list':
-                List.show();
-                break;
-            case 'map':
-                MyMap.show();
-                break;
-            case 'globe-point':
-                showGlobePointPage();
-                break;
-            case 'globe-line':
-                showGlobeLinePage();
-                break;
-            case 'charts':
-                showChartsPage();
-                break;
+            $('div[data-target]').removeClass('bgd-light-blue');
+            $('div[data-target="' + currentPage + '"]').addClass('bgd-light-blue');
+
+            //$header.css('visibility', 'visible');
+            switch (currentPage) {
+                case 'home':
+                    showHomePage();
+                    break;
+                case 'list':
+                    List.show();
+                    break;
+                case 'map':
+                    MyMap.show();
+                    break;
+                case 'globe-point':
+                    showGlobePointPage();
+                    break;
+                case 'globe-line':
+                    showGlobeLinePage();
+                    break;
+                case 'charts':
+                    showChartsPage();
+                    break;
+            }
         }
     }
 
@@ -173,7 +181,9 @@ function pageSlide() {
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
         $header.css('visibility', 'visible');
+        console.log("page slide tag = ", tag);
         MySessionStorage.set('currentPage', tag);
+        console.log("session storage currentpage", MySessionStorage.get('currentPage'));
         switch (tag) {
             case 'home':
                 showHomePage();

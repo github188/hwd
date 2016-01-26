@@ -37,14 +37,16 @@ public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRe
         if (countryFeatureSet == null) {
             countryFeatureSet = getAndFormatFeatureSet(Constant.countryFeatureSetURL);
         }
-        return countryFeatureSet;
+//        return countryFeatureSet;
+        return new JSONObject();
     }
 
     public static JSONObject getProvinceFeatureSet() {
         if (provinceFeatureSet == null) {
             provinceFeatureSet = getAndFormatFeatureSet(Constant.provinceFeatureSetURL);
         }
-        return provinceFeatureSet;
+//        return provinceFeatureSet;
+        return new JSONObject();
     }
 
     public static JSONObject getCityFeatureSet() {

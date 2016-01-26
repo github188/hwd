@@ -26,28 +26,29 @@ var List = {
         //侧栏
     },
     search: function (updateSidebar, pageNumber) {  //updateSidebar为boolean，true则更新侧边栏，否则不更新
-        console.log("List search starts ----" + sessionStorage.wd);
-        var obj = {
-            "url": listSearchURL,
-            "criteria": {
-                "wd": MySessionStorage.get('wd'),
-                "page": pageNumber
-            },
-            "success": success,
-            "noDataFunc": noDataFunc
-        };
-        newSearch(obj);
-
-
-        var success = function (data) {
-                if (updateSidebar) {
-                    Sidebar.init(data['aggregation']);
-                }
-                List.render(data);
-            },
-            noDataFunc = function (data) {
-                console.log("no data", data['errmsg']);
-                //显示无数据提示
+        console.log("List search starts ----wd before search" + MySessionStorage.get('wd'));
+        var wd = MySessionStorage.get('wd');
+        if (wd) {
+            var success = function (data) {
+                    if (updateSidebar) {
+                        Sidebar.init(data['aggregation']);
+                    }
+                    List.render(data);
+                },
+                noDataFunc = function (data) {
+                    console.log("no data", data['errmsg']);
+                    //显示无数据提示
+                };
+            var obj = {
+                "url": listSearchURL,
+                "criteria": {
+                    "wd": wd,
+                    "page": pageNumber
+                },
+                "success": success,
+                "noDataFunc": noDataFunc
             };
+            newSearch(obj);
+        }
     }
 };

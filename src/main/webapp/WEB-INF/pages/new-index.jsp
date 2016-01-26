@@ -29,6 +29,7 @@
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
     <script src="resources/js/lib/bootstrap.min.js"></script>
     <script> var basePath = '${basePath}';</script>
+    <script src="resources/js/sessionStorage.js"></script>
     <script src="resources/js/new-main.js"></script>
     <%--<script src="resources/js/initFeatureSets.js"></script>--%>
 

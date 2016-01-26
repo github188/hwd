@@ -22,7 +22,7 @@ public class NewDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(NewDeviceService.class);
     private static final String uri4AdvsSearch = "http://10.10.12.72:8083/se/search/advanced?q={q}";
     private static final String uri4MapSearch = "http://10.10.12.72:8083/se/search/map?q={q}";
-    private static final String uri4List = "http://10.10.2.143:8083/se/search?wd={wd}&page={page}";
+    private static final String uri4List = "http://10.10.12.72:8083/se/search?wd={wd}&page={page}";
 
     private final NewDeviceDAO dao;
 

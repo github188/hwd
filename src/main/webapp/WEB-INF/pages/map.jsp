@@ -10,9 +10,14 @@
 <script type="text/javascript" src="http://localhost:8080/arcgis_js_api/library/3.15/3.15/init.js"></script>
 <div>
     <div class="mapHolder" id="mapHolder"></div>
-    <%--<div id="homeButton"></div>--%>
     <div id="legend-wrapper">
         <div id="legend"></div>
+    </div>
+    <div id="tool-wrapper">
+        <div id="homeButton"></div>
+        <div id="featureLayer">
+            <span class="glyphicon glyphicon-globe feature" title="分布图"></span>
+        </div>
     </div>
     <div id="mapSidebar">
         <div class="tool-bar">
@@ -25,15 +30,15 @@
         <div class="content">
             <ul class="map-device-list">
                 <li>
-                        <a href="#" class="title">71.17.11.163</a>
+                    <a href="#" class="title">71.17.11.163</a>
 
-                        <div class="info">
-                            <span class="label label-default timestamp">123</span>
-                            <span class="label label-default location">加拿大, 加拿大</span>
-                            <span class="label label-default ports">redlion:789</span>
-                            <span class="label label-default vuls"></span>
-                            <span class="label label-default tags">ICS</span>
-                        </div>
+                    <div class="info">
+                        <span class="label label-default timestamp">123</span>
+                        <span class="label label-default location">加拿大, 加拿大</span>
+                        <span class="label label-default ports">redlion:789</span>
+                        <span class="label label-default vuls"></span>
+                        <span class="label label-default tags">ICS</span>
+                    </div>
                 </li>
             </ul>
         </div>
