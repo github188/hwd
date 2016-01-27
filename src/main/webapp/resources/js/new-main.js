@@ -132,10 +132,6 @@ $(function () {
         advsSearch(this);
     });
 
-    $('.map-sidebar-link').on('click', function (e) {
-        e.preventDefault();
-        $('#mapSidebar').toggleClass('active');
-    });
 
     //~~~~~~~~~~~~~~~~~~~~~~~listener↑~~~~~~~~~~~~~~~~~~~~~~
 });

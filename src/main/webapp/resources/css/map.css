@@ -15,7 +15,7 @@
 #mapSidebar {
     display: none;
     position: absolute;
-    width: 1rem;
+    width: 1.5rem;
     padding: .5rem;
     top: 5rem;
     right: 1px;
@@ -490,3 +490,52 @@
 }*/
 
 /* ------------------------  Map Wrapper ↑ ---------------------- */
+/*分页*/
+.pagination4 .page a, .pagination4 .page a:hover {
+    width: 100px;
+    text-align: center;
+    border: 1px solid #ddd;
+    color: #999;
+    background-color: #fff !important
+}
+
+pre code {
+    background-color: transparent
+}
+
+.customBootstrap .pagination > li > a {
+    margin-right: 5px;
+    border-radius: 2px;
+    background: #fff;
+    color: #333;
+    border-color: #ccc;
+    padding: 6px 15px
+}
+
+.customBootstrap .pagination > li > a:hover, .customBootstrap .pagination > li > a:focus {
+    color: #fff;
+    background: #fb9400;
+    border-color: #fb9400
+}
+
+.customBootstrap .pagination > .active > a, .customBootstrap .pagination > .active > a:hover, .customBootstrap .pagination > .active > a:focus {
+    color: #fff;
+    background: #fb9400;
+    border-color: #fb9400
+}
+
+.customBootstrap .pagination .arrow2 {
+    margin: 3px 8px 5px 0
+}
+
+.customBootstrap .pagination a:hover .arrow2 {
+    border-right-color: #fff
+}
+
+.customBootstrap .pagination .arrow3 {
+    margin: 3px 0 5px 8px
+}
+
+.customBootstrap .pagination a:hover .arrow3 {
+    border-left-color: #fff
+}

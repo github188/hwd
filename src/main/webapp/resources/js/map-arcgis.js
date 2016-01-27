@@ -494,7 +494,7 @@ var MyMap = {
             //（1）添加设备层
             addClusters(data['data']);
             //（2）显示地图右侧边栏
-            MapSidebar.init(data['data']);
+            MapSidebar.init(data);
             MapSidebar.show();
         } else {
             var interval = setInterval(function () {
@@ -502,7 +502,7 @@ var MyMap = {
                     //（1）添加设备层
                     addClusters(data['data']);
                     //（2）显示地图右侧边栏
-                    MapSidebar.init(data['data']);
+                    MapSidebar.init(data);
                     MapSidebar.show();
                     clearInterval(interval);
                 }
@@ -722,12 +722,25 @@ var MapSidebar = {
     show: function () {
         $('#mapSidebar').show();
     },
-    init: function (devices) {
+    init: function (data) {
         //popup_sidepanel， ArcGis 自带的侧边栏
+        var devices = data['data'];
         console.log("init map sidebar", devices);
-        $('.map-device-list').html('');
+        //添加设备
+        var deviceList = $('.map-device-list').html('');
+        $.each(devices, function (d) {
+            deviceList.append(genDeviceLi(d));
+        });
+        //分页
+        this.paginator(data['total'], data['pagesize'], data['currentpage']);
+
+        //listener
+        $('.map-sidebar-link').on('click', function (e) {
+            e.preventDefault();
+            $('#mapSidebar').toggleClass('active');
+        });
         //添加设备，待补充
-        function addDevice(device) {
+        function genDeviceLi(device) {
             var $li = $('<li id="' + device.ip + '"></li>').appendTo($('.map-device-list'));
             var $title = $('<a href="#" class="title">' + device.ip + '</a>').appendTo($li);
             var $info = $('<div class="info"></div>').appendTo($li);
@@ -743,20 +756,45 @@ var MapSidebar = {
             }
 
             if (ports && ports != '' & ports.length > 0) {
-                for (var p in ports) {
-
+                for (var i = 0; i < ports.length; i++) {
+                    for (var key in ports[i]) {
+                        $info.append($('<span class="label label-default port">' + key + '</span>'));
+                    }
                 }
             }
             if (vuls && vuls != '') {
-                for (var p in vuls) {
+                for (var key in vuls) {
+                    $info.append($('<span class="label label-default vul">' + key + '</span>'));
 
                 }
             }
+            return $li;
         }
     },
     onSelectionChange: function () {    //用户选择了一个设备的时候，在地图上弹出对应设备的infowindow
         var selected = map.infoWindow.getSelectedFeature();
         console.log("on selection  change, selected = ", selected);
+    },
+    paginator: function (totalCounts, pageSize, currentPageNum) {
+        $("#demo4").jqPaginator({
+            totalPages: totalCounts,
+            visiblePages: 1,
+            currentPage: currentPageNum,
+            prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
+            next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
+            page: '<li class="page"><a href="javascript:void(0);"> {{page}} / {{totalPages}} <\/a><\/li>',
+            onPageChange: function (n) {
+                $("#demo4-text").html("当前第" + n + "页");
+                if (type == 'change') {
+                    var currPage = MySessionStorage.get('currentPage');
+                    if (currPage == 'list') {
+                        List.search(false, num);
+                    } else if (currPage == 'map') {
+                        MyMap.search(false, num);
+                    }
+                }
+            }
+        });
     }
 };
 
