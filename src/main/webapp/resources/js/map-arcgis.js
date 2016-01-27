@@ -1,103 +1,322 @@
 /*---------------------------------------------↓Map-----------------------------------------------*/
 var mapSearchURL = "api/mapSearch",
     basemapURL = 'http://10.10.2.81:6080/arcgis/rest/services/China_Community_BaseMap/MapServer',
-    countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince/FeatureServer/2',
+//countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince/FeatureServer/2',
+    countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/world/MapServer/0',
     provinceLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince/FeatureServer/1',
-    cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince/FeatureServer/0';
+//cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince/FeatureServer/0';
+    cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1';
 var MAP_PAGE_SIZE = 5;
+var countryGL, cityGL;
+function initMap() { //网站加载时调用此方法
+    require(
+        [
+            "esri/map",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+            "esri/layers/GraphicsLayer",
+            "esri/InfoTemplate",
+            "esri/layers/FeatureLayer",
+            "esri/dijit/HomeButton",
+            "esri/tasks/query",
+            "esri/tasks/QueryTask",
+            "esri/symbols/SimpleFillSymbol",
+            "dojo/domReady!"
+        ],
+        function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, FeatureLayer, HomeButton, Query, QueryTask, SimpleFillSymbol) {
+            //（1）Create map and add layer
+            map = new Map("mapHolder", {
+                //basemap: 'gray',
+                center: [114.25, 24.1167],
+                minZoom: 3,
+                maxZoom: 8,
+                zoom: 4,
+                sliderPosition: "bottom-right",
+                logo: false
+            });
+            //（1）添加底图
+            var basemap = new ArcGISTiledMapServiceLayer(basemapURL);
+            map.addLayer(basemap);
+            countryGL = new GraphicsLayer();
+            map.addLayer(countryGL, 6);
+            cityGL = new GraphicsLayer();
+            map.addLayer(cityGL, 7);
+
+            //（2）添加设备点层
+            /* deviceGL = new GraphicsLayer({
+             id: "deviceGraphicLayer",
+             infoTemplate: new InfoTemplate("${ip}",
+             "<b>${location}<b><br><b>${tags}</b><br><b>${timestamp}</b>"),
+             visibleAtMapScale: true
+             });
+             map.addLayer(deviceGL, 1);*/
+
+            //（3）添加feature layers
+            var featureLayerInfoTemplate = new InfoTemplate("${Name_CHN}", "国家：<b>${Name_CHN}<b><br>共发现目标：<b>${count}</b>个");
+            var featureLayerOption = {
+                outFields: ["*"],
+                mode: FeatureLayer.MODE_SNAPSHOT,
+                visible: true //default is true
+                //infoTemplate: featureLayerInfoTemplate
+            };
+            countryLayer = new FeatureLayer(countryLayerURL, featureLayerOption);
+            map.addLayer(countryLayer, 2);
+            //provinceLayer = new FeatureLayer(provinceLayerURL, featureLayerOption);
+            //map.addLayer(provinceLayer, 3);
+            cityLayer = new FeatureLayer(cityLayerURL, featureLayerOption);
+            //map.addLayer(cityLayer, 4);
+            /*cityLayer.on('load', function () {
+             var cint = setInterval(function () {
+             if (cityLayer.graphics.length > 0) {
+             console.log(cityLayer.graphics[0]);
+             clearInterval(cint);
+             }
+             }, 1000)
+             });*/
+            //（4）Init Home button
+            /* home = new HomeButton({
+             map: map
+             }, "homeButton").startup();*/
+
+            map.on('load', function () {
+                console.log("map loaded");
+                //MyFeatureLayer.show('city', MySessionStorage.get('data').aggregation);
+            });
+
+            map.on('zoom-end', function (e) {
+                console.log("zoom levle: " + map.getZoom());
+                //MyFeatureLayer.show('country', MySessionStorage.get('data')['aggregation']);
+            });
+        });
+}
+initMap();
+
+var map, countryFS = {}, provinceFS = {}, cityFS = {}, featureGL, deviceGL, countryLayer, provinceLayer, cityLayer;
+var clusterLayer;
 
 var MyFeatureLayer = {
-    show: function (which, agg) {   //调用之前需要判断agg是否存在，存在再调用此方法
-        console.log("showing");
-        var layer, areas, cc = agg['country@%city'];
-        if (map && layer.graphics) {
-            initData();
-            render();
-            map.reorderLayer(layer, 10);
-            layer.show();
-        } else {
-            var wait4Map = setInterval(function () {
-                if (map && layer.graphics) {
-                    initData();
-                    render();
-                    map.reorderLayer(layer, 10);
-                    layer.show();
-                    clearInterval(wait4Map);
-                }
-            }, 1000);
-        }
-
-        function initData() {
-            switch (which) {
-                case 'country':
-                    layer = countryLayer;
-                    for (var co in cc) {
-                        areas[cc[co].en] = cc[co].count;
-                    }
-                    console.log("countries = ", areas);
-                    break;
-                case 'province':
-                    layer = provinceLayer;
-                    break;
-                case 'city':
-                    for (var co in cc) {
-                        areas = $.extend({}, areas, cc[co]['cities']);
-                    }
-                    console.log("cities = ", areas);
-                    layer = cityLayer;
-                    break;
+        show: function (which, agg) {   //调用之前需要判断agg是否存在，存在再调用此方法
+            console.log("showing feature layer");
+            var layer, areas = {}, cc = agg['country@%city'];
+            if (which == 'city') {
+                layer = cityLayer;
+            } else {
+                layer = countryLayer;
             }
-            console.log("areas = ", areas);
-            console.log("layer = ", layer);
-        }
+            if (map && layer.graphics) {
+                initData();
+                if (city == 'city') {
+                    renderCity();
+                } else {
+                    render();
+                }
+                map.reorderLayer(layer, 10);
+            } else {
+                var wait4Map = setInterval(function () {
+                    if (map && layer.graphics) {
+                        initData();
+                        if (city == 'city') {
+                            renderCity();
+                        } else {
+                            render();
+                        }
+                        map.reorderLayer(layer, 10);
+                        layer.show();
+                        clearInterval(wait4Map);
+                    }
+                }, 1000);
+            }
 
-        function render() {
-            console.log("feature layer is rendering");
-            var min = Number.MAX_VALUE, max = 0, areas, features = layer.graphics;
-            require([
-                "esri/map", "esri/geometry/Extent",
-                "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/dijit/Legend",
-                "esri/renderers/SimpleRenderer", "esri/Color",
-                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
-                "dojo/domReady!"
-            ], function (Map, Extent, FeatureLayer, InfoTemplate, Legend,
-                         SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
+            function initData() {
+                switch (which) {
+                    case 'country':
+                        layer = countryLayer;
+                        for (var co in cc) {
+                            areas[cc[co].en] = cc[co].count;
+                        }
+                        console.log("countries = ", areas);
+                        break;
+                    case 'province':
+                        layer = provinceLayer;
+                        break;
+                    case 'city':
+                        for (var co in cc) {
+                            areas = $.extend({}, areas, cc[co]['cities']);
+                        }
+                        console.log("cities = ", areas);
+                        layer = cityLayer;
+                        break;
+                }
+                console.log("areas = ", areas);
+                console.log("layer = ", layer);
+            }
 
-                //（1）修改layer的参数
-                for (var i = 0; i < features.length; i++) {
-                    var f = features[i], arr = f.attributes;
-                    for (var key in areas) {
-                        var name = arr.name ? arr.name : arr.name_chn;
-                        if (name && name.indexOf(key) >= 0) {
-                            var count = areas[key];
-                            arr.count = count;
-                            features[i].setAttributes(arr);
-                            setMinMax(count);
-                            break;
+            function render() {
+                console.log("feature layer is rendering");
+                var min = Number.MAX_VALUE, max = 0, features = layer.graphics;
+                require([
+                    "esri/map", "esri/geometry/Extent",
+                    "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/dijit/Legend",
+                    "esri/renderers/SimpleRenderer", "esri/Color",
+                    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+                    "dojo/domReady!"
+                ], function (Map, Extent, FeatureLayer, InfoTemplate, Legend,
+                             SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
+                    //（1）修改layer的参数
+                    for (var i = 0; i < features.length; i++) {
+                        console.log('feature areas = ', areas);
+                        var f = features[i], arr = f.attributes;
+                        for (var key in areas) {
+                            var name = arr.name ? arr.name : arr.name_chn;
+                            console.log('name in arcgis' + name);
+                            if (name && name.indexOf(key) >= 0) {
+                                var g = f;
+                                var count = areas[key];
+                                arr.count = count;
+                                features[i].setAttributes(arr);
+                                g.setAttributes(arr);
+                                countryGL.add(g);
+                                setMinMax(count);
+                                break;
+                            }
                         }
                     }
-                }
-                console.log(layer);
-                //（2）设置renderer
-                var renderer = new SimpleRenderer(new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128]))));
-                renderer.setColorInfo({
-                    field: "count",
-                    minDataValue: min,
-                    maxDataValue: max,
-                    colors: [
-                        new Color([255, 255, 255, 0.2]),
-                        new Color([244, 238, 246, 0.75]),
-                        new Color([121, 37, 135, 0.75])
-                    ]
+                    console.log(countryGL);
+                    //（2）设置renderer
+                    var renderer = new SimpleRenderer(new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128]))));
+                    renderer.setColorInfo({
+                        field: "count",
+                        minDataValue: min,
+                        maxDataValue: max,
+                        colors: [
+                            new Color([255, 255, 255, 0.2]),
+                            new Color([244, 238, 246, 0.75]),
+                            new Color([121, 37, 135, 0.75])
+                        ]
+                    });
+                    //layer.setRenderer(renderer);
+                    countryGL.setRenderer(renderer);
+                    // （3）启动legend
+                    //var legend = new Legend({
+                    //    map: map,
+                    //    layerInfos: [{title: "", layer: layer}]
+                    //}, "legend");
+                    //legend.startup();
                 });
-                layer.setRenderer(renderer);
-                // （3）启动legend
-                var legend = new Legend({
-                    map: map,
-                    layerInfos: [{title: "", layer: layer}]
-                }, "legend");
-                legend.startup();
-            });
+                function setMinMax(count) {
+                    if (count < min) {
+                        min = count;
+                    }
+                    if (count > max) {
+                        max = count;
+                    }
+                }
+            }
+
+            function renderCity() {
+                // the previous function cannot fulfill the req.
+                require([
+                    "esri/map", "esri/geometry/Extent",
+                    "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/dijit/Legend",
+                    "esri/renderers/SimpleRenderer", "esri/Color",
+                    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+                    "esri/tasks/query",
+                    "esri/tasks/QueryTask"
+                ], function (Map, Extent, FeatureLayer, InfoTemplate, Legend,
+                             SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol, Query, QueryTask) {
+                    var query = new Query();
+                    query.returnGeometry = true;
+
+                    for (var city in areas) {
+                        console.log("areas.city = " + city);
+                        //query.where = "'Shape'='面'";
+                        if (city != 'Unknown') {
+                            var name = city.replace('市', '').replace('郊县', '').replace('城区', '');
+                            query.where = "'Name_CHN'=" + name;
+                            cityLayer.queryFeatures(query, callback, errback);
+                        }
+                    }
+                    function queryLimitExceeded() {
+                    }
+
+                    function callback(data) {
+                        console.log("callback ", data);
+                    }
+
+                    function errback(data) {
+                        console.log("error ", data);
+                    }
+                });
+            }
+
+        },
+        showCountry: function (agg) {
+            console.log("country layer show", agg);
+            if (map && countryLayer && countryLayer.graphics && countryLayer.graphics.length > 0) {
+                console.log("country layer show in if");
+
+                //initData();
+                render();
+                map.reorderLayer(countryGL, 10);
+                countryLayer.show();
+            } else {
+                console.log("country layer show in else");
+
+                var wait4Map = setInterval(function () {
+                    if (map && countryLayer && countryLayer.graphics && countryLayer.graphics.length > 0) {
+                        //initData();
+                        render();
+                        map.reorderLayer(countryLayer, 10);
+                        countryLayer.show();
+                        clearInterval(wait4Map);
+                    }
+                }, 1000);
+            }
+            var countries = agg['country@%city'], min = Number.MAX_VALUE, max = 0;
+
+            function render() {
+                require([
+                    "esri/graphic",
+                    "esri/renderers/SimpleRenderer", "esri/Color",
+                    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+                    "esri/dijit/Legend"
+                ], function (Graphic, SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol, Legend) {
+                    countryGL.clear();
+                    if (!isEmptyObject(countries)) { //国家级别
+
+                        for (var key in countries) {
+                            var features = countryLayer.graphics;
+                            console.log("country for show in if", features);
+                            var country = countries[key];
+                            for (var i = 0; i < features.length; i++) {
+                                if (features[i].attributes.NAME == country.en) {
+                                    var f = features[i];
+                                    f.attributes.count = country.count;
+                                    f.attributes.Name_CHN = key;
+                                    var g = new Graphic(f);
+                                    countryGL.add(f);
+                                    console.log(f);
+                                    setMinMax(country.count);
+                                }
+                                min = (max.length - 2) > 0 ? (max.length - 2) * 10 : min;
+                                var sfs = new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128])));
+                                var renderer = new SimpleRenderer(sfs);
+                                renderer.setColorInfo({
+                                    field: "count",
+                                    minDataValue: min,
+                                    maxDataValue: max,
+                                    colors: [
+                                        new Color([244, 238, 246, 0.75]),
+                                        new Color([121, 37, 135, 0.75])
+                                    ]
+                                });
+                                countryGL.setRenderer(renderer);
+                                countryLayer.hide();
+                            }
+                        }
+                    }
+                });
+            }
+
             function setMinMax(count) {
                 if (count < min) {
                     min = count;
@@ -105,16 +324,106 @@ var MyFeatureLayer = {
                 if (count > max) {
                     max = count;
                 }
+
+            }
+
+        },
+        showCity: function (agg) {
+
+            function initData() {
+                switch (which) {
+                    case 'country':
+                        layer = countryLayer;
+                        for (var co in cc) {
+                            areas[cc[co].en] = cc[co].count;
+                        }
+                        console.log("countries = ", areas);
+                        break;
+                    case 'province':
+                        layer = provinceLayer;
+                        break;
+                    case 'city':
+                        for (var co in cc) {
+                            areas = $.extend({}, areas, cc[co]['cities']);
+                        }
+                        console.log("cities = ", areas);
+                        layer = cityLayer;
+                        break;
+                }
+                console.log("areas = ", areas);
+                console.log("layer = ", layer);
+            }
+
+            function render() {
+                console.log("feature layer is rendering");
+                var min = Number.MAX_VALUE, max = 0, features = layer.graphics;
+                require([
+                    "esri/map", "esri/geometry/Extent",
+                    "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/dijit/Legend",
+                    "esri/renderers/SimpleRenderer", "esri/Color",
+                    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+                    "dojo/domReady!"
+                ], function (Map, Extent, FeatureLayer, InfoTemplate, Legend,
+                             SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
+                    //（1）修改layer的参数
+                    for (var i = 0; i < features.length; i++) {
+                        console.log('feature areas = ', areas);
+                        var f = features[i], arr = f.attributes;
+                        for (var key in areas) {
+                            var name = arr.name ? arr.name : arr.name_chn;
+                            console.log('name in arcgis' + name);
+                            if (name && name.indexOf(key) >= 0) {
+                                var g = f;
+                                var count = areas[key];
+                                arr.count = count;
+                                features[i].setAttributes(arr);
+                                g.setAttributes(arr);
+                                countryGL.add(g);
+                                setMinMax(count);
+                                break;
+                            }
+                        }
+                    }
+                    console.log(countryGL);
+                    //（2）设置renderer
+                    var renderer = new SimpleRenderer(new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128]))));
+                    renderer.setColorInfo({
+                        field: "count",
+                        minDataValue: min,
+                        maxDataValue: max,
+                        colors: [
+                            new Color([255, 255, 255, 0.2]),
+                            new Color([244, 238, 246, 0.75]),
+                            new Color([121, 37, 135, 0.75])
+                        ]
+                    });
+                    //layer.setRenderer(renderer);
+                    countryGL.setRenderer(renderer);
+                    // （3）启动legend
+                    //var legend = new Legend({
+                    //    map: map,
+                    //    layerInfos: [{title: "", layer: layer}]
+                    //}, "legend");
+                    //legend.startup();
+                });
+                function setMinMax(count) {
+                    if (count < min) {
+                        min = count;
+                    }
+                    if (count > max) {
+                        max = count;
+                    }
+                }
             }
         }
-
-    },
-    hide: function () {
-        countryLayer.hide();
-        provinceLayer.hide();
-        cityLayer.hide();
+        ,
+        hide: function () {
+            countryLayer.hide();
+            provinceLayer.hide();
+            cityLayer.hide();
+        }
     }
-};
+    ;
 /*
  *
 
@@ -140,101 +449,35 @@ var MyFeatureLayer = {
  "dijit/popup",
  * */
 
-var map, countryFS = {}, provinceFS = {}, cityFS = {}, featureGL, deviceGL, countryLayer, provinceLayer, cityLayer;
-var clusterLayer;
-
-initMap();
-function initMap() { //网站加载时调用此方法
-    console.log("start to load map --- ");
-    require(
-        [
-            "esri/map",
-            "esri/layers/ArcGISTiledMapServiceLayer",
-            "esri/layers/GraphicsLayer",
-            "esri/InfoTemplate",
-            "esri/layers/FeatureLayer",
-            "esri/dijit/HomeButton",
-            "esri/tasks/query",
-            "esri/tasks/QueryTask",
-            "esri/symbols/SimpleFillSymbol",
-            "dojo/domReady!"
-        ],
-        function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, FeatureLayer, HomeButton, Query, QueryTask, SimpleFillSymbol) {
-            //（1）Create map and add layer
-            map = new Map("mapHolder", {
-                //basemap: 'gray',
-                //center: [114.25, 24.1167],
-                minZoom: 1,
-                maxZoom: 8,
-                zoom: 4,
-                sliderPosition: "bottom-right",
-                logo: false
-            });
-            //（1）添加底图
-            var basemap = new ArcGISTiledMapServiceLayer(basemapURL);
-            map.addLayer(basemap);
-
-            //（2）添加设备点层
-            deviceGL = new GraphicsLayer({
-                id: "deviceGraphicLayer",
-                infoTemplate: new InfoTemplate("${ip}",
-                    "<b>${location}<b><br><b>${tags}</b><br><b>${timestamp}</b>"),
-                visibleAtMapScale: true
-            });
-            map.addLayer(deviceGL, 1);
-
-            //（3）添加feature layers
-            var featureLayerInfoTemplate = new InfoTemplate("${Name_CHN}", "国家：<b>${Name_CHN}<b><br>共发现目标：<b>${count}</b>个");
-            var featureLayerOption = {
-                outFields: ["*"],
-                mode: FeatureLayer.MODE_SNAPSHOT,
-                visible: true //default is true
-                //infoTemplate: featureLayerInfoTemplate
-            };
-            countryLayer = new FeatureLayer(countryLayerURL, featureLayerOption);
-            map.addLayer(countryLayer, 2);
-            provinceLayer = new FeatureLayer(provinceLayerURL, featureLayerOption);
-            map.addLayer(provinceLayer, 3);
-            cityLayer = new FeatureLayer(cityLayerURL, featureLayerOption);
-            map.addLayer(provinceLayer, 4);
-
-            //（4）Init Home button
-            /* home = new HomeButton({
-             map: map
-             }, "homeButton").startup();*/
-
-            map.on('load', function () {
-                console.log("map loaded");
-            });
-
-            map.on('zoom-end', function (e) {
-                console.log("zoom levle: " + map.getZoom());
-                //MyFeatureLayer.show('country', MySessionStorage.get('data')['aggregation']);
-            });
-        });
-}
-
-//=============================public function related to map, not elegant at some point-----------------
 var MyMap = {
     RENDER_ZOOM: 4,
     show: function () { //滑动到地图页时调用此方法
-        console.log("map is showing---");
         $('header').css('visibility', ' visible').show();
         MySessionStorage.set('currentPage', 'map');
         var data = MySessionStorage.get('data');
-        if (data || !isEmptyObject(data)) {
+        console.log("map is showing---", data);
+        if (data && !isEmptyObject(data)) {
             //（1）显示左侧边栏
             Sidebar.show();
             //（2）渲染地图
             this.render(data);
             //（3）监听tool bar
-            $('#featureLayer').on('click', function () {
-                    if (map.getZoom() < 5) {
-                        MyFeatureLayer.show('country', data.aggregation);
-                    } else if (map.getZoom() < 4) {
-                        MyFeatureLayer.show('province', data.aggregation);
-                    } else {
-                        MyFeatureLayer.show('city', data.aggregation);
+            $('.feature').on('click', function () {
+                    var dd = MySessionStorage.get('data');
+                    console.log('feature tool is clicked! ', dd);
+
+                    if (dd && !isEmptyObject(dd)) {
+                        /* } else if (map.getZoom() < 4) {
+                         MyFeatureLayer.show('province', data.aggregation);
+                         } */
+                        if (map.getZoom() < 5) {
+                            console.log('zoom < 5');
+                            //MyFeatureLayer.show('country', dd.aggregation);
+                            MyFeatureLayer.showCountry(dd.aggregation);
+                        } else {
+                            console.log('feature tool is clicked! city');
+                            MyFeatureLayer.show('city', dd.aggregation);
+                        }
                     }
                 }
             );
@@ -246,21 +489,33 @@ var MyMap = {
             console.log('in map render data is undefined or empty');
             return;
         }
-        var interval = setInterval(function () {
-            if (map) {
-                //（1）添加设备层
-                addClusters(data['data']);
-                //（2）显示地图右侧边栏
-                MapSidebar.init(data['data']);
-                MapSidebar.show();
-                clearInterval(interval);
-            }
-        }, 1000);
+        this.hideNoData();
+        if (map) {
+            //（1）添加设备层
+            addClusters(data['data']);
+            //（2）显示地图右侧边栏
+            MapSidebar.init(data['data']);
+            MapSidebar.show();
+        } else {
+            var interval = setInterval(function () {
+                if (map) {
+                    //（1）添加设备层
+                    addClusters(data['data']);
+                    //（2）显示地图右侧边栏
+                    MapSidebar.init(data['data']);
+                    MapSidebar.show();
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
 
         function addClusters(devices) {
             console.log("add cluster -----", devices);
             if (!devices) {
                 return;
+            }
+            if (clusterLayer) {
+                map.removeLayer(clusterLayer);
             }
             require([
                 "esri/SpatialReference",
@@ -284,12 +539,24 @@ var MyMap = {
                 devicesInfo.data = $.map(devices, function (d) {
                     var latlng = new Point(parseFloat(d.lon), parseFloat(d.lat), wgs);
                     var webMercator = webMercatorUtils.geographicToWebMercator(latlng);
+                    var ports = d.ports, vuls = d.vuls, portsStr = '', vulsStr = '';
+                    for (var i = 0; i < ports.length; i++) {
+                        for (var p in ports[i]) {
+                            portsStr += ', ' + ports[i][p];
+                        }
+                    }
+                    for (var j = 0; j < vuls.length; j++) {
+                        for (var key in vuls[j]) {
+                            vulsStr += ", " + vuls[j][key];
+                        }
+                    }
+
                     var attributes = {
                         "IP": d.ip,
                         "Location": d.location,
-                        "Ports": d.ports,
+                        "Ports": portsStr,
                         "Tags": d.tags,
-                        "Vuls": d.vuls,
+                        "Vuls": vulsStr,
                         "Timestamp": d.timestamp,
                         "Image": basePath + "resources/img/home.png",
                         "Link": d.link
@@ -323,11 +590,11 @@ var MyMap = {
                         "fieldName": "Tags",
                         "label": "标签：",
                         visible: true
-                    }, {
-                        "fieldName": "Timestamp",
-                        "label": "更新时间：",
-                        visible: true
-                    }],
+                    }/*, {
+                     "fieldName": "Timestamp",
+                     "label": "更新时间：",
+                     visible: true
+                     }*/],
                     "mediaInfos": [{
                         "title": "",
                         "caption": "",
@@ -400,13 +667,13 @@ var MyMap = {
             console.log("map search succeed", data);
             if (updateSidebar) {
                 Sidebar.init(data['aggregation']);
+                Sidebar.show();
             }
+            MySessionStorage.set('mapWd', data['q']);
+            MySessionStorage.set('lastSavedWd', 'map');
             MyMap.render(data);
         };
-        var noDataFunc = function () {
-            alert("no related data found!");
-            console.log("map no data found!");
-        };
+        var noDataFunc = this.showNoData;
         var searchObj = {
             "url": basePath + mapSearchURL,
             "success": success,
@@ -441,6 +708,13 @@ var MyMap = {
             });
             return polygonCCW;
         }
+    },
+
+    showNoData: function () {
+        console.log("no data");
+    },
+    hideNoData: function () {
+        console.log("hide data function");
     }
 };
 
@@ -503,7 +777,6 @@ function initFeatureSetByNames(which, names) {
         //init data
         switch (which) {
             case 'country':
-                //将features转换为map，方便以后使用， key：名称，value：feature
                 resp.features.forEach(function (item) {
                     countryFS[item.attributes.NAME] = item;
                 });
@@ -559,14 +832,7 @@ function initFeatureSetByNames(which, names) {
     executeQueryTask(url);
 }
 
-/*
- * 分布图，根据区域中存在设备的数量来填充颜色
- * featureSet:
- * 　　countryFS:item.attributes.NAME 和 item.geometry
- *     provinceFS:item.attributes.Name_CHN 和 item.geometry
- *     cityFS:item.attributes.Name_CHN 和 item.geometry
- * agg: data.aggregation
- */
+
 function addFeatureGraphicLayer(agg, zoom) {
     console.log("addFeatureGraphicLayer------------starts");
     if (!agg || isEmptyObject(agg)) {
@@ -578,11 +844,11 @@ function addFeatureGraphicLayer(agg, zoom) {
     }
     if (!featureSets) {
         console.log("feature set is empty");
-        /*if (localStorage.featureSets && !isEmptyObject(JSON.parse(localStorage.featureSets))) {
-         fss = JSON.parse(localStorage.featureSets);
-         } else if (sessionStorage.featureSets && !isEmptyObject(JSON.parse(sessionStorage.featureSets))) {
-         fss = JSON.parse(sessionStorage.featureSets);
-         }*/
+        if (localStorage.featureSets && !isEmptyObject(JSON.parse(localStorage.featureSets))) {
+            fss = JSON.parse(localStorage.featureSets);
+        } else if (sessionStorage.featureSets && !isEmptyObject(JSON.parse(sessionStorage.featureSets))) {
+            fss = JSON.parse(sessionStorage.featureSets);
+        }
     }
     if (featureSets && !isEmptyObject(featureSets)) {
         renderFeatureLayer(agg, featureSets, zoom);
@@ -630,7 +896,6 @@ function addFeatureGraphicLayer(agg, zoom) {
                     var map = '{"福建省":558,"西藏自治区":62,"贵州省":115,"上海市":616,"广东省":824,"湖北省":325,"湖南省":471,"澳门特别行政区":30,"香港特别行政区":30,"四川省":358,"安徽省":260,"新疆维吾尔自治区":560,"江苏省":456,"吉林省":337,"宁夏回族自治区":78,"河北省":670,"河南省":325,"广西壮族自治区":148,"海南省":34,"江西省":366,"重庆市":463,"云南省":207,"北京市":887,"甘肃省":275,"山东省":476,"陕西省":55,"浙江省":741,"内蒙古自治区":228,"青海省":98,"天津市":443,"辽宁省":424,"台湾省":1022,"黑龙江省":316,"山西省":279}';
                     map = JSON.parse(map);
                     var ff = featureSets.provinceFS.features;
-                    //省份级别,目前也按照市来做
                     console.log("4<zoom<10", ff);
                     var i = 1;
                     for (var p in ff) {
@@ -642,17 +907,16 @@ function addFeatureGraphicLayer(agg, zoom) {
                         featureGL.add(g);
                         setMinMax(count);
                     }
-                    /* if (features.hasOwnProperty(country.en)) {
-                     var f = features[country.en];
-                     f.attributes.count = country.count;
-                     f.attributes.Name_CHN = key;
-                     var g = new Graphic(f);
-                     featureGL.add(g);
-                     setMinMax(country.count);
-                     }*/
+                    if (features.hasOwnProperty(country.en)) {
+                        var f = features[country.en];
+                        f.attributes.count = country.count;
+                        f.attributes.Name_CHN = key;
+                        var g = new Graphic(f);
+                        featureGL.add(g);
+                        setMinMax(country.count);
+                    }
 
                 } else {
-                    //城市级别
                     var names = "北京郊县";
                     console.log("zoom>=6", zoom);
                     var cityFeatures = fss.cityFS.features;
@@ -691,7 +955,6 @@ function addFeatureGraphicLayer(agg, zoom) {
                 }, "legend");
 
 
-                //调整min和max ，防止max过大、min过小造成显示太难看
                 min = (max.length - 2) > 0 ? (max.length - 2) * 10 : min;
                 var sfs = new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128])));
                 var renderer = new SimpleRenderer(sfs);
@@ -700,17 +963,17 @@ function addFeatureGraphicLayer(agg, zoom) {
                     minDataValue: min,
                     maxDataValue: max,
                     colors: [
-                        /*new Color([220, 199, 224, 0.75]),
-                         new Color([166, 110, 175, 0.75]),
-                         new Color([172, 120, 180, 0.75]),
-                         new Color([120, 37, 134, 0.75]),
-                         new Color([244, 238, 245, 0.75])*/
+                        new Color([220, 199, 224, 0.75]),
+                        new Color([166, 110, 175, 0.75]),
+                        new Color([172, 120, 180, 0.75]),
+                        new Color([120, 37, 134, 0.75]),
+                        new Color([244, 238, 245, 0.75]),
                         //new Color([247, 247, 247]),
                         new Color([153, 209, 244, 0.75]),
-                        new Color([0, 110, 221, 0.75])
+                        new Color([0, 110, 221, 0.75]),
                         //rgb(220, 198, 223)
-                        /*new Color([244, 238, 246, 0.75]),
-                         new Color([121, 37, 135, 0.75])*/
+                        new Color([244, 238, 246, 0.75]),
+                        new Color([121, 37, 135, 0.75])
 
                     ]
                 });
@@ -731,10 +994,7 @@ function addFeatureGraphicLayer(agg, zoom) {
     }
 }
 
-/*
- * 在地图上用图标将设备标示出来
- * devices: [{ lon:10.2, lat:1.2, country:'china', tags:[], timestamp:''},..]
- */
+
 function addDeviceGraphicLayer(devices) {
     if (!devices)return;
     require([

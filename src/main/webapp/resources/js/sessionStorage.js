@@ -17,12 +17,20 @@ MySessionStorage = {
             case 'mapExtent':
                 value = getMapExtent();
                 break;
+            case 'mapWd':
+                value = getMapWd(value);
+                break;
+            case 'advancedWd':
+                value = getAdvancedWd(value);
+                break;
+            case 'lastSavedWd':
+                value = getLastSavedWd(value);
+                break;
         }
         return value;
         //字符串。这里有问题。目前返回查询框中数据+checked数据
         //return sessionStorage.wd + " " + getChecked();
         function getWd() {
-
             var wd = sessionStorage.wd ? sessionStorage.wd : '';
             var globalSearchVal = $('.global-search-input').val();
             var homeSearchVal = $('#home_search_input').val();
@@ -32,6 +40,38 @@ MySessionStorage = {
                 wd += globalSearchVal;
             }
             wd = (wd + " " + getChecked()).replace('country:', 'description.device_location.country:');
+            return wd;
+        }
+
+        function getMapWd() {
+            var wd = sessionStorage.mapWd ? sessionStorage.mapWd : '';
+            if (wd != '') {
+                wd = JSON.parse(sessionStorage.mapWd);
+            }
+            return wd;
+        }
+
+        function getAdvancedWd() {
+            var wd = sessionStorage.advancedWd ? sessionStorage.advancedWd : '';
+            if (wd != '') {
+                wd = JSON.parse(sessionStorage.advancedWd);
+            }
+            return wd;
+        }
+
+        function getLastSavedWd() {
+            var which = sessionStorage.lastSavedWd, wd;
+            switch (which) {
+                case 'map':
+                    wd = getMapWd();
+                    break;
+                case 'advanced':
+                    wd = getAdvancedWd();
+                    break;
+                case 'list':
+                    wd = getWd();
+                    break;
+            }
             return wd;
         }
 
@@ -80,15 +120,40 @@ MySessionStorage = {
             case 'mapExtent':
                 setMapExtent(value);
                 break;
+            case 'mapWd':
+                setMapWd(value);
+                break;
+            case 'advancedWd':
+                setAdvancedWd(value);
+                break;
+            case 'lastSavedWd':
+                setLastSavedWd(value);
+                break;
         }
+        function setMapWd(value) {
+            if (value) {
+                sessionStorage.mapWd = JSON.stringify(value);
+            }
+        }
+
+        function setAdvancedWd(value) {
+            if (value) {
+                sessionStorage.advancedWd = JSON.stringify(value);
+            }
+        }
+
+        function setLastSavedWd(value) {//目前可选值map/list/advanced
+            if (value) {
+                sessionStorage.lastSavedWd = value;
+            }
+        }
+
         function setWd(value) {     //字符串。后端返回的数据中的wd
             console.log('getWd typeof vlaue = ', typeof value);
 
             if (value && typeof value == 'object') {
-                console.log("boject", value);
                 value = JSON.stringify(value);
-            }
-            if (value && value != '') {
+            } else if (value && value != '') {
                 sessionStorage.wd = value.replace(/(^s*)|(s*$)/gm, " ").replace(/\s{2,}/gm, " ");//去掉多余空白符
             }
             //replace(/\s+/g, " ");//所有空白符都替换为一个空格

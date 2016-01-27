@@ -4,6 +4,7 @@
     height: 100%;
     margin: 0 auto;
     font-size: 2rem;
+    color: #333;
 }
 
 .map-wrapper .mapHolder {
@@ -269,6 +270,12 @@
     border: 1px solid #ddd;
     color: #999;
     background-color: #fff !important
+}
+
+/*popup related esriViewPopup*/
+.esriViewPopup td {
+    color: #333;
+    /*background: #333;*/
 }
 
 /*------------sidebar wrapper-----------------*/

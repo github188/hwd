@@ -301,11 +301,13 @@ function advsSearch(form) {
             console.log('advanced search success', data);
             //generate sidebar
             Sidebar.init(data.aggregation);
-            console.log("ssssssssssssss");
-
             //hide advs page
             $('#advs_wrapper').removeClass('active');
-            console.log("ss");
+
+            //set session
+            MySessionStorage.set('advancedWd', data['q']);
+            MySessionStorage.set('lastSavedWd', 'advanced');
+
             //render page
             var currentPage = MySessionStorage.get('currentPage');
             console.log(currentPage);

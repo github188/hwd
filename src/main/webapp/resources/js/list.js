@@ -36,7 +36,7 @@ var List = {
         paginator(total, data['pagesize'], data['currpage'], VISIBLE_PAGE);
 
         function genDeviceLi(d) {
-            console.log("genDeviceLi", d);
+            //console.log("genDeviceLi", d);
             var li = $(' <li class="device"></li>');
             //ip
             var ip = $('<h3><a href="#' + d.ip + d.ip + '"></a></h3>').appendTo(li);
@@ -113,6 +113,9 @@ var List = {
                     if (updateSidebar) {
                         Sidebar.init(data['aggregation']);
                     }
+                    var wd = data['wd'];
+                    MySessionStorage.set('wd', wd);
+                    MySessionStorage.set('lastSavedWd', 'list');
                     List.render(data);
                 },
                 noDataFunc = List.showNoData;
