@@ -136,7 +136,7 @@ var Pivot = {
                 var k = k_v[0], v = k_v[1];
 
                 //（1）移除对应pivot
-                this.remove($(this).parent('li.pivot'));
+                $(this).parent('li.pivot').remove();
 
                 //（2）取消选中复选框
                 var checkboxId = key + CheckboxId_SEPARATOR + value;
@@ -182,7 +182,7 @@ function searchOnCheckboxChange() {
  *      checked为boolean，true为选中，false为取消选中
  *      pivot为对应checkbox的pivot，checkbox和pivot至少传一个
  */
-function setCheckbox(checkbox, checked, pivot) {
+function setCheckbox() {
     var p = obj.pivot, cb = obj.checkbox, id = cb.attr('id');
     if (!cb && !p)return;
     if (!p) {
@@ -197,6 +197,7 @@ function setCheckbox(checkbox, checked, pivot) {
         pivotFun('add', p);
         setSessionChecked('add', id);
     } else {
+        console.log("remove");
         pivotFun('remove', p);
         setSessionChecked('remove', id);
     }
@@ -205,17 +206,18 @@ function setCheckbox(checkbox, checked, pivot) {
 
 //添加或删除pivot，action可选值为add和remove
 function pivotFun(action, pivot) {
+    console.log(action, pivot);
     switch (action) {
         case 'add':
-            $pivots.append(pivot);
+            this.$pivots.append(pivot);
             if ($pivots.find('li').length == 1) {
-                $pivotsContainer.show();
+                this.$pivotsContainer.show();
             }
             break;
         case 'remove':
             pivot.remove();
             if ($pivots.find('li').length < 1) {
-                $pivotsContainer.hide();
+                this.$pivotsContainer.hide();
             }
             break;
     }

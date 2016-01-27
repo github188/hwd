@@ -3,6 +3,7 @@ var listSearchURL = basePath + 'api/listSearch';
 var List = {
     show: function () {
         MySessionStorage.set('currentPage', 'list');
+        $('header').css('visibility', ' visible').show();
         var data = MySessionStorage.get('data');
         if (data == undefined || data == '') {
             this.search(true, 1);
@@ -14,51 +15,52 @@ var List = {
         console.log("list is rendering---", data);
         if (isEmptyObject(data)) {
             console.log("data is null");
-            //显示无数据提示
-            //empty-result-desc-container
-            $('.result-col>div').hide();
-            $('.empty-result-desc-container').show();
+            this.showNoData();
             return;
         }
+        this.hideNoData();
         Sidebar.show(); //显示侧栏
         //更新查询时间、查询到数据的条数、结果列表、分页、侧栏checked
         $('.duration').text(data['took']);   //时间
         var total = data['total'];
         $('.resultCount').text(total);   //条数
-        //$('.result-container').html('<h1>返回的结果</h1><hr><code>' + data + '</code>');
+        //正文 result list显示
         var list = $('.result-container ul.devices').html('');
-        data.data.forEach(function (d) {
-            list.append(genDeviceLi(d));
-        });
+        var devices = data.data;
+        for (var i = 0; i < devices.length; i++) {
+            list.append(genDeviceLi(devices[i]));
+        }
         list.append('<div class="clearfix"></div>');
 
         //分页
         paginator(total, data['pagesize'], data['currpage'], VISIBLE_PAGE);
-        //侧栏
-        Sidebar.init(data['aggregation']);
 
         function genDeviceLi(d) {
             var li = $(' <li class="device"></li>');
-
+            //ip
+            var ip = $('<h3><a href="#' + d.ip + d.ip + '"></a></h3>').appendTo(li);
+            //详细内容
+            var row = $('<div class="row">').appendTo(li);
             //all tags
-            var facets = $('<div class="tags"></div>').appendTo(li);
-            var ip = $('<h3><a href="#' + d.ip + d.ip + '"></a></h3>').appendTo(facets);
+            //tag
+            var facets = $(' <div class="col-md-3 col-sm-3 left">').appendTo(row);
             if (d.hasOwnProperty('tags') && d.tags != '' && d.tags.length > 0) {
-                console.log("devices tags");
-                var $tags = $('<div class="tag item">').appendTo(facets);
+                var $tags = $('<div class="tag">').appendTo(facets);
                 d.tags.forEach(function (tag) {
                     $('<span class="label label-default"><a href="#' + tag + '"> ' + tag + ' </a></span>').appendTo($tags);
                 });
             }
+            //location
             var loc = d.location;
             if (loc && loc != '') {
-                var $location = $('<div class="location item">').appendTo(facets);
+                var $location = $('<div class="tag location">').appendTo(facets);
                 $('<span class="label label-danger"><a href="#' + loc + '">' +
                 '<span class="glyphicon glyphicon-map-marker"></span> ' + loc + ' </a></span>').appendTo($location);
             }
+            //time
             var time = d.timestamp;
             if (time && time != '') {
-                var $time = $('<div class="time item">').appendTo(facets);
+                var $time = $('<div class="tag time">').appendTo(facets);
                 $('<span class="label label-primary"><a href="#' + time + '">' +
                 '<span class="glyphicon glyphicon-time"></span> ' + time + ' </a></span>').appendTo($time);
             }
@@ -66,58 +68,35 @@ var List = {
                 e.preventDefault();
             });
 
-            //detail info(ports,vuls)
-            var info = $('<div class="well info">').appendTo(li);
-            info.on('click', function () {
-                if (!info.hasClass('active')) {
-                    info.addClass('active')
-                }
-            });
+            //ports and vuls
+            var info = $('<div class="col-md-9 col-sm-9 right">').appendTo(row);
             var ports = d.ports;
             if (ports != '' && ports.length > 0) {
                 for (var i = 0; i < ports.length; i++) {
                     for (var key in ports[i]) {
-                        var $port = $('<div><h3><a href="#">' + key + '</a></div>').appendTo(info);
-                        $('<pre>' + ports[i][key] + '</pre>').appendTo($port);
+                        var $port = $('<article><h3><a href="#">' + key + '</a></article>').appendTo(info);
+                        var $pre = $('<pre>' + ports[i][key] + '</pre>').appendTo($port);
+                        $pre.on('click', function () {
+                            if (!info.hasClass('active')) {
+                                $(this).closest('div.right').addClass('active');
+                            }
+                        });
                     }
                 }
             }
             var vuls = d.vuls;
-            console.log("devices vuls", vuls);
+
             if (vuls != '' && vuls.length > 0) {
-
                 for (var key in vuls) {
-                    var $vul = $('<div><h3><a href="#">' + key + '</a></div>').appendTo(info);
-
+                    var $vul = $('<article><h3><a href="#">' + key + '</a></article>').appendTo(info);
                     $('<pre>' + vuls[key] + '</pre>').appendTo($vul);
                 }
             }
-            var closeBtn = $('<button class="close"><span class="glyphicon glyphicon-menu-up"></span></button>').appendTo(info);
+            var closeBtn = $('<button class="up"><span class="glyphicon glyphicon-menu-up"></span></button>').appendTo(info);
             closeBtn.on('click', function () {
-                closeBtn.closest('div.info').removeClass('active');
+                $(this).closest('div.right').removeClass('active');
             });
             return li;
-            /*
-             *             <li class="device">
-             <div class="info well active">
-             <div class="item">
-             <h3><a href="#">http:30</a>
-             </h3>
-
-             <div>没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据</div>
-             </div>
-             <hr>
-             <div class="item">
-             <h3><a href="#">http:30</a>
-             </h3>
-
-             <div>a</div>
-             </div>
-             </div>
-             </div>
-             </li>
-
-             * */
         }
     },
     search: function (updateSidebar, pageNumber) {  //updateSidebar为boolean，true则更新侧边栏，否则不更新
@@ -130,10 +109,7 @@ var List = {
                     }
                     List.render(data);
                 },
-                noDataFunc = function (data) {
-                    console.log("no data", data['errmsg']);
-                    //显示无数据提示
-                };
+                noDataFunc = List.showNoData;
             var obj = {
                 "url": listSearchURL,
                 "criteria": {
@@ -145,6 +121,16 @@ var List = {
             };
             newSearch(obj);
         }
+    },
+    showNoData: function () {
+        $('.empty-result-desc-container').show();
+        $('.result-container').hide();
+        $('.pager-wrapper').hide();
+    },
+    hideNoData: function () {
+        $('.empty-result-desc-container').hide();
+        $('.result-container').show();
+        $('.pager-wrapper').show();
     }
 };
 
@@ -161,6 +147,9 @@ var PAGE_SIZE = 5, //每一页的条目数
 function paginator(totalCounts, pageSize, currentPageNum, visiblePages) {
     if (visiblePages == undefined) {
         visiblePages = VISIBLE_PAGE;
+    }
+    if (pageSize == undefined) {
+        pageSize = PAGE_SIZE;
     }
     var $pagerWrapper = $('#pager').show();
     $pagerWrapper.jqPaginator({
@@ -188,5 +177,4 @@ function paginator(totalCounts, pageSize, currentPageNum, visiblePages) {
             }
         }
     })
-
 }

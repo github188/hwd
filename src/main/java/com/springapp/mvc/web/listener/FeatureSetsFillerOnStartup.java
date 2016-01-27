@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by lyp on 2016-01-22.
  * 系统启动时，运行此程序，从服务器获取国家、省（中国）和城市的地理数据，保存为静态数据，常住内存
  */
-@Component
+//@Component
 public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRefreshedEvent> {
     private static JSONObject countryFeatureSet;
     private static JSONObject provinceFeatureSet;

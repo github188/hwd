@@ -1,35 +1,39 @@
 MySessionStorage = {
     get: function (key) {
+        var value = 'undefined';
         switch (key) {
             case 'wd':
-                return getWd();
+                value = getWd();
                 break;
             case 'checked':
-                return getChecked();
+                value = getChecked();
                 break;
             case 'data':
-                return getData();
+                value = getData();
                 break;
             case 'currentPage':
-                return getCurrentPage();
+                value = getCurrentPage();
                 break;
             case 'mapExtent':
-                return getMapExtent();
+                value = getMapExtent();
                 break;
         }
-        function getWd() {//字符串。这里有问题。目前返回查询框中数据+checked数据
-            //return sessionStorage.wd + " " + getChecked();
+        return value;
+        //字符串。这里有问题。目前返回查询框中数据+checked数据
+        //return sessionStorage.wd + " " + getChecked();
+        function getWd() {
+
+            var wd = sessionStorage.wd ? sessionStorage.wd : '';
             var globalSearchVal = $('.global-search-input').val();
             var homeSearchVal = $('#home_search_input').val();
-            var wd;
-            if (homeSearchVal && MySessionStorage.get('currentPage') == 'home') {
-                wd = homeSearchVal;
-            } else if (globalSearchVal) {
-                wd = globalSearchVal;
+            if (homeSearchVal && MySessionStorage.get('currentPage') == 'home' && wd.search(homeSearchVal) < 0) {
+                wd += homeSearchVal;
+            } else if (globalSearchVal && wd.search(globalSearchVal) < 0) {
+                wd += globalSearchVal;
             }
-            return wd + " " + getChecked();
+            wd = (wd + " " + getChecked()).replace('country:', 'description.device_location.country:');
+            return wd;
         }
-
 
         function getChecked() {//用空格分隔的键值对字符串，示例："city:北京 country:中国 ..."
             var checked = '';
@@ -56,12 +60,16 @@ MySessionStorage = {
         }
     },
     set: function (key, value, operation) {
+        if (!value) {
+            console.log("the value passed to MySessionStorage is undefined");
+            return;
+        }
         switch (key) {
             case 'wd':
                 setWd(value);
                 break;
             case 'checked':
-                setChecked(value);
+                setChecked(value, operation);
                 break;
             case 'data':
                 setData(value);
@@ -74,8 +82,8 @@ MySessionStorage = {
                 break;
         }
         function setWd(value) {     //字符串。后端返回的数据中的wd
-            console.log("set wd, value=", value);
-            if (value) {
+            console.log('getWd vlaue = ', value);
+            if (value && value != '') {
                 sessionStorage.wd = value.replace(/(^s*)|(s*$)/gm, " ").replace(/\s{2,}/gm, " ");//去掉多余空白符
             }
             //replace(/\s+/g, " ");//所有空白符都替换为一个空格
@@ -83,15 +91,21 @@ MySessionStorage = {
 
         function setChecked(value, operation) {//字符串。value="(k)CheckboxId_SEPARATOR(v)",为checkbox的id
             var item = value.replace(CheckboxId_SEPARATOR, ":");
-            console.log("MySessionStorage get() checked argument, key: " + value);
             var checked = MySessionStorage.get('checked');
-            if (checked && checked.search(new RegExp("\\s" + item + "\\s", "gim")) < 0) {
-                if (operation == 'add') {
-                    checked += " " + item;
+            if (checked) {
+                //"(?<=(\\s|^))" +item+"(?=(\\s|$))"
+                if (checked.search(new RegExp("(\\s|^)" + item + "(\\s|$)", "gim")) < 0) {
+                    if (operation == 'add') {
+                        checked += " " + item;
+                    }
+                } else {
+                    if (operation == 'remove') {
+                        checked = checked.replace(new RegExp("(\\s|^)" + item + "(\\s|$)", "gim"), "");
+                    }
                 }
-            } else {
-                if (operation == 'remove') {
-                    checked.replace(item, " ");
+            } else {    //checked == undefined
+                if (operation == 'add') {
+                    checked = item;
                 }
             }
             sessionStorage.checked = checked.replace('undefined', '').replace(/\s{2,}/gm, " ");//去掉多余的空白符
@@ -107,6 +121,7 @@ MySessionStorage = {
         }
 
         function setData(value) {   //json数据。ajax查询成功后台的响应数据，包含wd
+            //console.log("set session in MysessionStorage, data = ", value);
             sessionStorage.data = JSON.stringify(value);
         }
     }

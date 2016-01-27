@@ -1,10 +1,120 @@
 /*---------------------------------------------↓Map-----------------------------------------------*/
 var mapSearchURL = "api/mapSearch",
     basemapURL = 'http://10.10.2.81:6080/arcgis/rest/services/China_Community_BaseMap/MapServer',
-    countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/world/MapServer/0',
-    provinceLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/sheng/MapServer/0',
-    cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1';
+    countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince/FeatureServer/2',
+    provinceLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince/FeatureServer/1',
+    cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince/FeatureServer/0';
 var MAP_PAGE_SIZE = 5;
+
+var MyFeatureLayer = {
+    show: function (which, agg) {   //调用之前需要判断agg是否存在，存在再调用此方法
+        console.log("showing");
+        var layer, areas, cc = agg['country@%city'];
+        if (map && layer.graphics) {
+            initData();
+            render();
+            map.reorderLayer(layer, 10);
+            layer.show();
+        } else {
+            var wait4Map = setInterval(function () {
+                if (map && layer.graphics) {
+                    initData();
+                    render();
+                    map.reorderLayer(layer, 10);
+                    layer.show();
+                    clearInterval(wait4Map);
+                }
+            }, 1000);
+        }
+
+        function initData() {
+            switch (which) {
+                case 'country':
+                    layer = countryLayer;
+                    for (var co in cc) {
+                        areas[cc[co].en] = cc[co].count;
+                    }
+                    console.log("countries = ", areas);
+                    break;
+                case 'province':
+                    layer = provinceLayer;
+                    break;
+                case 'city':
+                    for (var co in cc) {
+                        areas = $.extend({}, areas, cc[co]['cities']);
+                    }
+                    console.log("cities = ", areas);
+                    layer = cityLayer;
+                    break;
+            }
+            console.log("areas = ", areas);
+            console.log("layer = ", layer);
+        }
+
+        function render() {
+            console.log("feature layer is rendering");
+            var min = Number.MAX_VALUE, max = 0, areas, features = layer.graphics;
+            require([
+                "esri/map", "esri/geometry/Extent",
+                "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/dijit/Legend",
+                "esri/renderers/SimpleRenderer", "esri/Color",
+                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+                "dojo/domReady!"
+            ], function (Map, Extent, FeatureLayer, InfoTemplate, Legend,
+                         SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
+
+                //（1）修改layer的参数
+                for (var i = 0; i < features.length; i++) {
+                    var f = features[i], arr = f.attributes;
+                    for (var key in areas) {
+                        var name = arr.name ? arr.name : arr.name_chn;
+                        if (name && name.indexOf(key) >= 0) {
+                            var count = areas[key];
+                            arr.count = count;
+                            features[i].setAttributes(arr);
+                            setMinMax(count);
+                            break;
+                        }
+                    }
+                }
+                console.log(layer);
+                //（2）设置renderer
+                var renderer = new SimpleRenderer(new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128]))));
+                renderer.setColorInfo({
+                    field: "count",
+                    minDataValue: min,
+                    maxDataValue: max,
+                    colors: [
+                        new Color([255, 255, 255, 0.2]),
+                        new Color([244, 238, 246, 0.75]),
+                        new Color([121, 37, 135, 0.75])
+                    ]
+                });
+                layer.setRenderer(renderer);
+                // （3）启动legend
+                var legend = new Legend({
+                    map: map,
+                    layerInfos: [{title: "", layer: layer}]
+                }, "legend");
+                legend.startup();
+            });
+            function setMinMax(count) {
+                if (count < min) {
+                    min = count;
+                }
+                if (count > max) {
+                    max = count;
+                }
+            }
+        }
+
+    },
+    hide: function () {
+        countryLayer.hide();
+        provinceLayer.hide();
+        cityLayer.hide();
+    }
+};
 /*
  *
 
@@ -78,9 +188,8 @@ function initMap() { //网站加载时调用此方法
             var featureLayerOption = {
                 outFields: ["*"],
                 mode: FeatureLayer.MODE_SNAPSHOT,
-                //mode:FeatureLayer.FeatureLayer.MODE_ONDEMAND,
-                visible: false, //default is true
-                infoTemplate: featureLayerInfoTemplate
+                visible: true //default is true
+                //infoTemplate: featureLayerInfoTemplate
             };
             countryLayer = new FeatureLayer(countryLayerURL, featureLayerOption);
             map.addLayer(countryLayer, 2);
@@ -90,110 +199,17 @@ function initMap() { //网站加载时调用此方法
             map.addLayer(provinceLayer, 4);
 
             //（4）Init Home button
-           /* home = new HomeButton({
-                map: map
-            }, "homeButton").startup();*/
+            /* home = new HomeButton({
+             map: map
+             }, "homeButton").startup();*/
 
-            map.on("load", function () {
+            map.on('load', function () {
                 console.log("map loaded");
-
-                /*                function getFeatureSetByName(which, name) {
-                 console.log(which + "getFeatureSetByName starts-------", new Date());
-
-
-                 function executeQueryTask(url) {
-                 var qt = new QueryTask(url);
-                 qt.execute(query, queryTaskComplete, queryTaskError);
-                 }
-
-                 //callback
-                 function queryTaskComplete(resp) {
-                 console.log(which + " complete：" + new Date(), resp.features);
-                 //init data
-                 switch (which) {
-                 case 'country':
-                 //将features转换为map，方便以后使用， key：名称，value：feature
-                 resp.features.forEach(function (item) {
-                 countryFS[item.attributes.NAME] = item;
-                 });
-                 break;
-                 case 'province':
-                 resp.features.forEach(function (item) {
-                 provinceFS[item.attributes.Name_CHN] = item;
-                 });
-                 console.log("province ends at---" + new Date());
-                 localStorage.featureSets.provinceFS = provinceFS;
-                 break;
-                 case 'city':
-                 resp.features.forEach(function (item) {
-                 //将feature添加到graphicLayer，并显示
-                 var sys = new SimpleFillSymbol();
-                 sys.color = 0xff0000;
-                 item.symbol = sys;
-                 deviceGL.add(g);
-                 });
-                 console.log("city ends at---" + new Date());
-                 break;
-                 }
-                 }
-
-                 //errorback
-                 function queryTaskError(err) {
-                 console.log('Oops, something goes wrong with feature layer. ', err);
-                 }
-
-                 $.ajax({
-                 url: getFeatureSetsURL ? getFeatureSetsURL : basePath + 'api/getFeatureSets',
-                 type: 'post',
-                 dataType: 'json',
-                 contentType: "application/json"
-                 }).success(function (data) {
-                 console.log("ajax get feature sets succeed ", data);
-                 queryTaskComplete(data);
-                 }).error(function () {
-                 console.log("Getting feature set error!");
-                 }).fail(function () {
-                 console.log("Getting feature set failed!");
-                 });
-
-
-                 //（setFeatureSet --> 1）initialize query
-                 */
-                /*  var query = new Query();
-                 query.returnGeometry = true;
-                 query.outSpatialReference = map.spatialReference;
-                 query.outFields = ["Name_CHN", "Name_ENG"];
-                 //query.where = "'OBJECTID'>'0'";
-                 var url;
-                 switch (which) {
-                 case 'country':
-                 url = countryLayerURL;   //（setFeatureSet --> 2）initialize query task (not yet start, just using this parameter)
-                 query.where = "'Shape'='面'";
-                 query.outFields = ["NAME", "REGION"];
-                 break;
-                 case 'province':
-                 url = provinceLayerURL;
-                 break;
-                 case 'city':
-                 url = cityLayerURL;
-                 query.where = "'Name_CHN'=" + name;
-                 query.outFields = ["*"];
-                 break;
-                 default:
-                 break;
-                 }
-                 executeQueryTask(url);*/
-                /*
-                 }*/
-
-                /*var capabilities = featureLayer.getEditCapabilities();
-                 console.log("This layer can be updated:", capabilities);
-                 console.log("this layer is editable? " + featureLayer.isEditable());*/
             });
 
             map.on('zoom-end', function (e) {
                 console.log("zoom levle: " + map.getZoom());
-                //MyMap.search(false, 1);
+                //MyFeatureLayer.show('country', MySessionStorage.get('data')['aggregation']);
             });
         });
 }
@@ -203,43 +219,37 @@ var MyMap = {
     RENDER_ZOOM: 4,
     show: function () { //滑动到地图页时调用此方法
         console.log("map is showing---");
-        $('header').show();
+        $('header').css('visibility', ' visible').show();
+        MySessionStorage.set('currentPage', 'map');
         var data = MySessionStorage.get('data');
         if (data || !isEmptyObject(data)) {
             //（1）显示左侧边栏
-            Sidebar.init(data['aggregation']);
+            Sidebar.show();
             //（2）渲染地图
             this.render(data);
             //（3）监听tool bar
             $('#featureLayer').on('click', function () {
-                    if (map.getZoom() < 4) {
-                        FeatureLayer.show(countryLayer, data.aggregation);
-                    } else if (map.getZoom() < 7) {
-                        FeatureLayer.show(provinceLayer, data.aggregation);
+                    if (map.getZoom() < 5) {
+                        MyFeatureLayer.show('country', data.aggregation);
+                    } else if (map.getZoom() < 4) {
+                        MyFeatureLayer.show('province', data.aggregation);
                     } else {
-                        FeatureLayer.show(cityLayer, data.aggregation);
+                        MyFeatureLayer.show('city', data.aggregation);
                     }
                 }
             );
         }
     },
-    render: function (data) {//像地图添加设备标注
+    render: function (data) {//向地图添加设备标注
         console.log("map render starts--", data);
         if (!data || isEmptyObject(data)) {
             console.log('in map render data is undefined or empty');
             return;
         }
-
-        /*if (!map) {
-         console.log('map is undefined');
-         return;
-         }*/
-
         var interval = setInterval(function () {
             if (map) {
                 //（1）添加设备层
                 addClusters(data['data']);
-
                 //（2）显示地图右侧边栏
                 MapSidebar.init(data['data']);
                 MapSidebar.show();
@@ -434,56 +444,6 @@ var MyMap = {
     }
 };
 
-var FeatureLayer = {
-    show: function (layer, agg) {
-        render();
-        map.reorderLayer(layer, 10);
-        layer.show();
-
-        function render(layer, agg) {
-            console.log("feature layer is rendering");
-            require([
-                "esri/map", "esri/geometry/Extent",
-                "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/dijit/Legend",
-                "esri/renderers/SimpleRenderer", "esri/Color",
-                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
-                "dojo/domReady!"
-            ], function (Map, Extent, FeatureLayer, InfoTemplate, Legend,
-                         SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
-
-                //（1）修改layer的参数
-                var min, max;
-                console.log("in feature layer render function", cityLayer);
-
-                //（2）设置renderer
-                var renderer = new SimpleRenderer(new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128]))));
-                renderer.setColorInfo({
-                    field: "count",
-                    minDataValue: min,
-                    maxDataValue: max,
-                    colors: [
-                        new Color([255, 255, 255, 0.2]),
-                        new Color([244, 238, 246, 0.75]),
-                        new Color([121, 37, 135, 0.75])
-                    ]
-                });
-                layer.setRenderer(renderer);
-                // （3）启动legend
-                var legend = new Legend({
-                    map: map,
-                    layerInfos: [{title: "", layer: layer}]
-                }, "legend");
-                legend.startup();
-            });
-        }
-    },
-    hide: function () {
-        countryLayer.hide();
-        provinceLayer.hide();
-        cityLayer.hide();
-    }
-};
-
 var MapSidebar = {
     show: function () {
         $('#mapSidebar').show();
@@ -525,6 +485,7 @@ var MapSidebar = {
         console.log("on selection  change, selected = ", selected);
     }
 };
+
 
 //------------------------------↓ functions not in use currently-------------------
 function initFeatureSetByNames(which, names) {

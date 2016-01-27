@@ -12,40 +12,21 @@ var advancedSearchURL = basePath + 'api/advancedSearch',
     imgUrl = basePath + "resources/img/";
 
 var featureSets = {};
-
-/* localStorage = {
- 'user': '',              //用户信息，包含用户名、密码、级别
- 'countryFS': {},         //国家FeatureSet映射表
- 'provinceFS': {},        //省份FeatureSet映射表
- 'cityFS': {}             //城市FeatureSet映射表
- };*/
-/* localStorage = {
- 'checkedIds': [],         //用户选中的复选框的id
- 'devices': [],         //当前获取到的设备信息
- 'aggregation': {}      //当前的聚类信息（即左边栏列表数据）
- };*/
-/* ↑---------->>>>>>>>>>>>>>>> Global Variables <<<<<<<<<<<<<<<<< ------------------------------↑ */
 $(function () {
     "use strict";
+    //initFeatureSets();
     //~~~~~~~~~~~~~~~~~~~全文必须~~~~~~~~~~~~~~~~~~~~~~~~~
-    //Init FeatureSets
-    /* if (localStorage) {
-     if (!localStorage.featureSets || isEmptyObject((eval(localStorage.featureSets)))) {
-     initFeatureSets();
-     }
-     } else if (sessionStorage) {
-     if (!sessionStorage.featureSets || isEmptyObject((JSON.parse(sessionStorage.featureSets)))) {
-     initFeatureSets();
-     }
-     }*/
-    initFeatureSets();
     pageSlide();//carousel页面导航
+
+    //~~~~~~~~~~~~~~~~~~~首页必须~~~~~~~~~~~~~~~~~~~~~~~~~
+    showHomePage();
+
     //初始化之后，跳转到用户当前所在页（同一个session的情况下）
     if (sessionStorage) {
         var activeTag = $('section.active').attr('tag');
-        console.log("active tag", activeTag);
+        //console.log("active tag", activeTag);
         var currentPage = MySessionStorage.get('currentPage');
-        console.log("current page on page load", currentPage);
+        //console.log("current page on page load", currentPage);
         if (currentPage && activeTag != currentPage) {
             $('section.item').removeClass('active');
             $('section[tag="' + currentPage + '"]').addClass('active');
@@ -53,15 +34,26 @@ $(function () {
             $('div[data-target]').removeClass('bgd-light-blue');
             $('div[data-target="' + currentPage + '"]').addClass('bgd-light-blue');
 
-            //$header.css('visibility', 'visible');
+            //$('header').css('visibility', 'visible');
+            var data = MySessionStorage.get('data');
+            var wd = MySessionStorage.get('wd');
+            if (wd && wd != 'undefined') {
+                $('global-search-input').val();
+            }
             switch (currentPage) {
                 case 'home':
                     showHomePage();
                     break;
                 case 'list':
+                    if (data && data.aggregation) {
+                        Sidebar.init(data.aggregation);
+                    }
                     List.show();
                     break;
                 case 'map':
+                    if (data && data.aggregation) {
+                        Sidebar.init(data.aggregation);
+                    }
                     MyMap.show();
                     break;
                 case 'globe-point':
@@ -77,9 +69,6 @@ $(function () {
         }
     }
 
-    //~~~~~~~~~~~~~~~~~~~首页必须~~~~~~~~~~~~~~~~~~~~~~~~~
-    showHomePage();
-
     //~~~~~~~~~~~~~~~~~~~listeners~~~~~~~~~~~~~~~~~~~~~~~~
     //input suggestions
     suggestCursorToggle();
@@ -92,6 +81,7 @@ $(function () {
         //var currentPage = sessionStorage.currentPage ? sessionStorage.currentPage : $('section.active').attr('tag');
         var currentPage = MySessionStorage.get('currentPage') ? MySessionStorage.get('currentPage') : $('section.active').attr('tag');
         console.log("search in global form, currentPage = " + currentPage);
+        MySessionStorage.set('wd', $('.global-search-input').val());
         if (currentPage == 'list') {
             List.search(true, 1);//true表示更新侧栏
         } else if (currentPage == 'map') {
@@ -106,7 +96,7 @@ $(function () {
         console.log("home form search, wd = " + MySessionStorage.get('wd'));
         /*$('.carousel').carousel(1);  //滑动到list页面
          List.show();*/
-        $('.carousel').carousel(2);  //滑动到list页面
+        $('.carousel').carousel(1);  //滑动到list页面
         //MyMap.show();
     });
 
@@ -152,38 +142,15 @@ $(function () {
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ functions↓~~~~~~~~~~~~~~~~~~~~~
-
-
-//获取所有的featureSet，保存在所有的localStorage中
-function initFeatureSets() {
-    $.ajax({
-        url: getFeatureSetsURL,
-        type: 'post',
-        dataType: 'json',
-        contentType: "application/json"
-    }).success(function (data) {
-        /* if (localStorage) {
-         localStorage.featureSets = JSON.stringify(data.data);
-         } else if (sessionStorage) {
-         sessionStorage.featureSets = JSON.stringify(data.data);
-         }*/
-        featureSets = data.data;
-    }).error(function () {
-        console.log("Getting feature set error!");
-    }).fail(function () {
-        console.log("Getting feature set failed!");
-    });
-}
-
 //页面滑动,使用bootstrap的carousel和slide
 function pageSlide() {
     var $carousel = $('.carousel').carousel({"interval": false});
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
-        $header.css('visibility', 'visible');
-        console.log("page slide tag = ", tag);
+        $('header').css('visibility', 'visible');
+        //console.log("page slide tag = ", tag);
         MySessionStorage.set('currentPage', tag);
-        console.log("session storage currentpage", MySessionStorage.get('currentPage'));
+        console.log("session storage currentpage in pageSlide", MySessionStorage.get('currentPage'));
         switch (tag) {
             case 'home':
                 showHomePage();
@@ -228,7 +195,7 @@ function pageSlide() {
         e.preventDefault();
         var index = $(this).index();
         $('.carousel').carousel(index);
-        $('#advs_wrapper').removeClass('active');
+        $('#advs_wrapper').removeClass('active')
     });
 }
 
@@ -399,8 +366,10 @@ function advsSearch(form) {
 
     //arguments
     var obj = {};
+    var criteria = getCriteria();
+    MySessionStorage.set('wd', criteria);
     obj["url"] = advancedSearchURL;
-    obj['criteria'] = getCriteria();
+    obj['criteria'] = criteria;
     obj['success'] = success;
     obj['error'] = error;
     obj['noDataFunc'] = noData;
@@ -408,6 +377,148 @@ function advsSearch(form) {
     newSearch(obj);
 }
 
+//show page functions
+function showHomePage() {
+    $('header').css('visibility', 'hidden');
+    $('.sidebar').hide();
+}
+
+function showGlobePointPage() {
+    $('header').css('visibility', 'hidden');
+    $('.sidebar').hide();
+    MySessionStorage.set('currentPage', 'globe-point');
+}
+
+function showGlobeLinePage() {
+    $('header').css('visibility', 'hidden');
+    $('.sidebar').hide();
+    MySessionStorage.set('currentPage', 'globe-line');
+
+}
+
+function showChartsPage() {
+    $('header').css('visibility', 'hidden');
+    $('.sidebar').hide();
+    MySessionStorage.set('currentPage', 'globe-charts');
+}
+
+/* --------------------------- Helper ------------------------ */
+//判断对象是否为空（无属性、有属性但值都为undefined，则为空）
+function isEmptyObject(obj) {
+    var flag = true;
+    for (var n in obj) {
+        if (obj[n]) {
+            flag = false;
+            break;
+        }
+    }
+
+    return flag;
+}
+
+//Format the date value for input
+Date.prototype.toDateInputValue = (function () {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0, 10);
+});
+
+//时间格式化
+function dateLocalize(timestamp) {
+    if (timestamp)  return (new Date(parseInt(timestamp))).toLocaleDateString();
+    return timestamp;
+}
+
+
+//获取当前查询条件----废弃
+/*function getWd() {
+ var wd = '';
+ if (sessionStorage.wd) {
+ wd = sessionStorage.wd;
+ } else if ($('.global-search-input').val() != '') {
+ wd = $('.global-search-input').val();
+ } else if ($('.home-search-input').val() != '') {
+ $('.home-search-input').val()
+ }
+ var checked = getChecked();
+ console.log(checked);
+ *//*   for (var i = 0; i < checked.length; i++) {
+ if (checked[i] != '' && checked[i] != ' ' && wd.indexOf(checked[i]) < 0) {
+ console.log(checked[i]);
+ wd += ' ' + checked[i];
+ }
+ }*//*
+ //new RegExp("\\s" + cV + "\\s", "gim"
+ return wd.replace(/\"/g, "").replace('undefined', '').replace(new RegExp(CheckboxId_SEPARATOR, "gim"), '');//去掉双引号
+ }*/
+
+/*//显示列表页---废弃
+ function showListPage() {
+ $('.sidebar').show();
+ var agg = sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
+ devices = sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
+ wd = sessionStorage.wd;
+ if (agg == undefined && devices == undefined) {
+ List.search(true, 1);
+ } else {
+ List.render({
+ "aggregation": agg,
+ "data": devices,
+ "wd": wd
+ }
+ );
+ }
+ }*/
+
+/*function showMapPage() {
+ $('header').show();
+ //console.log(sessionStorage);
+ if (sessionStorage.agg) {
+ initSidebar(JSON.parse(sessionStorage.agg));
+ }
+ MyMap.render({
+ 'aggregation': sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
+ 'data': sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
+ 'wd': getWd()
+ });
+ }*/
+
+
+/*
+ //获取用户已选择的checkbox，返回值为[(key:value),...]---废弃
+ function getChecked() {
+ var checkedArr = [];
+ console.log("sessionSTAORGET CHECKED", sessionStorage.checked);
+
+ if (sessionStorage.checked) {
+ var checked = JSON.parse(sessionStorage.checked);
+ console.log("sessionSTAORGET CHECKED", checked);
+ for (var key in checked) {
+ var arr = checked[key].split(' ' + CheckboxId_SEPARATOR);
+ for (var i = 0; i < arr.length; i++) {
+ checkedArr.push(' ' + key + ":" + arr[i]);
+ }
+ }
+ }
+ return checkedArr;
+ }*/
+/*
+
+ //获取所有的featureSet，保存在所有的localStorage中
+ function initFeatureSets() {
+ $.ajax({
+ url: getFeatureSetsURL,
+ type: 'post',
+ dataType: 'json',
+ contentType: "application/json"
+ }).success(function (data) {
+ featureSets = data.data;
+ }).error(function () {
+ console.log("Getting feature set error!");
+ }).fail(function () {
+ console.log("Getting feature set failed!");
+ });
+ }*/
 //设置session的checked - --废弃
 function setSessionChecked(operation, checkedId) {
     console.log(checkedId);
@@ -443,117 +554,4 @@ function setSessionChecked(operation, checkedId) {
 
     sessionStorage.checked = JSON.stringify(checked);
     console.log(sessionStorage.checked);
-}
-
-//获取用户已选择的checkbox，返回值为[(key:value),...]---废弃
-function getChecked() {
-    var checkedArr = [];
-    console.log("sessionSTAORGET CHECKED", sessionStorage.checked);
-
-    if (sessionStorage.checked) {
-        var checked = JSON.parse(sessionStorage.checked);
-        console.log("sessionSTAORGET CHECKED", checked);
-        for (var key in checked) {
-            var arr = checked[key].split(' ' + CheckboxId_SEPARATOR);
-            for (var i = 0; i < arr.length; i++) {
-                checkedArr.push(' ' + key + ":" + arr[i]);
-            }
-        }
-    }
-    return checkedArr;
-}
-
-//获取当前查询条件----废弃
-function getWd() {
-    var wd = '';
-    if (sessionStorage.wd) {
-        wd = sessionStorage.wd;
-    } else if ($('.global-search-input').val() != '') {
-        wd = $('.global-search-input').val();
-    } else if ($('.home-search-input').val() != '') {
-        $('.home-search-input').val()
-    }
-    var checked = getChecked();
-    console.log(checked);
-    /*   for (var i = 0; i < checked.length; i++) {
-     if (checked[i] != '' && checked[i] != ' ' && wd.indexOf(checked[i]) < 0) {
-     console.log(checked[i]);
-     wd += ' ' + checked[i];
-     }
-     }*/
-    //new RegExp("\\s" + cV + "\\s", "gim"
-    return wd.replace(/\"/g, "").replace('undefined', '').replace(new RegExp(CheckboxId_SEPARATOR, "gim"), '');//去掉双引号
-}
-
-//show page functions
-function showHomePage() {
-    $header.css('visibility', 'hidden');
-    $sidebar.hide();
-}
-
-//显示列表页---废弃
-function showListPage() {
-    $('.sidebar').show();
-    var agg = sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
-        devices = sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
-        wd = sessionStorage.wd;
-    if (agg == undefined && devices == undefined) {
-        List.search(true, 1);
-    } else {
-        List.render({
-                "aggregation": agg,
-                "data": devices,
-                "wd": wd
-            }
-        );
-    }
-}
-
-function showMapPage() {
-    $('header').show();
-    //console.log(sessionStorage);
-    if (sessionStorage.agg) {
-        initSidebar(JSON.parse(sessionStorage.agg));
-    }
-    MyMap.render({
-        'aggregation': sessionStorage.agg ? JSON.parse(sessionStorage.agg) : undefined,
-        'data': sessionStorage.devices ? JSON.parse(sessionStorage.devices) : undefined,
-        'wd': getWd()
-    });
-}
-
-function showGlobePointPage() {
-}
-
-function showGlobeLinePage() {
-}
-
-function showChartsPage() {
-}
-
-/* --------------------------- Helper ------------------------ */
-//判断对象是否为空（无属性、有属性但值都为undefined，则为空）
-function isEmptyObject(obj) {
-    var flag = true;
-    for (var n in obj) {
-        if (obj[n]) {
-            flag = false;
-            break;
-        }
-    }
-
-    return flag;
-}
-
-//Format the date value for input
-Date.prototype.toDateInputValue = (function () {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0, 10);
-});
-
-//时间格式化
-function dateLocalize(timestamp) {
-    if (timestamp)  return (new Date(parseInt(timestamp))).toLocaleDateString();
-    return timestamp;
 }

@@ -31,7 +31,6 @@
     <script> var basePath = '${basePath}';</script>
     <script src="resources/js/sessionStorage.js"></script>
     <script src="resources/js/new-main.js"></script>
-    <%--<script src="resources/js/initFeatureSets.js"></script>--%>
 
 </head>
 <body>
@@ -59,7 +58,7 @@
     <%@include file="advs.jsp" %>
     <%@include file="sidebar.jsp" %>
     <div id="content" class="carousel slide full-height">
-        <div class="carousel-inner full_height" role="listboxt">
+        <div class="carousel-inner full_height" role="listbox">
             <section class="item home active" tag="home" tabindex="1">
                 <%--<canvas id="galaxy"></canvas>--%>
                 <div class="home-search">
@@ -84,7 +83,11 @@
             <section class="map-wrapper item" tag="map" tabindex="3">
                 <%@include file="map.jsp" %>
             </section>
-            <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">point</section>
+            <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">
+               <%-- <iframe>
+                    <jsp:include page="device-probe-globe.jsp"></jsp:include>
+                </iframe>--%>
+            </section>
             <section class="globe-line-wrapper item" tag="globe-line" tabindex="5">line</section>
             <section class="charts-wrapper item" tag="charts" tabindex="6">charts</section>
         </div>
@@ -118,7 +121,6 @@
     </div>
 </footer>
 <script src="resources/js/new-search.js"></script>
-<%--<script src="resources/js/index.js"></script>--%>
 <script src="resources/js/sidebar.js"></script>
 </body>
 </html>

@@ -10,46 +10,6 @@
     </div>
     <div class="result-container">
         <ul class="result devices">
-<%--            <li class="device">
-
-                <h3><a href="#ip">1.1.1.1.1</a></h3>
-
-
-                <div class="tags">
-                    <div class="tag item">
-                        <span class="label label-default"><a href="#tags"> tags+ </a></span>
-                        <span class="label label-default"><a href="#tags"> tags+ </a></span>
-                        <span class="label label-default"><a href="#tags"> tags+ </a></span>
-                    </div>
-                    <div class="location item">
-                            <span class="label label-danger"><a href="#tags"><span
-                                    class="glyphicon glyphicon-map-marker"></span> locations+ </a></span>
-
-                    </div>
-                    <div class="timestamp item">
-                            <span class="label label-primary"><a href="#tags"> <span
-                                    class="glyphicon glyphicon-time"></span> </a></span>
-                    </div>
-                </div>
-                <div class="well info">
-                    <div class="item">
-                        <h3><a href="#">http:30</a>
-                        </h3>
-
-                        <pre>没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据</pre>
-                    </div>
-                    <hr>
-                    <div class="item">
-                        <h3><a href="#">http:30</a>
-                        </h3>
-
-                        <div>
-                            <pre>没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据没有找到相关数据</pre>
-                        </div>
-                    </div>
-                    <button class="close"><span class="glyphicon glyphicon-menu-up"></span></button>
-                </div>
-            </li>--%>
         </ul>
 
     </div>

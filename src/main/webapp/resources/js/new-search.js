@@ -10,6 +10,7 @@
  *          searchInput：搜索框输入按钮(如果不填，则为$('.global-search-input'))
  */
 function newSearch(obj) {
+    console.log('new SEARCH WD = ', obj.criteria);
     var button = obj.searchButton ? obj.searchButton : $('.global-search-button'),
         input = obj.searchInput ? obj.searchInput : $('.global-search-input'),
         requestData = obj.criteria ? JSON.stringify(obj.criteria) : input.val(),
