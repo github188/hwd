@@ -22,9 +22,9 @@
             <span class="glyphicon glyphicon-th-list sidelist" title="数据列表"></span>
         </div>
     </div>
-    <div id="mapSidebar" width="10rem">
+    <div id="mapSidebar">
         <div class="tool-bar">
-            <a class="map-sidebar-link advs-link-main" href="#" role="button" aria-controls="advs-wrapper">
+            <a class="map-sidebar-link advs-link-main" href="#" role="button" aria-controls="mapSidebar">
                 <span class="glyphicon glyphicon-menu-right"></span>
 
             </a>
@@ -32,21 +32,11 @@
         <div class="clearfix"></div>
         <div class="content">
             <ul class="map-device-list">
-                <li>
-                    <a href="#" class="title">71.17.11.163</a>
 
-                    <div class="info">
-                        <span class="label label-default timestamp">123</span>
-                        <span class="label label-default location">加拿大, 加拿大</span>
-                        <span class="label label-default ports">redlion:789</span>
-                        <span class="label label-default vuls"></span>
-                        <span class="label label-default tags">ICS</span>
-                    </div>
-                </li>
             </ul>
         </div>
         <div class="pager-wrapper demo4 customBootstrap map">
-            <p id="demo4-text"></p>
+            <%--<p id="demo4-text"></p>--%>
             <ul id="map_pager" class="pagination pagination4"></ul>
         </div>
     </div>

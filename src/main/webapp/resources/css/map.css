@@ -15,17 +15,19 @@
 #mapSidebar {
     display: none;
     position: absolute;
-    width: 1.5rem;
+    width: 1rem;
     padding: .5rem;
     top: 5rem;
     right: 1px;
     z-index: 100;
     background-color: #ddd;
+    height:80%;
+    overflow: hidden;
     /*color: #333;*/
     -webkit-box-shadow: -3px 3px 3px 3px #b4b4b4;;
     -moz-box-shadow: -3px 3px 3px 3px #b4b4b4;;
     box-shadow: -3px 3px 3px 3px #b4b4b4;;
-    border-radius: 0 0 5px 5px;
+    border-radius: 5px;
     /*overflow: auto;*/
     transition: all .6s;
 }
@@ -33,11 +35,15 @@
 #mapSidebar.active {
     display: block;
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-    opacity: 0.8;
-    width: 20%;
+    opacity: 0.9;
+    width: auto;
+    overflow: auto;
 }
 
 #mapSidebar .content {
+    display: block;
+    clear: both;
+    float: none;
     padding: 0 2px;
     margin-left: 1rem;
     /*border: 1px solid red;*/
@@ -61,16 +67,16 @@
     margin: 0;
 }
 
-#mapSidebar .content div a {
+#mapSidebar .content a {
     color: #228DFF;
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
     transition: all 0.5s;
 }
 
-#mapSidebar .content div a:hover {
+#mapSidebar .content a:hover {
     padding-right: 3em;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: #ff7f50;
     text-shadow: 0 0 2px #eee;
     -webkit-animation: neon2 1.5s ease-in-out infinite alternate;
@@ -148,20 +154,21 @@
 }
 
 .demo {
-    margin: 20px 0;
+    margin: 10px 0;
     background-color: transparent;
 }
 
-.customBootstrap .pagination > li > a {
+.map-wrapper .customBootstrap .pagination > li > a {
     margin-right: 1px;
     border-radius: 2px;
     background: hsla(223, 16%, 29%, .3);
     color: #eee;
     border-color: hsla(223, 16%, 29%, 0.5);
-    padding: 6px 15px
+    padding: 6px 15px;
+    cursor: pointer;
 }
 
-.customBootstrap .pagination > li > a:hover, .customBootstrap .pagination > li > a:focus {
+.map-wrapper .customBootstrap .pagination > li > a:hover, .map-wrapper .customBootstrap .pagination > li > a:focus {
     color: #fff;
     /*    background: #fb9400;
         border-color: #fb9400*/
@@ -169,9 +176,9 @@
     border-color: hsla(96, 48%, 47%, 1);
 }
 
-.customBootstrap .pagination > .active > a,
-.customBootstrap .pagination > .active > a:hover,
-.customBootstrap .pagination > .active > a:focus {
+.map-wrapper .customBootstrap .pagination > .active > a,
+.map-wrapper .customBootstrap .pagination > .active > a:hover,
+.map-wrapper .customBootstrap .pagination > .active > a:focus {
     color: #fff;
     /*    background: #fb9400;
         border-color: #fb9400*/
@@ -179,26 +186,26 @@
     border-color: hsla(96, 48%, 47%, 1);
 }
 
-.customBootstrap .pagination .arrow2 {
+.map-wrapper .customBootstrap .pagination .arrow2 {
     margin: 3px 8px 5px 0
 }
 
-.customBootstrap .pagination a:hover .arrow2 {
+.map-wrapper .customBootstrap .pagination a:hover .arrow2 {
     border-right-color: #fff
 }
 
-.customBootstrap .pagination .arrow3 {
+.map-wrapper .customBootstrap .pagination .arrow3 {
     margin: 3px 0 5px 8px
 }
 
-.customBootstrap .pagination a:hover .arrow3 {
+.map-wrapper .customBootstrap .pagination a:hover .arrow3 {
     border-left-color: #fff
 }
 
-.customBootstrap .pagination > .disabled > a,
-.customBootstrap .pagination > .disabled > a:focus,
-.customBootstrap .pagination > .disabled > a:hover,
-.customBootstrap .pagination > .disabled > a:active {
+.map-wrapper .customBootstrap .pagination > .disabled > a,
+.map-wrapper .customBootstrap .pagination > .disabled > a:focus,
+.map-wrapper .customBootstrap .pagination > .disabled > a:hover,
+.map-wrapper .customBootstrap .pagination > .disabled > a:active {
     color: hsla(223, 16%, 29%, 0.8);
     cursor: not-allowed;
     background-color: hsla(0, 39%, 21%, 0.5);
@@ -495,7 +502,7 @@
     width: 100px;
     text-align: center;
     border: 1px solid #ddd;
-    color: #999;
+    color: red;
     background-color: #fff !important
 }
 
@@ -503,7 +510,7 @@ pre code {
     background-color: transparent
 }
 
-.customBootstrap .pagination > li > a {
+.map-wrapper .customBootstrap .pagination > li > a {
     margin-right: 5px;
     border-radius: 2px;
     background: #fff;
@@ -512,30 +519,31 @@ pre code {
     padding: 6px 15px
 }
 
-.customBootstrap .pagination > li > a:hover, .customBootstrap .pagination > li > a:focus {
-    color: #fff;
+.map-wrapper .customBootstrap .pagination > li > a:hover, .map-wrapper .customBootstrap .pagination > li > a:focus {
+    color: #fb9400;
     background: #fb9400;
     border-color: #fb9400
 }
 
-.customBootstrap .pagination > .active > a, .customBootstrap .pagination > .active > a:hover, .customBootstrap .pagination > .active > a:focus {
-    color: #fff;
+.map-wrapper .customBootstrap .pagination > .active > a,
+.map-wrapper .customBootstrap .pagination > .active > a:hover, .map-wrapper .customBootstrap .pagination > .active > a:focus {
+    color: #fb9400;
     background: #fb9400;
     border-color: #fb9400
 }
 
-.customBootstrap .pagination .arrow2 {
+.map-wrapper .customBootstrap .pagination .arrow2 {
     margin: 3px 8px 5px 0
 }
 
-.customBootstrap .pagination a:hover .arrow2 {
+.map-wrapper .customBootstrap .pagination a:hover .arrow2 {
     border-right-color: #fff
 }
 
-.customBootstrap .pagination .arrow3 {
+.map-wrapper .customBootstrap .pagination .arrow3 {
     margin: 3px 0 5px 8px
 }
 
-.customBootstrap .pagination a:hover .arrow3 {
+.map-wrapper .customBootstrap .pagination a:hover .arrow3 {
     border-left-color: #fff
 }
