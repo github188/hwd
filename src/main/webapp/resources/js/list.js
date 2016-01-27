@@ -2,7 +2,6 @@
 var listSearchURL = basePath + 'api/listSearch';
 var List = {
     show: function () {
-        return;
         MySessionStorage.set('currentPage', 'list');
         var data = MySessionStorage.get('data');
         if (data == undefined || data == '') {
@@ -19,23 +18,31 @@ var List = {
             //empty-result-desc-container
             $('.result-col>div').hide();
             $('.empty-result-desc-container').show();
-
             return;
         }
         Sidebar.show(); //显示侧栏
         //更新查询时间、查询到数据的条数、结果列表、分页、侧栏checked
         $('.duration').text(data['took']);   //时间
-        console.log(data['took']);
-        $('.resultCount').text(data['total']);   //条数
-        $('.result-container').html('<h1>返回的结果</h1><hr><code>' + data + '</code>');
+        var total = data['total'];
+        $('.resultCount').text(total);   //条数
+        //$('.result-container').html('<h1>返回的结果</h1><hr><code>' + data + '</code>');
+        var list = $('.result-container ul.devices').html('');
+        data.data.forEach(function (d) {
+            list.append(genDeviceLi(d));
+        });
+        list.append('<div class="clearfix"></div>');
+
         //分页
+        paginator(total, data['pagesize'], data['currpage'], VISIBLE_PAGE);
         //侧栏
+        Sidebar.init(data['aggregation']);
 
         function genDeviceLi(d) {
             var li = $(' <li class="device"></li>');
-            var ip = $('<h3><a href="#' + d.ip + '">d.ip</a></h3>').appendTo(li);
+
             //all tags
             var facets = $('<div class="tags"></div>').appendTo(li);
+            var ip = $('<h3><a href="#' + d.ip + d.ip + '"></a></h3>').appendTo(facets);
             if (d.hasOwnProperty('tags') && d.tags != '' && d.tags.length > 0) {
                 console.log("devices tags");
                 var $tags = $('<div class="tag item">').appendTo(facets);
@@ -60,7 +67,7 @@ var List = {
             });
 
             //detail info(ports,vuls)
-            var info = $('<div class="info well">');
+            var info = $('<div class="well info">').appendTo(li);
             info.on('click', function () {
                 if (!info.hasClass('active')) {
                     info.addClass('active')
@@ -68,15 +75,17 @@ var List = {
             });
             var ports = d.ports;
             if (ports != '' && ports.length > 0) {
-                console.log("devices ports", ports);
-                for (var key in ports) {
-                    var $port = $('<div><h3><a href="#">' + key + '</a></div>').appendTo(info);
-                    $('<pre>' + ports[key] + '</pre>').appendTo($port);
+                for (var i = 0; i < ports.length; i++) {
+                    for (var key in ports[i]) {
+                        var $port = $('<div><h3><a href="#">' + key + '</a></div>').appendTo(info);
+                        $('<pre>' + ports[i][key] + '</pre>').appendTo($port);
+                    }
                 }
             }
             var vuls = d.vuls;
+            console.log("devices vuls", vuls);
             if (vuls != '' && vuls.length > 0) {
-                console.log("devices vuls", vuls);
+
                 for (var key in vuls) {
                     var $vul = $('<div><h3><a href="#">' + key + '</a></div>').appendTo(info);
 

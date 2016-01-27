@@ -1,106 +1,95 @@
 /* ------------------------ ↓ List Wrapper ---------------------- */
 .list-wrapper {
     display: none;
-    height: 100%;
     margin: 0 auto;
+    margin-bottom: 25rem;
     padding: 0 2rem;
     font-size: 2rem;
+    overflow: auto;
 }
 
 /* -- result list -- */
 .list-wrapper .result-col {
     height: 10rem;
-    /*border: 1px solid #32cd32;*/
     padding-right: 2rem;
 }
 
-.list-wrapper .result-container {
-    /*margin-top: 1rem;*/
-}
-
-.list-wrapper .result-container ul {
-    /*padding: 1rem;*/
-}
-
-.list-wrapper .device {
-    height: auto;
-    position: relative;
+.list-wrapper ul li {
+    /*position: relative;*/
     overflow: visible;
-    border-bottom: 1px solid hsla(0, 30%, 21%, 1)
+    padding: 12px 0 8px 0;
 }
 
-.list-wrapper .device h3 {
+.list-wrapper .result-container li h3 {
     padding: 0;
     margin: 5px 0;
     font-size: 2rem;
-    line-height: 2.5rem;
+    line-height: 2.2rem;
     font-weight: normal;
 }
 
-.list-wrapper .device h3 a {
-    color: #eee
+.list-wrapper .result-container li h3 a {
+    color: #006fa6;
+    text-decoration: none;
 }
 
-.list-wrapper .device .tags {
+.list-wrapper .result-container li .tags {
+    display: inline-block;
     width: 30%;
     float: left;
-    border: 1px solid hsla(0, 30%, 21%, .6)
-}
-
-.list-wrapper .device .info {
-    width: 65%;
-    word-wrap: break-word;
-    float: left;
-    border: 1px solid hsla(0, 30%, 21%, .6)
 }
 
 .list-wrapper .tags .item {
-    padding-bottom: 1.3rem;
-    height: auto;
-    /*padding: 1rem;*/
-
+    padding-bottom: 1rem;
+    height: 2.3rem;
 }
 
-.list-wrapper .tags a {
+.list-wrapper .tags .item a {
     display: inline-block;
     line-height: 100%;
-    /*width: 100%;*/
+    font-size: inherit;
     color: #fff;
     font-weight: normal;
-    /*background: #3a4a56;*/
 }
 
-.list-wrapper .tags a:focus,
-.list-wrapper .tags a:hover {
+.list-wrapper .tags .item a:focus,
+.list-wrapper .tags .item a:hover {
     text-decoration: none !important;
+    font-size: inherit;
 }
 
-.list-wrapper .device .well {
+.list-wrapper .result-container li .info {
+    right: 2px;
+    width: 65%;
+    word-wrap: break-word;
+    height: 10rem;
+    border: 1px solid hsla(0, 30%, 21%, .6);
     color: rgb(51, 122, 183);
-    padding: 0 0 0 1rem;
     background-color: hsla(0, 10%, 40%, .1);
+    /*background-color: #ff0000;*/
     cursor: pointer;
-    max-height: 10rem;
     overflow: hidden;
     font-size: 1.7rem;
+    float: right;
 }
 
-.list-wrapper .device .well a {
-    display: inline-block;
-    width: 10%;
-    color: rgb(51, 122, 183);
-}
-
-.list-wrapper .device hr {
-    border: 1px solid rgb(51, 122, 183);
-}
-
-.list-wrapper .device .active {
+.list-wrapper .result-container li .info .active {
     cursor: auto;
+    height: auto;
     overflow: visible;
 }
 
-.list-wrapper .device .info .close {
+.list-wrapper .result-container li .info a {
+    display: inline-block;
+    width: 20%;
+    color: rgb(51, 122, 183);
+}
+
+.list-wrapper .result-container li hr {
+    border: 1px solid rgb(51, 122, 183);
+}
+
+.list-wrapper .result-container li .info .close {
     float: right;
     background: hsla(0, 30%, 21%, .5);
     cursor: pointer;
@@ -108,13 +97,23 @@
     color: #eee;
     display: none;
 }
-.list-wrapper .device .info.active .close{
+
+.list-wrapper .result-container li .info.active .close {
     display: block;
 }
 
-.list-wrapper .device .info pre {
+/*.list-wrapper .result-container li .info a{
+    width: 90%;
+}*/
+.list-wrapper .result-container li .info h3 {
+    margin-bottom: -5px;
+}
+
+.list-wrapper .result-container li .info pre {
+    /*padding: 0 5px;*/
     background: none;
     /*height: auto;*/
+    line-height: 1.5rem;
     color: inherit;
     font-size: inherit;
     border: none;
@@ -122,6 +121,10 @@
     white-space: -moz-pre-wrap;
     white-space: -o-pre-wrap;
     word-wrap: break-word;
+}
+
+.list-wrapper .empty-result-desc-container {
+    display: none;
 }
 
 /* ------------------------  List Wrapper ↑ ---------------------- */
