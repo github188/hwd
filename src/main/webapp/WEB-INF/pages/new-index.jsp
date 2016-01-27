@@ -24,15 +24,15 @@
     <link rel="stylesheet" href="resources/css/leaflet.css">
     <link rel="stylesheet" href="resources/css/footer.css">
     <link rel="stylesheet" href="resources/css/media.css">
-    <link rel="stylesheet" href="/resources/css/device-globe.css">
-    <link rel="stylesheet" href="/resources/css/device-probe-globe.css">
+    <%--<link rel="stylesheet" href="resources/css/device-globe.css">--%>
+    <%--<link rel="stylesheet" href="resources/css/device-probe-globe.css">--%>
 
     <script src="resources/js/lib/jquery-1.11.3.min.js"></script>
     <script src="resources/js/lib/typeahead.bundle.min.js"></script>
     <script src="resources/js/lib/bootstrap.min.js"></script>
     <script> var basePath = '${basePath}';</script>
-    <script src="resources/plugins/echarts-2.2.7/build/dist/echarts.js"></script>
-    <script src="resources/plugins/echarts-x/build/dist/echarts-x.js"></script>
+    <%--<script src="resources/plugins/echarts-2.2.7/build/dist/echarts.js"></script>--%>
+    <%--<script src="resources/plugins/echarts-x/build/dist/echarts-x.js"></script>--%>
     <script src="resources/js/sessionStorage.js"></script>
     <script src="resources/js/new-main.js"></script>
 
@@ -88,10 +88,13 @@
                 <%@include file="map.jsp" %>
             </section>
             <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">
-                <%@include file="globe-point.jsp" %>
+                <%--<%@include file="globe-point.jsp" %>--%>
+                <iframe src="device-globe.jsp"></iframe>
             </section>
             <section class="globe-line-wrapper item" tag="globe-line" tabindex="5">
                 <%@include file="globe-line.jsp" %>
+
+                <%--<iframe src="globe-line.jsp"></iframe>--%>
             </section>
             <section class="charts-wrapper item" tag="charts" tabindex="6">charts</section>
         </div>

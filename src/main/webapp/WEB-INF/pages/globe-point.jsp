@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div id="main">
 
     <div id="legend">
@@ -147,22 +148,15 @@
     </div>
     <div id="globe4DeviceHolder"></div>
 </div>
+
 <div class="clearfix"></div>
+<spring:url value="resources/plugins/echarts-2.2.7/build/dist/echarts.js" var="echarts"/>
+<script src="${echarts}"></script>
+<spring:url value="resources/plugins/echarts-x/build/dist/echarts-x.js" var="echartsX"/>
+<script src="${echartsX}"></script>
+<spring:url value="resources/js/device-globe.js" var="globeJs"/>
+<script src="${globeJs}"></script>
 <script src="resources/js/device-globe.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

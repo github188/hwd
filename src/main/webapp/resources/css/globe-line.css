@@ -5,5 +5,8 @@
     margin: 0 auto;
     background: purple;
 }
-
+#globe4LineHolder {
+    height: 100%;
+    width: 100%;
+}
 /* ------------------------  Globe MarkLines Wrapper ↑ ---------------------- */

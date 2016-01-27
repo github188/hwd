@@ -1,4 +1,11 @@
 @charset "UTF-8";
+
+.globe-point-wrapper {
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+    background: #ffff00;
+}
 /*color: #6db33f, #3f4657, #452525*/
 #main,
 #globe4DeviceHolder {
