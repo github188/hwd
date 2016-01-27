@@ -36,16 +36,17 @@ var List = {
         paginator(total, data['pagesize'], data['currpage'], VISIBLE_PAGE);
 
         function genDeviceLi(d) {
+            console.log("genDeviceLi", d);
             var li = $(' <li class="device"></li>');
             //ip
             var ip = $('<h3><a href="#' + d.ip + d.ip + '"></a></h3>').appendTo(li);
             //详细内容
-            var row = $('<div class="row">').appendTo(li);
+            var row = $('<div class="row"></div>').appendTo(li);
             //all tags
             //tag
-            var facets = $(' <div class="col-md-3 col-sm-3 left">').appendTo(row);
+            var facets = $(' <div class="col-md-3 col-sm-3 left"></div>').appendTo(row);
             if (d.hasOwnProperty('tags') && d.tags != '' && d.tags.length > 0) {
-                var $tags = $('<div class="tag">').appendTo(facets);
+                var $tags = $('<div class="tag"></div>').appendTo(facets);
                 d.tags.forEach(function (tag) {
                     $('<span class="label label-default"><a href="#' + tag + '"> ' + tag + ' </a></span>').appendTo($tags);
                 });
@@ -53,14 +54,14 @@ var List = {
             //location
             var loc = d.location;
             if (loc && loc != '') {
-                var $location = $('<div class="tag location">').appendTo(facets);
+                var $location = $('<div class="tag location"></div>').appendTo(facets);
                 $('<span class="label label-danger"><a href="#' + loc + '">' +
                 '<span class="glyphicon glyphicon-map-marker"></span> ' + loc + ' </a></span>').appendTo($location);
             }
             //time
             var time = d.timestamp;
             if (time && time != '') {
-                var $time = $('<div class="tag time">').appendTo(facets);
+                var $time = $('<div class="tag time"></div>').appendTo(facets);
                 $('<span class="label label-primary"><a href="#' + time + '">' +
                 '<span class="glyphicon glyphicon-time"></span> ' + time + ' </a></span>').appendTo($time);
             }
@@ -69,13 +70,18 @@ var List = {
             });
 
             //ports and vuls
-            var info = $('<div class="col-md-9 col-sm-9 right">').appendTo(row);
+            var info = $('<div class="col-md-9 col-sm-9 right"></div>').appendTo(row);
             var ports = d.ports;
             if (ports != '' && ports.length > 0) {
                 for (var i = 0; i < ports.length; i++) {
                     for (var key in ports[i]) {
                         var $port = $('<article><h3><a href="#">' + key + '</a></article>').appendTo(info);
-                        var $pre = $('<pre>' + ports[i][key] + '</pre>').appendTo($port);
+                        var banner = ports[i][key];
+                        if (banner || banner == '') {
+                            banner = banner.replace(/</g, "&lt;");
+                        }
+                        var $pre = $('<pre>' + banner + '</pre>').appendTo($port);
+
                         $pre.on('click', function () {
                             if (!info.hasClass('active')) {
                                 $(this).closest('div.right').addClass('active');
@@ -124,13 +130,11 @@ var List = {
     },
     showNoData: function () {
         $('.empty-result-desc-container').show();
-        $('.result-container').hide();
-        $('.pager-wrapper').hide();
+        $('.result-col').hide();
     },
     hideNoData: function () {
         $('.empty-result-desc-container').hide();
-        $('.result-container').show();
-        $('.pager-wrapper').show();
+        $('.result-col').show();
     }
 };
 

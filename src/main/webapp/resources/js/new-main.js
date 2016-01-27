@@ -301,13 +301,26 @@ function advsSearch(form) {
             console.log('advanced search success', data);
             //generate sidebar
             Sidebar.init(data.aggregation);
+            console.log("ssssssssssssss");
+
             //hide advs page
             $('#advs_wrapper').removeClass('active');
+            console.log("ss");
             //render page
-            if (MySessionStorage.get('currentPage') == 'list') {
+            var currentPage = MySessionStorage.get('currentPage');
+            console.log(currentPage);
+            if (!currentPage || currentPage == 'home') {
+                $('section.item').removeClass('active');
+                $('section[tag="list"]').addClass('active');
+
+                $('div[data-target]').removeClass('bgd-light-blue');
+                $('div[data-target="list"]').addClass('bgd-light-blue');
+                List.show();
+                //List.render(data);
+            } else if (currentPage == 'list') {
                 console.log('rending list from advs search');
                 List.render(data);
-            } else if (MySessionStorage.get('currentPage') == 'map') {
+            } else if (currentPage == 'map') {
                 console.log('rending map from advs search');
                 MyMap.render(data);
             }

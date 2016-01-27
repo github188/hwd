@@ -82,7 +82,12 @@ MySessionStorage = {
                 break;
         }
         function setWd(value) {     //字符串。后端返回的数据中的wd
-            console.log('getWd vlaue = ', value);
+            console.log('getWd typeof vlaue = ', typeof value);
+
+            if (value && typeof value == 'object') {
+                console.log("boject", value);
+                value = JSON.stringify(value);
+            }
             if (value && value != '') {
                 sessionStorage.wd = value.replace(/(^s*)|(s*$)/gm, " ").replace(/\s{2,}/gm, " ");//去掉多余空白符
             }

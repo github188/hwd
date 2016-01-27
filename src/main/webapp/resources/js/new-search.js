@@ -38,6 +38,8 @@ function newSearch(obj) {
             obj.success(data);
         } else if (statuscode == 204) {
             alert("no data found");
+            MySessionStorage.set('wd', '');
+            MySessionStorage.set('data', data);
             noDataHandler();
         } else {
             console.log("ajax success but " + data['statuscode'], data['errmsg']);

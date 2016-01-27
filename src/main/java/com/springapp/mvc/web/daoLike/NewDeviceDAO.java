@@ -167,6 +167,7 @@ public class NewDeviceDAO {
                         String vulKey;
                         vulKey = !"".equals(vul_ID.getString("CVE")) ? vul_ID.getString("CVE") : vul_ID.getString("CNVD");
                         vulValue.setData(item.getJSONObject("data"));
+                        //getString("data").replace("\"", "\\\"")
                         vulValue.setDesc(item.getString("description"));
                         vulValue.setPlatform(item.getString("platform"));
                         vul.put(vulKey, vulValue);
