@@ -15,8 +15,11 @@
     </div>
     <div id="tool-wrapper">
         <div id="homeButton"></div>
-        <div id="featureLayer">
+        <div class="tool-item">
             <span class="glyphicon glyphicon-globe feature" title="分布图"></span>
+        </div>
+        <div class="tool-item">
+            <span class="glyphicon glyphicon-th-list sidelist" title="数据列表"></span>
         </div>
     </div>
     <div id="mapSidebar">

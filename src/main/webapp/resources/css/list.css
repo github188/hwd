@@ -10,8 +10,118 @@
 /* -- result list -- */
 .list-wrapper .result-col {
     height: 10rem;
-    border: 1px solid #32cd32;
+    /*border: 1px solid #32cd32;*/
     padding-right: 2rem;
+}
+
+.list-wrapper .result-container {
+    /*margin-top: 1rem;*/
+}
+
+.list-wrapper .result-container ul {
+    /*padding: 1rem;*/
+}
+
+.list-wrapper .device {
+    height: auto;
+    position: relative;
+    overflow: visible;
+    border-bottom: 1px solid hsla(0, 30%, 21%, 1)
+}
+
+.list-wrapper .device h3 {
+    padding: 0;
+    margin: 5px 0;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    font-weight: normal;
+}
+
+.list-wrapper .device h3 a {
+    color: #eee
+}
+
+.list-wrapper .device .tags {
+    width: 30%;
+    float: left;
+    border: 1px solid hsla(0, 30%, 21%, .6)
+}
+
+.list-wrapper .device .info {
+    width: 65%;
+    word-wrap: break-word;
+    float: left;
+    border: 1px solid hsla(0, 30%, 21%, .6)
+}
+
+.list-wrapper .tags .item {
+    padding-bottom: 1.3rem;
+    height: auto;
+    /*padding: 1rem;*/
+
+}
+
+.list-wrapper .tags a {
+    display: inline-block;
+    line-height: 100%;
+    /*width: 100%;*/
+    color: #fff;
+    font-weight: normal;
+    /*background: #3a4a56;*/
+}
+
+.list-wrapper .tags a:focus,
+.list-wrapper .tags a:hover {
+    text-decoration: none !important;
+}
+
+.list-wrapper .device .well {
+    color: rgb(51, 122, 183);
+    padding: 0 0 0 1rem;
+    background-color: hsla(0, 10%, 40%, .1);
+    cursor: pointer;
+    max-height: 10rem;
+    overflow: hidden;
+    font-size: 1.7rem;
+}
+
+.list-wrapper .device .well a {
+    display: inline-block;
+    width: 10%;
+    color: rgb(51, 122, 183);
+}
+
+.list-wrapper .device hr {
+    border: 1px solid rgb(51, 122, 183);
+}
+
+.list-wrapper .device .active {
+    cursor: auto;
+    overflow: visible;
+}
+
+.list-wrapper .device .info .close {
+    float: right;
+    background: hsla(0, 30%, 21%, .5);
+    cursor: pointer;
+    margin: .5rem 1rem;
+    color: #eee;
+    display: none;
+}
+.list-wrapper .device .info.active .close{
+    display: block;
+}
+
+.list-wrapper .device .info pre {
+    background: none;
+    /*height: auto;*/
+    color: inherit;
+    font-size: inherit;
+    border: none;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
 }
 
 /* ------------------------  List Wrapper ↑ ---------------------- */

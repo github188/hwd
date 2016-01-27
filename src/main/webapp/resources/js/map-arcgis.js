@@ -57,7 +57,7 @@ function initMap() { //网站加载时调用此方法
                 minZoom: 1,
                 maxZoom: 8,
                 zoom: 4,
-                sliderPosition: "top-right",
+                sliderPosition: "bottom-right",
                 logo: false
             });
             //（1）添加底图
@@ -90,9 +90,9 @@ function initMap() { //网站加载时调用此方法
             map.addLayer(provinceLayer, 4);
 
             //（4）Init Home button
-            home = new HomeButton({
+           /* home = new HomeButton({
                 map: map
-            }, "homeButton").startup();
+            }, "homeButton").startup();*/
 
             map.on("load", function () {
                 console.log("map loaded");
