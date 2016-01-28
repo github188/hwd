@@ -13,15 +13,30 @@
     <div id="legend-wrapper">
         <div id="legend"></div>
     </div>
-    <div id="tool-wrapper">
-        <div id="homeButton"></div>
-        <div class="tool-item">
-            <span class="glyphicon glyphicon-globe feature" title="分布图"></span>
+
+    <%--<div id="homeButton"></div>--%>
+    <div class="btn-group" role="group" id="tool-wrapper">
+        <div class="btn-group" role="group">
+
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                <span class="glyphicon glyphicon-eye-open"></span>
+                分布图
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" id="countryLayer">按国家</a></li>
+                <li><a href="#" id="provinceLayer">按省份</a></li>
+                <li><a href="#" id="cityLayer">按城市</a></li>
+            </ul>
         </div>
-        <div class="tool-item">
-            <span class="glyphicon glyphicon-th-list sidelist" title="数据列表"></span>
-        </div>
+        <button type="button" class="btn btn-default" id="sidebarCtrl">
+
+
+            数据列表
+        </button>
     </div>
+
     <div id="mapSidebar">
         <div class="tool-bar">
             <a class="map-sidebar-link advs-link-main" href="#" role="button" aria-controls="mapSidebar">
@@ -41,9 +56,9 @@
         </div>
     </div>
 
-
     <%--<button class="menu-button" id="open-button">Open Menu</button>--%>
 </div>
 <div class="clearfix"></div>
+<%--<script src="resources/js/map.js"></script>--%>
 <script src="resources/js/map-arcgis.js"></script>
 
