@@ -102,7 +102,6 @@ MySessionStorage = {
         }
     },
     set: function (key, value, operation) {
-        console.log("set key" + key + " to value" + value);
         if (!value) {
             console.log("the value passed to MySessionStorage is undefined");
             return;

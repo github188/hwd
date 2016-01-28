@@ -1,6 +1,6 @@
 //Init FeatureSets
 if (localStorage) {
-    //console.log(eval(localStorage.getItem("featureSets")));
+    console.log(eval(localStorage.getItem("featureSets")));
     if (!localStorage.featureSets) {
         initFeatureSets();
     }
@@ -9,13 +9,14 @@ if (localStorage) {
         initFeatureSets();
     }
 }
-
 //获取所有的featureSet，保存在所有的localStorage中
 function initFeatureSets() {
+    console.log('starts to load features sets');
     $.ajax({
         url: basePath + 'api/getFeatureSets',
         type: 'post'
     }).success(function (data) {
+        console.log(data);
         featureSets.countryFS = data.countryFS;
         featureSets.provinceFS = data.provinceFS;
         featureSets.cityFS = data.cityFS;

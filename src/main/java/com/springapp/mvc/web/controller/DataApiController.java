@@ -209,7 +209,9 @@ public class DataApiController {
 
     @RequestMapping(value = "/api/getFeatureSets")
     public String getFeatureSets() {
-        return featureSetService.getFeatureSets();
+        String fs = featureSetService.getFeatureSets();
+//        System.out.println(fs);
+        return fs;
     }
 
     @RequestMapping(value = "/api/getFeatureSetsByNames")
@@ -227,4 +229,24 @@ public class DataApiController {
         return result;
     }
 
+    @RequestMapping(value = "/api/getCountryFeatureSet")
+    public String getCountryFeatureSet() {
+        String fs = featureSetService.getCountryFeatureSet();
+//        System.out.println(fs);
+        return fs;
+    }
+
+    @RequestMapping(value = "/api/getProvinceFeatureSet")
+    public String getProvinceFeatureSet() {
+        String fs = featureSetService.getProvinceFeatureSet();
+//        System.out.println(fs);
+        return fs;
+    }
+
+    @RequestMapping(value = "/api/getCityFeatureSet")
+    public String getCityFeatureSet() {
+        String fs = featureSetService.getCityFeatureSet();
+//        System.out.println(fs);
+        return fs;
+    }
 }

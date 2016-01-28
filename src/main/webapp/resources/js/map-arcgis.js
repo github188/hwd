@@ -4,11 +4,11 @@ var mapSearchURL = "api/mapSearch",
     countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince1/FeatureServer/2',
 //    countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/world/MapServer/0',
     provinceLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince1/FeatureServer/1',
-    cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince1/FeatureServer/0';
-//    cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1';
+//cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince1/FeatureServer/0';
+    cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1';
 var MAP_PAGE_SIZE = 5;
 var countryGL, cityGL, map, countryFS = {}, provinceFS = {}, cityFS = {}, featureGL, deviceGL, countryLayer, provinceLayer, cityLayer;
-var clusterLayer;
+var clusterLayer, featureLayer;
 function initMap() { //网站加载时调用此方法
     //listener
     $('.sidelist').on('click', function (e) {
@@ -19,24 +19,6 @@ function initMap() { //网站加载时调用此方法
         e.preventDefault();
         $('#mapSidebar').toggleClass('active');
     });
-    //（3）监听tool bar
-    $('.feature').on('click', function () {
-        var dd = MySessionStorage.get('data');
-        console.log('feature tool is clicked! ', dd);
-        if (dd && !isEmptyObject(dd)) {
-            if (map.getZoom() < 6) {
-                console.log('zoom < 6, country feature is rendering ...');
-                MyFeatureLayer.showCountry(dd.aggregation);
-            }
-            else if (map.getZoom() < 7) {
-                console.log('zoom < 7, country feature is rendering ...');
-                MyFeatureLayer.showProvince(dd.aggregation);
-            } else {
-                console.log('zoom > =7, city feature is rendering ...');
-                MyFeatureLayer.showCity(dd.aggregation);
-            }
-        }
-    });
 //map initial
     require(
         [
@@ -46,12 +28,13 @@ function initMap() { //网站加载时调用此方法
             "esri/InfoTemplate",
             "esri/layers/FeatureLayer",
             "esri/dijit/HomeButton",
+            "esri/dijit/Legend",
             "esri/tasks/query",
             "esri/tasks/QueryTask",
             "esri/symbols/SimpleFillSymbol",
             "dojo/domReady!"
         ],
-        function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, FeatureLayer, HomeButton, Query, QueryTask, SimpleFillSymbol) {
+        function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, FeatureLayer, HomeButton, Legend, Query, QueryTask, SimpleFillSymbol) {
             //（1）Create map and add layer
             map = new Map("mapHolder", {
                 //basemap: 'gray',
@@ -70,22 +53,29 @@ function initMap() { //网站加载时调用此方法
             var featureLayerInfoTemplate = new InfoTemplate("${Name_CHN}", "国家：<b>${Name_CHN}<b><br>共发现目标：<b>${count}</b>个");
             var featureLayerOption = {
                 outFields: ["*"],
-                mode: FeatureLayer.MODE_SNAPSHOT,
-                visible: true //default is true
+                mode: FeatureLayer.MODE_ONDEMAND,
+                maxRecordCount: 400
+                //visible: true //default is true
                 //infoTemplate: featureLayerInfoTemplate
             };
-            countryLayer = new FeatureLayer(countryLayerURL, featureLayerOption);
-            map.addLayer(countryLayer, 2);
+            /* countryLayer = new FeatureLayer(countryLayerURL, featureLayerOption);
+             map.addLayer(countryLayer, 2);*/
             //provinceLayer = new FeatureLayer(provinceLayerURL, featureLayerOption);
             //map.addLayer(provinceLayer, 3);
-            cityLayer = new FeatureLayer(cityLayerURL, featureLayerOption);
-            map.addLayer(cityLayer, 4);
+            featureLayer = new GraphicsLayer();
+            var legend = new Legend({
+                map: map,
+                layerInfos: [{layer: featureLayer}]
+            }, "legend");
+            legend.startup();
+
+            map.addLayer(featureLayer);
 
             //(3)添加自己的graphic层，用于分布图渲染
-            countryGL = new GraphicsLayer();
-            map.addLayer(countryGL, 6);
-            cityGL = new GraphicsLayer();
-            map.addLayer(cityGL, 7);
+            /* countryGL = new GraphicsLayer();
+             map.addLayer(countryGL, 6);
+             cityGL = new GraphicsLayer();
+             map.addLayer(cityGL, 7);*/
 
             //（2）添加设备点层
             /* deviceGL = new GraphicsLayer({
@@ -98,22 +88,141 @@ function initMap() { //网站加载时调用此方法
 
             map.on('load', function () {
                 console.log("map loaded");
+                cityLayer = new FeatureLayer(cityLayerURL, featureLayerOption);
+                cityLayer.setMaxAllowableOffset(map.extent.getWidth() / map.width);
+                map.addLayer(cityLayer);
+                //MyFeatureLayer.showCityLayerFromArcGis();
+
+
+                //（3）监听tool bar
+                $('.feature').on('click', function () {
+                    var dd = MySessionStorage.get('data');
+                    console.log('feature tool is clicked! ', dd);
+                    if (dd && !isEmptyObject(dd)) {
+                        if (map.getZoom() < 4) {
+                            console.log('zoom < 4, country feature is rendering ...');
+                            MyFeatureLayer.showCountry(dd.aggregation);
+                        }
+                        else if (map.getZoom() < 7) {
+                            console.log('zoom < 7, province feature is rendering ...');
+                            MyFeatureLayer.showProvince(dd.aggregation);
+                        } else {
+                            console.log('zoom >= 7, city feature is rendering ...');
+                            MyFeatureLayer.showCityLayerFromArcGis(dd.aggregation);
+                        }
+                    }
+                });
             });
 
             map.on('zoom-end', function (e) {
                 console.log("zoom levle: " + map.getZoom());
-                MyMap.search(false, 1);
+                //MyMap.search(false, 1);
+                console.log(cityLayer.graphics[0]);
+                cityLayer.graphics[0].attributes.count = 10;
+                console.log(cityLayer.graphics[0]);
             });
         });
 }
 initMap();
 
 var MyFeatureLayer = {
+        min: Number.MAX_VALUE,
+        max: 0,
+        renderFeatureLayer: function (min, max) {
+            require([
+                "esri/graphic",
+                "esri/renderers/SimpleRenderer", "esri/Color",
+                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+                "esri/dijit/Legend"
+            ], function (Graphic, SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol, Legend) {
+                var sfs = new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128])));
+                var renderer = new SimpleRenderer(sfs);
+                renderer.setColorInfo({
+                    field: "count",
+                    minDataValue: min,
+                    maxDataValue: max,
+                    colors: [
+                        new Color([244, 238, 246, 0.7]),
+                        new Color([121, 37, 135, 0.7])
+                    ]
+                });
+                featureLayer.setRenderer(renderer);
+                map.addLayer(featureLayer, 3);
+                map.reorderLayer(clusterLayer, 100);
+            });
+        },
+        formatData: function (which, agg) {//format city and province data
+            var result = {};
+            if (which == 'province') {
+                if (agg['province]']) {
+                    var provinces = agg['province'];
+                    for (var p in provinces) {
+                        result[p] = provinces[p];
+                    }
+                }
+
+            } else if (which == 'city') {
+                if (agg && agg['country@city']) {  //agg.country@city={country:{en:name,count:number;cities:{},...}}
+                    var cc = agg['country@city'];
+                    for (var country in cc) {
+                        if (country == '中国') {
+                            result = $.extend({}, result, cc[country]['cities']);
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
+        },
         show: function () {
-            console.log('show feature layere');
+            console.log('show feature layer');
         },
         showCountry: function (agg) {
-            console.log("country is rendering",agg);
+            //console.log("country is rendering, agg=", agg);
+            if (!agg || isEmptyObject(agg)) return;
+            //console.log("country is rendering ---------countries==", agg['country@%city']);
+            if (!agg['country@%city'] || isEmptyObject(agg['country@%city']))return;
+            console.log("country is rendering -----------++++++++++", countryFS);
+
+            if (countryFS && countryFS.features && !isEmptyObject(countryFS.features)) {
+                render(agg['country@%city'], countryFS.features);
+            } else {
+                console.log("country layer is not loaded yet. wait...");
+                var wait = setInterval(function () {
+                    if (countryFS && countryFS.features && !isEmptyObject(countryFS.features)) {
+                        render(agg['country@%city'], countryFS.features);
+                    }
+                }, 1000);
+            }
+            function render(countries, features) {   //counts={name:count}
+                var min = Number.MAX_VALUE, max = 0;
+                require(["esri/graphic"], function (Graphic) {
+                    map.removeLayer(featureLayer);
+                    featureLayer.clear();
+                    for (var key in countries) {
+                        var country = countries[key];
+                        if (country.en && features.hasOwnProperty(country.en)) {
+                            var g = features[country.en];
+                            g.attributes.count = country.count;
+                            g.attributes.Name_CHN = key;
+                            featureLayer.add(new Graphic(g));
+                            setMinMax(country.count);
+                        }
+                    }
+                    MyFeatureLayer.renderFeatureLayer(min, max);
+                });
+                function setMinMax(count) {
+                    if (count < min) {
+                        min = count;
+                    }
+                    if (count > max) {
+                        max = count;
+                    }
+                }
+            }
+        },
+        showCountryFormArcGis: function (agg) {
+            console.log("country is rendering", agg);
             if (!agg || isEmptyObject(agg))return;
             console.log("country is rendering -----------");
             if (!agg['country@%city'] || isEmptyObject(agg['country@%city']))return;
@@ -173,6 +282,7 @@ var MyFeatureLayer = {
                     }
                 });
             }
+
             function setMinMax(count) {
                 if (count < min) {
                     min = count;
@@ -183,128 +293,41 @@ var MyFeatureLayer = {
 
             }
         },
-        showProvince:function(agg){
-            console.log("shou province");
-        },
-        showCity: function (agg) {
-            var layer, areas = {}, cc = agg['country@%city'];
-            initData();
-            render();
-            function render() {
-                // the previous function cannot fulfill the req.
-                require([
-                    "esri/map", "esri/geometry/Extent",
-                    "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/dijit/Legend",
-                    "esri/renderers/SimpleRenderer", "esri/Color",
-                    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
-                    "esri/tasks/query",
-                    "esri/tasks/QueryTask"
-                ], function (Map, Extent, FeatureLayer, InfoTemplate, Legend,
-                             SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol, Query, QueryTask) {
-                    var query = new Query();
-                    query.returnGeometry = true;
-
-                    var names = '', finalCities = {};
-
-                    for (var city in areas) {
-                        var name;
-                        if (city.toLocaleLowerCase() != 'unknown') {
-                            if (city == "北京" || city == "天津" || city == "上海" || city == "重庆") {
-                                name = city + "郊县";
-                                names += "'" + city + "郊县',";
-                            } else {
-                                if (city.indexOf('市') < 0) {
-                                    name = city + "市";
-                                    names += "'" + city + "市',";
-                                }
-                            }
-                            finalCities[name] = areas[city];
+        showProvince: function (agg) {
+            console.log("province is rendering ...");
+            if (!agg || isEmptyObject(agg)) return;
+            //console.log("province is rendering ---------provinces==", agg['province']);
+            if (!agg['province'] || isEmptyObject(agg['province']))return;
+            //console.log("province is rendering -----------++++++++++", provinceFS);
+            if (provinceFS && provinceFS.features && !isEmptyObject(provinceFS.features)) {
+                render(agg['province'], provinceFS.features);
+            } else {
+                console.log("province layer is not loaded yet. wait...");
+                var wait = setInterval(function () {
+                    if (provinceFS && provinceFS.features && !isEmptyObject(provinceFS.features)) {
+                        render(agg['province'], provinceFS.features);
+                    }
+                }, 1000);
+            }
+            function render(provinces, features) {   //counts={name:count}
+                var min = Number.MAX_VALUE, max = 0;
+                require(["esri/graphic"], function (Graphic) {
+                    map.removeLayer(featureLayer);
+                    featureLayer.clear();
+                    for (var key in features) {
+                        console.log('in if key==', key);
+                        console.log('in if provinces==', provinces);
+                        if (provinces.hasOwnProperty(key)) {
+                            console.log('in if');
+                            var g = features[key];
+                            var count = provinces[key];
+                            g.attributes.count = count;
+                            featureLayer.add(new Graphic(g));
+                            setMinMax(count);
+                            console.log(featureLayer.graphics);
                         }
                     }
-                    names = names.substr(0, names.length - 1);
-                    console.log("NAME_CHN IN (" + names + ")");
-                    console.log(finalCities);
-
-                    query.where = "NAME_CHN IN (" + names + ")";
-                    cityLayer.queryFeatures(query, callback, errback);
-
-                    function callback(data) {
-                        console.log("callback ", data);
-                        //add count
-                        data.features.map(function (f) {
-                            console.log(f);
-                        });
-                        //add citylayer
-                        //renderlayer
-                    }
-
-                    function errback(data) {
-                        console.log("error ", data);
-                    }
-                });
-            }
-
-            function initData() {
-                for (var co in cc) {
-                    if (co == '中国') {
-                        areas = $.extend({}, areas, cc[co]['cities']);
-                    }
-                }
-                console.log("cities = ", areas);
-                layer = cityLayer;
-            }
-
-            function render() {
-                console.log("feature layer is rendering");
-                var min = Number.MAX_VALUE, max = 0, features = layer.graphics;
-                require([
-                    "esri/map", "esri/geometry/Extent",
-                    "esri/layers/FeatureLayer", "esri/InfoTemplate", "esri/dijit/Legend",
-                    "esri/renderers/SimpleRenderer", "esri/Color",
-                    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
-                    "dojo/domReady!"
-                ], function (Map, Extent, FeatureLayer, InfoTemplate, Legend,
-                             SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol) {
-                    //（1）修改layer的参数
-                    for (var i = 0; i < features.length; i++) {
-                        console.log('feature areas = ', areas);
-                        var f = features[i], arr = f.attributes;
-                        for (var key in areas) {
-                            var name = arr.name ? arr.name : arr.name_chn;
-                            console.log('name in arcgis' + name);
-                            if (name && name.indexOf(key) >= 0) {
-                                var g = f;
-                                var count = areas[key];
-                                arr.count = count;
-                                features[i].setAttributes(arr);
-                                g.setAttributes(arr);
-                                countryGL.add(g);
-                                setMinMax(count);
-                                break;
-                            }
-                        }
-                    }
-                    console.log(countryGL);
-                    //（2）设置renderer
-                    var renderer = new SimpleRenderer(new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128]))));
-                    renderer.setColorInfo({
-                        field: "count",
-                        minDataValue: min,
-                        maxDataValue: max,
-                        colors: [
-                            new Color([255, 255, 255, 0.2]),
-                            new Color([244, 238, 246, 0.75]),
-                            new Color([121, 37, 135, 0.75])
-                        ]
-                    });
-                    //layer.setRenderer(renderer);
-                    countryGL.setRenderer(renderer);
-                    // （3）启动legend
-                    //var legend = new Legend({
-                    //    map: map,
-                    //    layerInfos: [{title: "", layer: layer}]
-                    //}, "legend");
-                    //legend.startup();
+                    MyFeatureLayer.renderFeatureLayer(min, max);
                 });
                 function setMinMax(count) {
                     if (count < min) {
@@ -315,6 +338,66 @@ var MyFeatureLayer = {
                     }
                 }
             }
+        },
+        showCityLayerFromArcGis: function () {
+            require([
+                "esri/graphic",
+                "esri/Color",
+                "esri/dijit/PopupTemplate",
+                "esri/renderers/SimpleRenderer",
+                "esri/symbols/SimpleFillSymbol",
+                "esri/symbols/SimpleLineSymbol",
+                "esri/layers/FeatureLayer"
+            ], function (Graphic, Color, PopupTemplate, SimpleRenderer, SimpleFillSymbol, SimpleLineSymbol, FeatureLayer) {
+                var popupTemplate = new PopupTemplate({
+                    title: "{Name_CHN}",
+                    fieldInfos: [
+                        {fieldName: "count", visible: true, label: "目标数量"}
+                    ]
+                });
+                addFeatureLayers(0, 99999);
+                function addFeatureLayers(min, max) {
+                    var outline = new SimpleLineSymbol()
+                        .setColor(new Color([255, 255, 255, 0.9]));
+                    var sym = new SimpleFillSymbol()
+                        .setColor(new Color([52, 67, 83, 0.4]))
+                        .setOutline(outline);
+                    var renderer = new SimpleRenderer(sym);
+                    renderer.setColorInfo({
+                        field: "count",
+                        minDataValue: min,
+                        maxDataValue: max,
+                        colors: [
+                            new Color([244, 238, 246, 0.75]),
+                            new Color([121, 37, 135, 0.75])
+                        ]
+                    });
+
+                    cityLayer = new FeatureLayer(
+                        cityLayerURL, {
+                            infoTemplate: popupTemplate,
+                            mode: FeatureLayer.MODE_ONDEMAND,
+                            outFields: ["*"]
+                        }
+                    );
+                    for (var i = 0; i < cityLayer.features.length; i++) {
+                        f.attributes.count = i;
+                    }
+                    console.log(cityLayer);
+                    cityLayer.setRenderer(renderer);
+
+
+                    // Show popup when a feature is clicked
+                    cityLayer.on('click', function (evt) {
+                        map.infoWindow.setFeature([evt.graphic]);
+                        map.infoWindow.show(evt.mapPoint);
+                    });
+
+                    // Add this FL to the map
+                    map.addLayer(cityLayer);
+                }
+            });
+
         },
         hide: function () {
             countryLayer.hide();
@@ -354,7 +437,6 @@ var MyMap = {
         $('header').css('visibility', ' visible').show();
         MySessionStorage.set('currentPage', 'map');
         var data = MySessionStorage.get('data');
-        console.log("map is showing---", data);
         if (data && !isEmptyObject(data)) {
             //（1）显示左侧边栏
             Sidebar.show();
@@ -870,6 +952,7 @@ function addFeatureGraphicLayer(agg, zoom) {
                         }
                     }
                 }
+
                 var legend = new Legend({
                     map: map,
                     layerInfos: [{layer: featureGL}]

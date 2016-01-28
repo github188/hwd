@@ -10,11 +10,86 @@ var advancedSearchURL = basePath + 'api/advancedSearch',
     suggestionSearchURL = 'api/getSuggestions?search=',
     getFeatureSetsURL = basePath + 'api/getFeatureSets',
     imgUrl = basePath + "resources/img/";
+var getCountryFeatureSetURL = basePath + 'api/getCountryFeatureSet';
+var getProvinceFeatureSetURL = basePath + 'api/getProvinceFeatureSet';
+var getCityFeatureSetURL = basePath + 'api/getCityFeatureSet';
 
-var featureSets = {};
+var featureSets = {}, countryFS = {};       //全局变量
+//获取国家数据
+function getCountryFeatureSet() {
+    getFeatureSet(getCountryFeatureSetURL, 'country');
+}
+function getProvinceFeatureSet() {
+    getFeatureSet(getProvinceFeatureSetURL, 'province');
+}
+function getCityFeatureSet() {
+    getFeatureSet(getCityFeatureSetURL, 'province');
+}
+
+function getFeatureSet(url, featureSet) {
+    console.log('starts to load features sets');
+    $.ajax({
+        url: url,
+        type: "post",
+        contentType: "application/json",
+        dataType: "json",
+        timeout: 50000
+    }).success(function (data) {
+        console.log(url + "  succeed.", data);
+        if (featureSet == 'country') {
+            countryFS = data.data;
+        } else if (featureSet == 'province') {
+            provinceFS = data.data;
+        } else if (featureSet == 'city') {
+            cityFS = data.data;
+        }
+    }).error(function () {
+        console.log("Getting country feature set error!");
+    }).fail(function () {
+        console.log("Getting country feature set failed!");
+    });
+}
+
+//获取所有的featureSet，保存在所有的localStorage中
+function initFeatureSets() {
+    console.log('starts to load features sets');
+    $.ajax({
+        url: basePath + 'api/getFeatureSets',
+        type: 'post'
+    }).success(function (data) {
+        console.log("get feature sets succeed.");
+        featureSets.countryFS = data.countryFS;
+        featureSets.provinceFS = data.provinceFS;
+        featureSets.cityFS = data.cityFS;
+        if (localStorage) {
+            console.log(JSON.stringify(featureSets));
+            localStorage.featureSets = JSON.stringify(featureSets);
+        } else if (sessionStorage) {
+            sessionStorage.featureSets = JSON.stringify(featureSets);
+        }
+    }).error(function () {
+        console.log("Getting feature set error!");
+    }).fail(function () {
+        console.log("Getting feature set failed!");
+    });
+}
 $(function () {
     "use strict";
-    //initFeatureSets();
+    //Init FeatureSets
+    getCityFeatureSet();
+    getCountryFeatureSet();
+    getProvinceFeatureSet();
+    /*    if (localStorage) {
+     console.log(eval(localStorage.getItem("featureSets")));
+     if (!localStorage.featureSets) {
+     initFeatureSets();
+     }
+     } else if (sessionStorage) {
+     if (!sessionStorage.featureSets || isEmptyObject((JSON.parse(sessionStorage.featureSets)))) {
+     initFeatureSets();
+     }
+     }
+     initFeatureSets();*/
     //~~~~~~~~~~~~~~~~~~~全文必须~~~~~~~~~~~~~~~~~~~~~~~~~
     pageSlide();//carousel页面导航
 

@@ -23,9 +23,36 @@ public class FeatureSetService {
         result.put("errmsg", "");
         result.put("statuscode", "200");
         result.put("data", featureSets);
-        System.out.println(featureSets.getJSONObject("cityFS"));
         return result.toString();
     }
+
+    public String getCountryFeatureSet() {
+        JSONObject featureSet = FeatureSetsFillerOnStartup.getCountryFeatureSet();
+        JSONObject result = new JSONObject();
+        result.put("errmsg", "");
+        result.put("statuscode", "200");
+        result.put("data", featureSet);
+        return result.toString();
+    }
+
+    public String getProvinceFeatureSet() {
+        JSONObject featureSet = FeatureSetsFillerOnStartup.getProvinceFeatureSet();
+        JSONObject result = new JSONObject();
+        result.put("errmsg", "");
+        result.put("statuscode", "200");
+        result.put("data", featureSet);
+        return result.toString();
+    }
+
+    public String getCityFeatureSet() {
+        JSONObject featureSet = FeatureSetsFillerOnStartup.getCityFeatureSet();
+        JSONObject result = new JSONObject();
+        result.put("errmsg", "");
+        result.put("statuscode", "200");
+        result.put("data", featureSet);
+        return result.toString();
+    }
+
 
     public String getFeatureSetsByNames(String names) {
         JSONObject featureSets = new JSONObject();
@@ -37,7 +64,7 @@ public class FeatureSetService {
         result.put("errmsg", "");
         result.put("statuscode", "200");
         result.put("data", featureSets);
-        System.out.println(featureSets.getJSONObject("cityFS"));
+//        System.out.println(featureSets.getJSONObject("cityFS"));
         return result.toString();
     }
 
