@@ -9,7 +9,9 @@
 }
 
 .list-wrapper .empty-result-desc-container {
+    margin: 6rem;
     display: none;
+    text-align: center;
 }
 
 .list-wrapper .result-count-duration {

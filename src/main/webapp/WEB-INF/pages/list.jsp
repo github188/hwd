@@ -17,7 +17,7 @@
         <ul id="pager" class="pagination"></ul>
     </div>
 </div>
-<div class="empty-result-desc-container">没有找到相关数据，你可以尝试搜索其他关键词</div>
+<div class="empty-result-desc-container">没有找到相关数据，您可以尝试搜索其他关键词</div>
 <script src="resources/js/lib/jqPaginator.min.js"></script>
 <script src="resources/js/list.js"></script>
 <div class="clearfix"></div>

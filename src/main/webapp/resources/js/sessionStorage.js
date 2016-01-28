@@ -39,7 +39,8 @@ MySessionStorage = {
             } else if (globalSearchVal && wd.search(globalSearchVal) < 0) {
                 wd += globalSearchVal;
             }
-            wd = (wd + " " + getChecked()).replace('country:', 'description.device_location.country:');
+            //wd = (wd + " " + getChecked()).replace(/\bcountry:/, 'description.device_location.country:');
+            wd = wd + " " + getChecked();
             return wd;
         }
 
@@ -80,6 +81,7 @@ MySessionStorage = {
             if (sessionStorage.checked) {
                 checked = sessionStorage.checked;
             }
+            //console.log("get checked is ", checked);
             return checked;
         }
 
@@ -100,6 +102,7 @@ MySessionStorage = {
         }
     },
     set: function (key, value, operation) {
+        console.log("set key" + key + " to value" + value);
         if (!value) {
             console.log("the value passed to MySessionStorage is undefined");
             return;
@@ -150,7 +153,6 @@ MySessionStorage = {
 
         function setWd(value) {     //字符串。后端返回的数据中的wd
             console.log('getWd typeof vlaue = ', typeof value);
-
             if (value && typeof value == 'object') {
                 value = JSON.stringify(value);
             } else if (value && value != '') {
@@ -160,10 +162,14 @@ MySessionStorage = {
         }
 
         function setChecked(value, operation) {//字符串。value="(k)CheckboxId_SEPARATOR(v)",为checkbox的id
+            if (item == '空' && operation == 'add') {
+                checked = item;
+                sessionStorage.checked = checked.replace('undefined', '').replace(/\s{2,}/gm, " ");
+                return;
+            }
             var item = value.replace(CheckboxId_SEPARATOR, ":");
             var checked = MySessionStorage.get('checked');
             if (checked) {
-                //"(?<=(\\s|^))" +item+"(?=(\\s|$))"
                 if (checked.search(new RegExp("(\\s|^)" + item + "(\\s|$)", "gim")) < 0) {
                     if (operation == 'add') {
                         checked += " " + item;
@@ -194,5 +200,10 @@ MySessionStorage = {
             //console.log("set session in MysessionStorage, data = ", value);
             sessionStorage.data = JSON.stringify(value);
         }
+    },
+    reset:function(){
+        sessionStorage.wd=undefined;
+        sessionStorage.data=undefined;
+        sessionStorage.mapExtent=undefined;
     }
 };

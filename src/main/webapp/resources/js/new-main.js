@@ -397,20 +397,20 @@ function showHomePage() {
 function showGlobePointPage() {
     $('header').css('visibility', 'hidden');
     $('.sidebar').hide();
-    MySessionStorage.set('currentPage', 'globe-point');
+    //MySessionStorage.set('currentPage', 'globe-point');
 }
 
 function showGlobeLinePage() {
     $('header').css('visibility', 'hidden');
     $('.sidebar').hide();
-    MySessionStorage.set('currentPage', 'globe-line');
+    //MySessionStorage.set('currentPage', 'globe-line');
 
 }
 
 function showChartsPage() {
     $('header').css('visibility', 'hidden');
     $('.sidebar').hide();
-    MySessionStorage.set('currentPage', 'globe-charts');
+    //MySessionStorage.set('currentPage', 'globe-charts');
 }
 
 /* --------------------------- Helper ------------------------ */

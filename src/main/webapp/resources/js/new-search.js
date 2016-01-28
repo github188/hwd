@@ -33,13 +33,14 @@ function newSearch(obj) {
         if (statuscode == 200) {
             //设置sessionStorage
             /*var wd = data['wd'] ? data['wd'] : data['q'];
-            MySessionStorage.set('wd', wd);*/
+             MySessionStorage.set('wd', wd);*/
             MySessionStorage.set('data', data);
             obj.success(data);
         } else if (statuscode == 204) {
             alert("no data found");
             //MySessionStorage.set('wd', '');
             MySessionStorage.set('data', data);
+            MySessionStorage.set('checked', '空', 'add');
             noDataHandler();
         } else {
             console.log("ajax success but " + data['statuscode'], data['errmsg']);

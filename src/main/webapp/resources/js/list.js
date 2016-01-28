@@ -22,7 +22,7 @@ var List = {
         Sidebar.show(); //显示侧栏
         //更新查询时间、查询到数据的条数、结果列表、分页、侧栏checked
         $('.duration').text(data['took']);   //时间
-        var total = data['total'];
+        var total = data['total'] ? data['total'] : 0;
         $('.resultCount').text(total);   //条数
         //正文 result list显示
         var list = $('.result-container ul.devices').html('');
@@ -157,6 +157,9 @@ function paginator(totalCounts, pageSize, currentPageNum, visiblePages) {
     }
     if (pageSize == undefined) {
         pageSize = PAGE_SIZE;
+    }
+    if (!totalCounts || totalCounts == undefined) {
+        totalCounts = 0;
     }
     var $pagerWrapper = $('#pager').show();
     $pagerWrapper.jqPaginator({
