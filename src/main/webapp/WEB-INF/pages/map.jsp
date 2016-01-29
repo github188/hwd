@@ -20,21 +20,22 @@
 
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
-                <span class="glyphicon glyphicon-eye-open"></span>
                 分布图
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="#" id="countryLayer">按国家</a></li>
-                <li><a href="#" id="provinceLayer">按省份</a></li>
-                <li><a href="#" id="cityLayer">按城市</a></li>
+                <li class="map-layer"><a href="#" id="country" class="">按国家 <span
+                        class="glyphicon"></span></a>
+                </li>
+                <li class="map-layer"><a href="#" id="province" class="">按省份 <span
+                        class="glyphicon"></span></a>
+                </li>
+                <li class="map-layer"><a href="#" id="city" class="">按城市 <span
+                        class="glyphicon"></span></a>
+                </li>
             </ul>
         </div>
-        <button type="button" class="btn btn-default" id="sidebarCtrl">
-
-
-            数据列表
-        </button>
+        <button type="button" class="btn btn-default" id="sidebarCtrl">数据列表</button>
     </div>
 
     <div id="mapSidebar">

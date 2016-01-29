@@ -47,13 +47,15 @@ public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRe
     }
 
     public static JSONObject getCityFeatureSet() {
+        return new JSONObject();
+        /*URL r = ClassLoader.getSystemResource("");
         String root = "F:\\IdeaProjects\\hwd\\src\\main\\resources\\city-feature-set\\";
         cityFeatureSet = new JSONObject();
         JSONObject features = new JSONObject();
         if (cityFeatureSet == null) {
             for (int i = 0; i < 400; i += 40) {
                 String filePath = root + i + "-" + (i + 40) + "_no_bom.json";
-                System.out.println(filePath + "----------------------------------------------------------------");
+//                System.out.println(filePath + "----------------------------------------------------------------");
                 JSONObject tmp = getCitySet(filePath);
                 if (i == 0) {
                     cityFeatureSet.putAll(tmp);
@@ -65,7 +67,7 @@ public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRe
         }
         cityFeatureSet.put("features", features);
 //        System.out.println(cityFeatureSet.getJSONObject("features").keySet());
-        return cityFeatureSet;
+        return cityFeatureSet;*/
     }
 
     // 将features对象数组以其中的一个属性为key转化为map数组，更方便前端使用
@@ -111,12 +113,11 @@ public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRe
             }
         }
         jsonObj.put("features", map);
-        System.out.println("and format" + jsonObj.keySet());
+//        System.out.println("and format" + jsonObj.keySet());
         return jsonObj;
     }
 
     private static JSONObject getCitySet(String filePath) {
-
         String s = ReadFile(filePath);
         JSONObject jsonObj = JSONObject.parseObject(s);
         JSONArray features = jsonObj.getJSONArray("features");
@@ -165,7 +166,7 @@ public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRe
         JSONObject result = cityFeatureSet;
         JSONObject resultF = new JSONObject();
         JSONObject features = cityFeatureSet.getJSONObject("features");
-        System.out.println(features.keySet());
+//        System.out.println(features.keySet());
         for (int i = 0; i < names.size(); i++) {
             if (features.containsKey(names.get(i))) {
                 resultF.put(names.get(i), features.getJSONObject(names.get(i)));
@@ -176,10 +177,11 @@ public class FeatureSetsFillerOnStartup implements ApplicationListener<ContextRe
         return result;
     }
 
-    public static void main(String[] args) {
-        /*List<String> names = new ArrayList<String>();
+/*    public static void main(String[] args) {
+       *//* List<String> names = new ArrayList<String>();
         names.add("北京郊县");
-        names.add("上海郊县");*/
-        System.out.println(getProvinceFeatureSet().getJSONObject("features").keySet());
-    }
+        names.add("上海郊县");
+        System.out.println(getProvinceFeatureSet().getJSONObject("features").keySet());*//*
+        System.out.println(ClassLoader.getSystemResource(""));
+    }*/
 }

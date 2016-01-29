@@ -23,9 +23,9 @@ public class NewDeviceDAO {
     //返回用户查询的数据，用于前端以列表的形式显示设备信息（数据访问层）高级搜素
     public JSONObject getResult4DeviceSearch(String uri, Map<String, Object> criteria) {
         logger.debug("NewDAO ==>> getResult4DeviceSearch starts =================");
-        System.out.println("NewDAO ==>> getResult4DeviceSearch starts =======================");
+//        System.out.println("NewDAO ==>> getResult4DeviceSearch starts =======================");
         JSONObject result = JSONObject.fromObject(rc.get(uri, criteria));
-        System.out.println("before: " + result);
+//        System.out.println("before: " + result);
 
         if ("200".equals(result.getString("statuscode"))) {
             result = rawData2ResponseBody(result);
@@ -210,6 +210,6 @@ public class NewDeviceDAO {
         //dd.getDevices4List(criteria);
         //dd.getResponse4Globe(JSONObject.fromObject(search).toString());
 //        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
-        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/map?q={q}", criteria));
+//        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/map?q={q}", criteria));
     }
 }

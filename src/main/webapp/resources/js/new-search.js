@@ -31,16 +31,17 @@ function newSearch(obj) {
     }).success(function (data) {
         var statuscode = data['statuscode'];
         if (statuscode == 200) {
+            List.hideNoData();
             //设置sessionStorage
             /*var wd = data['wd'] ? data['wd'] : data['q'];
-             MySessionStorage.set('wd', wd);*/
+            MySessionStorage.set('wd', wd);*/
             MySessionStorage.set('data', data);
             obj.success(data);
         } else if (statuscode == 204) {
             alert("no data found");
             //MySessionStorage.set('wd', '');
+            //MySessionStorage.set('currentPage','home');
             MySessionStorage.set('data', data);
-            MySessionStorage.set('checked', '空', 'add');
             noDataHandler();
         } else {
             console.log("ajax success but " + data['statuscode'], data['errmsg']);

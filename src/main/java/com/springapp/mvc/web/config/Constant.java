@@ -5,9 +5,9 @@ package com.springapp.mvc.web.config;
  * 保存所有的常亮，使用配置文件配置之前先用此方法存放常亮
  */
 public class Constant {
-    public static final String suggestionSearchURL = "http://10.10.12.72:8083/se/search/advanced/completionsuggest";
-    public static final String advancedSearchURL = "http://10.10.12.72:8083/se/search/advanced?q={q}";
-    public static final String mapSearchURL = "http://10.10.12.72:8083/se/search/map?q={q}";
+    public static final String suggestionSearchURL = "http://10.10.2.143:8083/se/search/advanced/completionsuggest";
+    public static final String advancedSearchURL = "http://10.10.2.143:8083/se/search/advanced?q={q}";
+    public static final String mapSearchURL = "http://10.10.2.143:8083/se/search/map?q={q}";
     public static final String listSearchURL = "http://10.10.2.143:8083/se/search?wd={wd}&page={page}";
     public static final String markpointSearchURL = "http://10.10.2.143:8083/se/search/mapcluster?q={q}";
     public static final String marklineSearchURL = "http://10.10.2.84:8082/devicescan/getLinesSegment?numPerPage=100&pageId=";

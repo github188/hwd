@@ -36,7 +36,7 @@ public class WebPageController {
         return "footer";
     }*/
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
         logger.debug("index() starts----------------------");
         return "index";
@@ -125,7 +125,7 @@ public class WebPageController {
         return "index2";
     }
 
-    @RequestMapping(value = "/new-index", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String newIndex() {
         logger.debug("newIndex() starts----------------------");
         return "new-index";

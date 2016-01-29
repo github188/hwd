@@ -19,7 +19,9 @@ var List = {
             return;
         }
         this.hideNoData();
+        //Sidebar.init();
         Sidebar.show(); //显示侧栏
+
         //更新查询时间、查询到数据的条数、结果列表、分页、侧栏checked
         $('.duration').text(data['took']);   //时间
         var total = data['total'] ? data['total'] : 0;
@@ -59,12 +61,12 @@ var List = {
                 '<span class="glyphicon glyphicon-map-marker"></span> ' + loc + ' </a></span>').appendTo($location);
             }
             //time
-            var time = d.timestamp;
-            if (time && time != '') {
-                var $time = $('<div class="tag time"></div>').appendTo(facets);
-                $('<span class="label label-primary"><a href="#' + time + '">' +
-                '<span class="glyphicon glyphicon-time"></span> ' + time + ' </a></span>').appendTo($time);
-            }
+            /* var time = d.timestamp;
+             if (time && time != '') {
+             var $time = $('<div class="tag time"></div>').appendTo(facets);
+             $('<span class="label label-primary"><a href="#' + time + '">' +
+             '<span class="glyphicon glyphicon-time"></span> ' + time + ' </a></span>').appendTo($time);
+             }*/
             facets.find('a').on('click', function (e) {
                 e.preventDefault();
             });
@@ -106,9 +108,10 @@ var List = {
         }
     },
     search: function (updateSidebar, pageNumber) {  //updateSidebar为boolean，true则更新侧边栏，否则不更新
+        updateSidebar = true;
         console.log("List search starts ----wd before search" + MySessionStorage.get('wd'));
         var wd = MySessionStorage.get('wd');
-        if (wd) {
+        if (wd && wd != '') {
             var success = function (data) {
                     if (updateSidebar) {
                         Sidebar.init(data['aggregation']);
@@ -125,8 +128,8 @@ var List = {
                     "wd": wd,
                     "page": pageNumber
                 },
-                "success": success,
-                "noDataFunc": noDataFunc
+                "success": success
+                //"noDataFunc": noDataFunc
             };
             newSearch(obj);
         }
@@ -134,6 +137,7 @@ var List = {
     showNoData: function () {
         $('.empty-result-desc-container').show();
         $('.result-col').hide();
+        MySessionStorage.set('currentPage', 'home');
     },
     hideNoData: function () {
         $('.empty-result-desc-container').hide();

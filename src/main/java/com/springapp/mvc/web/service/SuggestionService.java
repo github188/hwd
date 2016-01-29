@@ -19,7 +19,7 @@ import java.util.Map;
 @Service
 public class SuggestionService {
     private static final Logger logger = LoggerFactory.getLogger(SuggestionService.class);
-    private static final String URL = "http://10.10.12.72:8083/se/search/advanced/completionsuggest";
+    private static final String URL = "http://10.10.2.143:8083/se/search/advanced/completionsuggest";
     private final SuggestionDAO dao;
 
     @Autowired

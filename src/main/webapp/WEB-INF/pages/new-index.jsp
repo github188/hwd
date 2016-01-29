@@ -31,7 +31,14 @@
     <script src="resources/js/sessionStorage.js"></script>
     <%--<script src="resources/js/initFeatureSets.js"></script>--%>
     <script src="resources/js/new-main.js"></script>
-
+    <style>
+        .tbd {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            margin-top: 40%;
+        }
+    </style>
 </head>
 <body>
 <header class="navbar-fixed-top">
@@ -81,16 +88,20 @@
             <section class="map-wrapper item" tag="map" tabindex="3">
                 <%@include file="map.jsp" %>
             </section>
-            <section class="globe-point-wrapper item" tag="globe-point" tabindex="4">
-                <%--<%@include file="globe-point.jsp" %>--%>
-                <%--<iframe src="device-globe.jsp"></iframe>--%>
-            </section>
-            <section class="globe-line-wrapper item" tag="globe-line" tabindex="5">
-                <%--<%@include file="globe-line.jsp" %>--%>
+            <section class="globe-point-wrapper item tbd" tag="globe-point" tabindex="4">
+                <div><p>原3D地球设备展示，暂未合并</p>
 
-                <%--<iframe src="globe-line.jsp"></iframe>--%>
+                    <p><a href="http://10.10.2.174:8080/device-globe">过去看看</a></p></div>
+                <%--<%@include file="globe-line.jsp" %>--%>
             </section>
-            <section class="charts-wrapper item" tag="charts" tabindex="6">charts</section>
+            <section class="globe-line-wrapper item tbd" tag="globe-line" tabindex="5">
+                <div><p>原3D数据流，暂未合并</p>
+
+                    <p><a href="http://10.10.2.174:8080/device-probe-globe">过去看看</a></p></div>
+            </section>
+            <section class="charts-wrapper item tbd" tag="charts" tabindex="6">
+                <p>TBD & 待续 ...</p>
+            </section>
         </div>
     </div>
     <div class="processing-overlay"></div>
@@ -116,7 +127,7 @@
                 <div data-target="globe-line">探测</div>
             </a></div>
             <div class="navbtn"><a href="">
-                <div data-target="charts">分析</div>
+                <div data-target="charts">TBD...</div>
             </a></div>
         </div>
     </div>

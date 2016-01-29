@@ -76,7 +76,7 @@ function initFeatureSets() {
 $(function () {
     "use strict";
     //Init FeatureSets
-    getCityFeatureSet();
+    //getCityFeatureSet();
     getCountryFeatureSet();
     getProvinceFeatureSet();
     /*    if (localStorage) {
@@ -109,12 +109,11 @@ $(function () {
             $('div[data-target]').removeClass('bgd-light-blue');
             $('div[data-target="' + currentPage + '"]').addClass('bgd-light-blue');
 
-            //$('header').css('visibility', 'visible');
-            var data = MySessionStorage.get('data');
             var wd = MySessionStorage.get('wd');
             if (wd && wd != 'undefined') {
-                $('global-search-input').val();
+                wd = $('global-search-input').val();
             }
+            var data = MySessionStorage.get('data');
             switch (currentPage) {
                 case 'home':
                     showHomePage();
@@ -467,6 +466,9 @@ function advsSearch(form) {
 function showHomePage() {
     $('header').css('visibility', 'hidden');
     $('.sidebar').hide();
+    //MySessionStorage.set('currentPage','home');
+/*    MySessionStorage.set('data','');
+    MySessionStorage.set('wd','');*/
 }
 
 function showGlobePointPage() {

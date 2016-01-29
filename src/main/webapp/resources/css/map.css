@@ -36,7 +36,7 @@
     display: block;
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
     opacity: 0.9;
-    width: auto;
+    /*width: auto;*/
     overflow: auto;
 }
 
@@ -107,7 +107,7 @@
     -webkit-box-shadow: -3px 3px 3px 3px #b4b4b4;;
     -moz-box-shadow: -3px 3px 3px 3px #b4b4b4;;
     box-shadow: -3px 3px 3px 3px #b4b4b4;;
-    overflow: auto;
+    /*overflow: auto;*/
     transition: all .6s;
 /*    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -115,7 +115,7 @@
     border-radius: 5px;*/
     border-radius: 3px;
 }
-
+/*
 .tool-item,
 #homeButton {
     display: inline-block;
@@ -135,7 +135,7 @@
     cursor: pointer;
     border: none;
     background: none;
-}
+}*/
 /*
 .tool-item > span,
 .HomeButton .home {
@@ -167,11 +167,11 @@
 
 /* pagination--*/
 
-.pager-wrapper {
+.map-wrapper .pager-wrapper {
     text-align: center;
 }
 
-.demo {
+.map-wrapper .demo {
     margin: 10px 0;
     background-color: transparent;
 }
@@ -230,12 +230,12 @@
     border-color: hsla(223, 16%, 29%, 0.5);
 }
 
-.pagination2 {
+.map-wrapper .pagination2 {
     height: 30px;
     margin: 10px 0
 }
 
-.pagination2 a {
+.map-wrapper .pagination2 a {
     text-decoration: none;
     border: solid 1px #c0d3e6;
     color: #333;
@@ -243,7 +243,7 @@
     height: 24px !important
 }
 
-.pagination2 a {
+.map-wrapper .pagination2 a {
     height: 24px !important;
     display: block;
     float: left;
@@ -255,41 +255,41 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, .05)
 }
 
-.pagination2 .active {
+.map-wrapper .pagination2 .active {
     background-color: #6babdd;
     color: #fff;
     padding: 0 10px;
     border: solid 1px #5c95c1
 }
 
-.pagination2 .prev {
+.map-wrapper .pagination2 .prev {
     border: solid 1px #c0d3e6
 }
 
-.pagination2 .next {
+.map-wrapper .pagination2 .next {
     border-left-width: 0;
     border-right-width: 1px
 }
 
-.pagination2 .active.prev, .pagination2 .active.next {
+.map-wrapper .pagination2 .active.prev, .map-wrapper .pagination2 .active.next {
     color: #dcdcdc;
     border-color: #efefef;
     background: #fff
 }
 
-.pagination2 a:hover {
+.map-wrapper .pagination2 a:hover {
     background-color: #cde4f8
 }
 
-.pagination2 .active:hover {
+.map-wrapper .pagination2 .active:hover {
     background-color: #6babdd
 }
 
-.pagination2 a.disabled {
+.map-wrapper .pagination2 a.disabled {
     display: none
 }
 
-.pagination4 .page a, .pagination4 .page a:hover {
+.map-wrapper .pagination4 .page a, .map-wrapper .pagination4 .page a:hover {
     width: 100px;
     text-align: center;
     border: 1px solid #ddd;
@@ -516,7 +516,7 @@
 
 /* ------------------------  Map Wrapper ↑ ---------------------- */
 /*分页*/
-.pagination4 .page a, .pagination4 .page a:hover {
+.map-wrapper .pagination4 .page a, .map-wrapper .pagination4 .page a:hover {
     width: 100px;
     text-align: center;
     border: 1px solid #ddd;

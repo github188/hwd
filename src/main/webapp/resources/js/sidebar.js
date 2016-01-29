@@ -15,10 +15,11 @@ var Sidebar = {
                 if (!isEmptyObject(value)) {
                     $.each(value, function (name, countryObj) {
                         var total = countryObj['count'],
-                            countryLi = genSidebarLi('country', name, total).appendTo($country),
+                            countryLi = genSidebarCountryLi('country', name, total).appendTo($country),
                             id = 'collapse' + name,
                             citiesContainer = $('<div class="collapse" id="' + id + '"></div>').appendTo(countryLi),
                             $cities = $('<ol class="inner-facet-values"></ol>').appendTo(citiesContainer);
+                        $cities.append(genSidebarLi('country' + CheckboxId_SEPARATOR + name, '全国', total));
                         $.each(countryObj['cities'], function (name, count) {
                             $cities.append(genSidebarLi('city', name, count));
                         });
@@ -51,9 +52,16 @@ var Sidebar = {
         /*--------------------------------------↓functions ----------------------------------*/
         //生成一个聚类的一个条目 ol -> li，key为搜索关键字，value为该关键字对应的值，count为查到的条数
         function genSidebarLi(key, value, count) {
-            var id = key + CheckboxId_SEPARATOR + value,
-                li = $('<li class="facet-value"></li>'),
-                input = $('<input type="checkbox">').attr({'id': id, 'name': id}),
+            var id = key + CheckboxId_SEPARATOR + value;
+            if (value == '全国') {
+                id = key + '_all_';
+            }
+            var li = $('<li class="facet-value"></li>'),
+                input = $('<input type="checkbox">').attr({'id': id, 'name': id});
+            if (value.toLocaleLowerCase() == 'unknown') {
+                input = $('<input type="checkbox" disabled>').attr({'id': id, 'name': id});
+            }
+            var
                 div = $('<div class="label-container"></div>'),
                 span = $('<span class="facet-count"></span>').html('(' + count + ')'),
                 label = $('<label class="facet-label"></label>').attr({
@@ -95,6 +103,30 @@ var Sidebar = {
                     //（3）重新搜索
                     searchOnCheckboxChange();
                 }
+            });
+
+            div.append(span).append(label);
+            li.append(input).append(div);
+            return li;
+        }
+
+        function genSidebarCountryLi(key, value, count) {
+            var id = key + CheckboxId_SEPARATOR + value,
+                li = $('<li class="facet-value"></li>'),
+                input = $('<input type="checkbox">').attr({'id': id, 'name': id}),
+                div = $('<div class="label-container"></div>'),
+                span = $('<span class="facet-count"></span>').html(''),
+                label = $('<label class="facet-label"></label>').attr({
+                    'for': id,
+                    'title': id
+                }).append('<bdi>' + value + '</bdi>');
+
+
+            //listener
+            input.on('click', function () {
+                var k_v = this.id.split(CheckboxId_SEPARATOR);
+                var k = k_v[0], v = k_v[1];
+                $('#collapse' + v).collapse('toggle');
             });
 
             div.append(span).append(label);

@@ -159,7 +159,7 @@ public class DataApiController {
     @RequestMapping(value = "/api/getResponse4Map")
     public String getResponse4Map(@RequestBody SearchCriteria criteria) {
         logger.debug("DataApiController ==>> getResponse4Map starts-----------");
-        System.out.println("Controller ==>> getResponse4Map starts-----------" + JSONObject.fromObject(criteria));
+//        System.out.println("Controller ==>> getResponse4Map starts-----------" + JSONObject.fromObject(criteria));
         String result = deviceService.getResponse4Map(criteria);
 //        System.out.println("map controller result length: " + result);
         return result;
@@ -174,7 +174,7 @@ public class DataApiController {
     @RequestMapping(value = "/api/advancedSearch")
     public String advancedSearch(@RequestBody AdvancedSearchCriteria criteria) {
         logger.debug("DataApiController advancedSearch starts-----------");
-        System.out.println("DataApiController advancedSearch starts-----------");
+//        System.out.println("DataApiController advancedSearch starts-----------");
         String result = newDeviceService.getResponse4AdvanceSearch(criteria);
 //        System.out.println("advancedSearch====" + result);
         return result;

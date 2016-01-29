@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<spring:url value="resources/plugins/echarts-2.2.7/build/dist/echarts.js" var="echarts"/>
+<script src="${echarts}"></script>
+<spring:url value="resources/plugins/echarts-x/build/dist/echarts-x.js" var="echartsX"/>
+<script src="${echartsX}"></script>
+<spring:url value="/resources/js/device-probe-globe.js" var="probeJs"/>
+<script src="${probeJs}"></script>
 <div id="main">
 
     <div id="legend">

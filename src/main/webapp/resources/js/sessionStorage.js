@@ -35,12 +35,12 @@ MySessionStorage = {
             var globalSearchVal = $('.global-search-input').val();
             var homeSearchVal = $('#home_search_input').val();
             if (homeSearchVal && MySessionStorage.get('currentPage') == 'home' && wd.search(homeSearchVal) < 0) {
-                wd += homeSearchVal;
+                wd += homeSearchVal + " ";
             } else if (globalSearchVal && wd.search(globalSearchVal) < 0) {
-                wd += globalSearchVal;
+                wd += globalSearchVal + " ";
             }
             //wd = (wd + " " + getChecked()).replace(/\bcountry:/, 'description.device_location.country:');
-            wd = wd + " " + getChecked();
+            wd += getChecked();
             return wd;
         }
 
@@ -82,7 +82,7 @@ MySessionStorage = {
                 checked = sessionStorage.checked;
             }
             //console.log("get checked is ", checked);
-            return checked;
+            return checked.replace('undefined','');
         }
 
         function getCurrentPage() {//字符串。当前页的id，示例"list"
@@ -161,12 +161,16 @@ MySessionStorage = {
         }
 
         function setChecked(value, operation) {//字符串。value="(k)CheckboxId_SEPARATOR(v)",为checkbox的id
-            if (item == '空' && operation == 'add') {
+
+            if (value == '空' && operation == 'add') {
                 checked = item;
                 sessionStorage.checked = checked.replace('undefined', '').replace(/\s{2,}/gm, " ");
                 return;
             }
             var item = value.replace(CheckboxId_SEPARATOR, ":");
+            if (value.indexOf('_all_') >= 0) {
+                item = item.replace('_all_', '')
+            }
             var checked = MySessionStorage.get('checked');
             if (checked) {
                 if (checked.search(new RegExp("(\\s|^)" + item + "(\\s|$)", "gim")) < 0) {
@@ -197,12 +201,15 @@ MySessionStorage = {
 
         function setData(value) {   //json数据。ajax查询成功后台的响应数据，包含wd
             //console.log("set session in MysessionStorage, data = ", value);
+            if (value || value == '') {
+                sessionStorage.data = undefined;
+            }
             sessionStorage.data = JSON.stringify(value);
         }
     },
-    reset:function(){
-        sessionStorage.wd=undefined;
-        sessionStorage.data=undefined;
-        sessionStorage.mapExtent=undefined;
+    reset: function () {
+        sessionStorage.wd = undefined;
+        sessionStorage.data = undefined;
+        sessionStorage.mapExtent = undefined;
     }
 };

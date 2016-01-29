@@ -20,9 +20,9 @@ import java.util.Map;
 @Service
 public class NewDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(NewDeviceService.class);
-    private static final String uri4AdvsSearch = "http://10.10.12.72:8083/se/search/advanced?q={q}";
-    private static final String uri4MapSearch = "http://10.10.12.72:8083/se/search/map?q={q}";
-    private static final String uri4List = "http://10.10.12.72:8083/se/search?wd={wd}&page={page}";
+    private static final String uri4AdvsSearch = "http://10.10.2.143:8083/se/search/advanced?q={q}";
+    private static final String uri4MapSearch = "http://10.10.2.143:8083/se/search/map?q={q}";
+    private static final String uri4List = "http://10.10.2.143:8083/se/search?wd={wd}&page={page}";
 
     private final NewDeviceDAO dao;
 
@@ -55,12 +55,12 @@ public class NewDeviceService {
 
     public String getResponse4MapSearch(SearchCriteria search) {
         logger.debug("Service ==>> getResponse4MapSearch starts ================");
-        System.out.println("Service ==>> getResponse4MapSearch starts ================");
+//        System.out.println("Service ==>> getResponse4MapSearch starts ================");
         JSONObject result;
         if (isValidSearchCriteria(search)) {
             Map<String, Object> criteria = new HashMap<String, Object>();
             criteria.put("q", JSONObject.fromObject(search));
-            System.out.println("Service ==>> getResponse4MapSearch starts ================" + JSONObject.fromObject(search));
+//            System.out.println("Service ==>> getResponse4MapSearch starts ================" + JSONObject.fromObject(search));
             result = dao.getResult4DeviceSearch(uri4MapSearch, criteria);
             if ("200".equals(result.getString("statuscode")) && result.getJSONArray("data").size() <= 0) {
                 result.put("statuscode", "204");
@@ -77,13 +77,13 @@ public class NewDeviceService {
 
     public String getResponse4ListSearch(SearchCriteria search) {
         logger.debug("Service ==>> getResponse4ListSearch starts ================");
-        System.out.println("Service ==>> getResponse4ListSearch starts ================");
+//        System.out.println("Service ==>> getResponse4ListSearch starts ================");
         JSONObject result;
         if (isValidSearchCriteria(search)) {
             Map<String, Object> criteria = new HashMap<String, Object>();
             criteria.put("wd", search.getWd());
             criteria.put("page", search.getPage());
-            System.out.println("Service ==>> getResponse4ListSearch starts ================" + criteria);
+//            System.out.println("Service ==>> getResponse4ListSearch starts ================" + criteria);
             result = dao.getResult4DeviceSearch(uri4List, criteria);
             if ("200".equals(result.getString("statuscode")) && result.getJSONArray("data").size() <= 0) {
                 result.put("statuscode", "204");
