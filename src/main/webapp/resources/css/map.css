@@ -36,8 +36,11 @@
     display: block;
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
     opacity: 0.9;
-    /*width: auto;*/
+    width: auto;
     overflow: auto;
+}
+#mapSidebar.hover {
+    width: 2rem;
 }
 
 #mapSidebar .content {

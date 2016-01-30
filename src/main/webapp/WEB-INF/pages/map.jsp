@@ -8,7 +8,7 @@
     var djConfig = {parseOnLoad: true}
 </script>
 <script type="text/javascript" src="http://localhost:8080/arcgis_js_api/library/3.15/3.15/init.js"></script>
-<div>
+<div class="map-wrapper-inner">
     <div class="mapHolder" id="mapHolder"></div>
     <div id="legend-wrapper">
         <div id="legend"></div>
