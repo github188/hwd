@@ -157,7 +157,7 @@
 
 /* Let's get this party started */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 12px;
 }
 
 /* Track */
@@ -176,6 +176,7 @@
 }
 
 ::-webkit-scrollbar-thumb:window-inactive {
+    /*background: rgba(255, 0, 0, 0.4);*/
     background: hsla(0, 30%, 21%, .5);
 }
 

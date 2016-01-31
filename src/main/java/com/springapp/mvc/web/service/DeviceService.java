@@ -1,6 +1,5 @@
 package com.springapp.mvc.web.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.springapp.mvc.web.daoLike.DeviceDAO;
 import com.springapp.mvc.web.model.*;
@@ -22,7 +21,7 @@ import java.util.Map;
 @Service
 public class DeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceService.class);
-    private static final String uri4AdvsSearch = "http://10.10.12.72:8083/se/search/advanced?q={q}";
+    private static final String uri4AdvsSearch = "http://10.10.2.143:8083/se/search/advanced?q={q}";
     private final DeviceDAO deviceDAO;
 
     @Autowired
@@ -123,7 +122,7 @@ public class DeviceService {
     //返回用户查询的数据，用于前端3d地球显示设备信息（业务逻辑层）
     public String getResponse4Globe(SearchCriteria search) {
         logger.debug("Service ==>> getResponse4Globe starts ================");
-//        System.out.println("Service ==>> getResponse4Globe starts-------" + JSONObject.fromObject(search).toString());
+        System.out.println("Service ==>> getResponse4Globe starts-------" );
         JSONObject result;
         if (isValidSearchCriteriaOld(search)) {
             result = deviceDAO.getDevices4Globe(JSONObject.toJSON(search).toString());

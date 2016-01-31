@@ -17,12 +17,13 @@
     position: absolute;
     width: 1rem;
     padding: .5rem;
-    top: 5rem;
+    top: 7rem;
     right: 1px;
-    z-index: 100;
+    z-index: 20;
     background-color: #ddd;
     height: 80%;
     overflow: hidden;
+    font-size: 1.5rem;
     /*color: #333;*/
     -webkit-box-shadow: -3px 3px 3px 3px #b4b4b4;;
     -moz-box-shadow: -3px 3px 3px 3px #b4b4b4;;
@@ -36,11 +37,9 @@
     display: block;
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
     opacity: 0.9;
-    width: auto;
+    /*width: auto;*/
+    width: 15rem;
     overflow: auto;
-}
-#mapSidebar.hover {
-    width: 2rem;
 }
 
 #mapSidebar .content {
@@ -50,6 +49,17 @@
     padding: 0 2px;
     margin-left: 1rem;
     /*border: 1px solid red;*/
+}
+
+#mapSidebar .content div.well {
+    display: none;
+    border: 1px solid #a9a9a9;
+    border-radius: 3px;
+    background: #a9a9a9;
+}
+
+#mapSidebar .content div.well.on {
+    display: block;
 }
 
 #mapSidebar .content ul {
@@ -112,12 +122,28 @@
     box-shadow: -3px 3px 3px 3px #b4b4b4;;
     /*overflow: auto;*/
     transition: all .6s;
-/*    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -o-border-radius: 5px;
-    border-radius: 5px;*/
     border-radius: 3px;
 }
+
+#featureInfo {
+    display: none;
+    position: absolute;
+    top: 5.2rem;
+    right: 3px;
+    z-index: 50;
+    width: 14.5rem;
+    padding: 1rem;
+    font-size: 1.5rem;
+    /*color: #333;*/
+    background-color: rgba(222, 222, 222, 0.8);
+    /*   -webkit-box-shadow: -3px 3px 3px 3px #b4b4b4;;
+       -moz-box-shadow: -3px 3px 3px 3px #b4b4b4;;
+       box-shadow: -3px 3px 3px 3px #b4b4b4;;*/
+    /*overflow: auto;*/
+    transition: all .6s;
+    border-radius: 3px;
+}
+
 /*
 .tool-item,
 #homeButton {
@@ -185,7 +211,7 @@
     background: hsla(223, 16%, 29%, .3);
     color: #eee;
     border-color: hsla(223, 16%, 29%, 0.5);
-    padding: 6px 15px;
+    padding: 2px 5px;
     cursor: pointer;
 }
 
@@ -293,7 +319,7 @@
 }
 
 .map-wrapper .pagination4 .page a, .map-wrapper .pagination4 .page a:hover {
-    width: 100px;
+    width: 60px;
     text-align: center;
     border: 1px solid #ddd;
     color: #999;
@@ -520,10 +546,10 @@
 /* ------------------------  Map Wrapper ↑ ---------------------- */
 /*分页*/
 .map-wrapper .pagination4 .page a, .map-wrapper .pagination4 .page a:hover {
-    width: 100px;
+    width: 60px;
     text-align: center;
     border: 1px solid #ddd;
-    color: red;
+    color: #fb9400;
     background-color: #fff !important
 }
 
@@ -537,7 +563,7 @@ pre code {
     background: #fff;
     color: #333;
     border-color: #ccc;
-    padding: 6px 15px
+    padding: 2px 5px
 }
 
 .map-wrapper .customBootstrap .pagination > li > a:hover, .map-wrapper .customBootstrap .pagination > li > a:focus {
@@ -546,7 +572,12 @@ pre code {
     border-color: #fb9400
 }
 
-.map-wrapper .customBootstrap .pagination > .active > a,
+.map-wrapper .customBootstrap .pagination > .active > a {
+    color: #333;
+    background: #fb9400;
+    border-color: #fb9400
+}
+
 .map-wrapper .customBootstrap .pagination > .active > a:hover, .map-wrapper .customBootstrap .pagination > .active > a:focus {
     color: #fb9400;
     background: #fb9400;
@@ -568,3 +599,4 @@ pre code {
 .map-wrapper .customBootstrap .pagination a:hover .arrow3 {
     border-left-color: #fff
 }
+

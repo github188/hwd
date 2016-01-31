@@ -16,8 +16,11 @@
 
     <%--<div id="homeButton"></div>--%>
     <div class="btn-group" role="group" id="tool-wrapper">
+        <button type="button" class="btn btn-default open" id="sidebarCtrl">
+            <span class="glyphicon glyphicon-triangle-left"></span>
+            隐藏侧栏
+        </button>
         <div class="btn-group" role="group">
-
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                 分布图
@@ -35,10 +38,14 @@
                 </li>
             </ul>
         </div>
-        <button type="button" class="btn btn-default" id="sidebarCtrl">数据列表</button>
+        <button type="button" class="btn btn-default" id="mapSidebarCtrl">显示数据
+            <span class="glyphicon glyphicon-triangle-right"></span>
+        </button>
     </div>
-
-    <div id="mapSidebar">
+    <div id="featureInfo">
+        地理位置：<strong class="f-country"></strong><br>
+        目标数量：<strong class="f-count"></strong></div>
+    <div id="mapSidebar" class="">
         <div class="tool-bar">
             <a class="map-sidebar-link advs-link-main" href="#" role="button" aria-controls="mapSidebar">
                 <span class="glyphicon glyphicon-menu-right"></span>
@@ -46,9 +53,9 @@
             </a>
         </div>
         <div class="clearfix"></div>
+        <div></div>
         <div class="content">
             <ul class="map-device-list">
-
             </ul>
         </div>
         <div class="pager-wrapper demo4 customBootstrap map">

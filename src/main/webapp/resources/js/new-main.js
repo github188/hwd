@@ -1,6 +1,7 @@
 var CheckboxId_SEPARATOR = '_s0s_',//分隔符：key_s0s_value（s零s）
-    PivotId_SEPARATOR = '_pivot_';
-
+    PivotId_SEPARATOR = '_pivot_',
+    CountryId_SEPARATOR = '_all_';
+var homepage_search_flag = false;
 var suggestionSearchURL = basePath + 'api/getSuggestions?search=',
     imgUrl = basePath + "resources/img/",
     getCountryFeatureSetURL = basePath + 'api/getCountryFeatureSet',
@@ -18,9 +19,16 @@ $(function () {
     //初始化之后，跳转到用户当前所在页（同一个session的情况下）
     if (sessionStorage) {
         var currentPage = MySessionStorage.get('currentPage');
+        if (!currentPage) {
+            $('.carousel').carousel(0);
+        }
+        var wd = MySessionStorage.get('wd');
+        if (wd) {
+            $('.global-search-input').val(wd);
+        }
         var data = MySessionStorage.get('data');
-        if (currentPage && data && data['statuscode'] == 200) {
-            $('.carousel').carousel(parseInt($('section [tag="' + currentPage + '"]').attr('tabindex')) - 1);
+        if (data && data['statuscode'] == 200) {
+            $('.carousel').carousel(parseInt($('section[tag="' + currentPage + '"]').attr('tabindex')) - 1);
         } else {
             $('.carousel').carousel(0);
         }
@@ -37,7 +45,7 @@ $(function () {
         e.preventDefault();
         console.log("search in global form");
         var criteria = $('.global-search-input').val();
-        if (criteria = '')return;
+        if (criteria == '')return;
         MySessionStorage.set('wd', criteria);
         var currentPage = MySessionStorage.get('currentPage') ? MySessionStorage.get('currentPage') : $('section.active').attr('tag');
         if (currentPage == 'list') {
@@ -51,11 +59,7 @@ $(function () {
     $('.home-search-form').on('submit', function (e) {
         e.preventDefault();
         console.log("home form search");
-        var criteria = $('#home_search_input').val();
-        if (criteria = '')return;
-        MySessionStorage.set('wd', criteria);
-        $('.carousel').carousel(1);  //滑动到list页面
-        List.search(1);
+        Homepage.search();
     });
 
     //advanced search link
@@ -95,6 +99,7 @@ $(function () {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ functions↓~~~~~~~~~~~~~~~~~~~~~
 //页面滑动,使用bootstrap的carousel和slide
 function pageSlide() {
+    console.log("FUNCTION CALL: pageSlide");
     var $carousel = $('.carousel').carousel({"interval": false});
     $carousel.on('slide.bs.carousel', function (event) {
         var tag = $(event.relatedTarget).attr("tag");
@@ -109,27 +114,35 @@ function pageSlide() {
         $(".carousel-progress").animate({width: progress, left: (progress / 2) - 400}, 500);
         var wd = MySessionStorage.get('wd');
         if (wd && wd != '') {
-            $('global-search-input').val(wd);
+            $('.global-search-input').val(wd);
         }
         var data = MySessionStorage.get('data');    //当data.statuscode!=200的时候需要做特殊处理，待开发-------------
         switch (tag) {
             case 'home':
-                HomePage.show();
+                Homepage.show();
                 break;
             case 'list':
-                List.show(data);
+                if (!homepage_search_flag) {
+                    List.show(data);
+                }
                 break;
             case 'map':
                 MyMap.show(data);
                 break;
             case 'globe-point':
-                GlobePoint.show(data);
+                MySessionStorage.set('currentPage', 'globe-point');
+                //initPoint();
+                //GlobePoint.show(data);
+                window.location.href = basePath + 'device-globe';
                 break;
             case 'globe-line':
-                GlobeLine.show(data);
+                //GlobeLine.show(data);
+                window.location.href = basePath + 'device-probe-globe';
+
                 break;
             case 'charts':
-                Charts.show(data);
+                //Charts.show(data);
+                alert("更多内容，静待后续奉上！");
                 break;
         }
     });
@@ -139,6 +152,7 @@ function pageSlide() {
 
     //点击切换，起到carousel control的作用
     $('footer .navbtn').on('click', function (e) {
+        console.log("FUNCTION CALL: footer navbtn is clicked");
         e.preventDefault();
         var index = $(this).index();
         $('.carousel').carousel(index);
@@ -155,7 +169,6 @@ function suggestCursorToggle() {
 }
 
 function getFeatureSet(url, featureSet) {
-    console.log('starts to load features sets');
     $.ajax({
         url: url,
         type: "post",
@@ -163,7 +176,7 @@ function getFeatureSet(url, featureSet) {
         dataType: "json",
         timeout: 50000
     }).success(function (data) {
-        console.log(url + "  succeed.", data);
+        //console.log(url + "  succeed.", data);
         if (featureSet == 'country') {
             countryFS = data.data;
         } else if (featureSet == 'province') {
@@ -180,10 +193,12 @@ function getFeatureSet(url, featureSet) {
 
 //获取国家Layer数据
 function getCountryFeatureSet() {
+    console.log("FUNCTION CALL: getCountryFeatureSet");
     getFeatureSet(getCountryFeatureSetURL, 'country');
 }
 //获取省份Layer数据
 function getProvinceFeatureSet() {
+    console.log("FUNCTION CALL: getProvinceFeatureSet");
     getFeatureSet(getProvinceFeatureSetURL, 'province');
 }
 

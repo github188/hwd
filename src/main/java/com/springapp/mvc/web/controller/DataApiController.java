@@ -127,6 +127,7 @@ public class DataApiController {
             @PathVariable("permitfilter") String permitfilter,
             @PathVariable("lossycompress") Integer lossycompress) {
         logger.debug("DataApiController ==>> getResponse4Globe starts-----------");
+        System.out.println("getDevices4Globe "+typefilter);
         permitfilter = !"all".equals(permitfilter) ? permitfilter : "";
         SearchCriteria search = new SearchCriteria();
         search.setPermitfilter(permitfilter);
@@ -214,10 +215,12 @@ public class DataApiController {
         return fs;
     }
 
+/*
     @RequestMapping(value = "/api/getFeatureSetsByNames")
     public String getFeatureSetsByNames(@RequestParam(value = "names") String names) {
         return featureSetService.getFeatureSetsByNames(names);
     }
+*/
 
 
     @JsonView(Views.Public.class)
@@ -243,10 +246,10 @@ public class DataApiController {
         return fs;
     }
 
-    @RequestMapping(value = "/api/getCityFeatureSet")
+/*    @RequestMapping(value = "/api/getCityFeatureSet")
     public String getCityFeatureSet() {
         String fs = featureSetService.getCityFeatureSet();
 //        System.out.println(fs);
         return fs;
-    }
+    }*/
 }

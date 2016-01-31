@@ -231,7 +231,7 @@
             </li>
         </ul>
     </div>
-    <div id="globe4DeviceHolder"></div>
+    <div id="globe4DeviceHolder" style="width: 600px;height: 600px; margin-left: 200px"></div>
 </div>
 <%@include file="footer.jsp" %>
 <spring:url value="resources/plugins/echarts-2.2.7/build/dist/echarts.js" var="echarts"/>

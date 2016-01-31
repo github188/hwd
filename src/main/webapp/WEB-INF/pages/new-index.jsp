@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="resources/css/sidebar.css">
     <link rel="stylesheet" href="resources/css/list.css">
     <link rel="stylesheet" href="resources/css/map.css">
-    <link rel="stylesheet" href="resources/css/leaflet.css">
     <link rel="stylesheet" href="resources/css/footer.css">
     <link rel="stylesheet" href="resources/css/media.css">
     <script src="resources/js/lib/jquery-1.11.3.min.js"></script>
@@ -36,7 +35,7 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            margin-top: 40%;
+            border: none;
         }
     </style>
 </head>
@@ -70,6 +69,7 @@
                 <%--<canvas id="galaxy"></canvas>--%>
                 <div class="home-search">
                     <form class="form-inline home-search-form">
+                        <%--onsubmit="Homepage.search(this)"--%>
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search"
                                    autofocus="autofocus"
@@ -89,15 +89,18 @@
                 <%@include file="map.jsp" %>
             </section>
             <section class="globe-point-wrapper item tbd" tag="globe-point" tabindex="4">
-                <div><p>原3D地球设备展示，暂未合并</p>
+                <%--<iframe src="http://localhost:8099/device-globe" class="tbd" id="point"></iframe>--%>
 
-                    <p><a href="http://10.10.2.174:8080/device-globe">过去看看</a></p></div>
+
+               <%-- <div><p>原3D地球设备展示，暂未合并</p>
+
+                    <p><a href="http://10.10.2.174:8080/device-globe">过去看看</a></p></div>--%>
                 <%--<%@include file="globe-line.jsp" %>--%>
             </section>
             <section class="globe-line-wrapper item tbd" tag="globe-line" tabindex="5">
-                <div><p>原3D数据流，暂未合并</p>
+                <%--<div><p>原3D数据流，暂未合并</p>--%>
 
-                    <p><a href="http://10.10.2.174:8080/device-probe-globe">过去看看</a></p></div>
+                    <%--<p><a href="http://10.10.2.174:8080/device-probe-globe">过去看看</a></p></div>--%>
             </section>
             <section class="charts-wrapper item tbd" tag="charts" tabindex="6">
                 <p>TBD & 待续 ...</p>
@@ -134,5 +137,8 @@
 </footer>
 <script src="resources/js/new-search.js"></script>
 <script src="resources/js/sidebar.js"></script>
+<script src="resources/js/homepage.js"></script>
+<script src="resources/js/error.js"></script>
+<%--<script src="resources/js/device-globe.js"></script>--%>
 </body>
 </html>

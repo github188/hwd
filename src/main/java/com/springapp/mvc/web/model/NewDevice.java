@@ -126,7 +126,16 @@ public class NewDevice {
 
         private String desc;
         private String platform;
+        private String imgURL;
         private JSONObject data;
+
+        public String getImgURL() {
+            return imgURL;
+        }
+
+        public void setImgURL(String imgURL) {
+            this.imgURL = imgURL;
+        }
 
         public void setDesc(String desc) {
             this.desc = desc;

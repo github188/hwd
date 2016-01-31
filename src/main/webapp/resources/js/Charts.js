@@ -1,5 +1,5 @@
 var Charts = {
     show: function (data) {
-        console.log('Charts page is showing', data);
+        console.log("FUNCTION CALL: Charts.show");
     }
 };

@@ -37,10 +37,11 @@ a {
 
 a.hover, a:hover {
     font-size: 1.5rem;
+    color: hsla(206, 95%, 65%, 1)
 }
 
 a.visited, a:visited {
-    color: #96999c;
+    /*color: #96999c;*/
 }
 
 .text-button {

@@ -8,6 +8,7 @@ var List = {
     listPageNum: 1,
     wrapper: $('.result-col'),
     show: function (data) {
+        console.log("FUNCTION CALL: List.show");
         MySessionStorage.set('currentPage', this.tag);
         $('header').css('visibility', ' visible').show();
         if (data && data['statuscode'] == 200) {
@@ -20,10 +21,11 @@ var List = {
         this.wrapper.show();
     },
     hide: function () {
+        console.log("FUNCTION CALL: List.hide");
         this.wrapper.hide();
     },
     render: function (data) {
-        console.log("list is rendering---", data);
+        console.log("FUNCTION CALL: List.render");
         //更新查询时间、查询到数据的条数、结果列表、分页
         var currpage = data['currpage'],
             total = data['total'],
@@ -33,7 +35,7 @@ var List = {
         $('.duration').text(took);
         //条数
         $('.resultCount').text(total);
-        $('#pageTip').html(currpage + '/' + (Math.floor(total / pagesize) + 1));
+        $('#pageTip').html(currpage + ' / ' + (Math.floor(total / pagesize) + 1));
         //结果列表
         var list = $('.result-container ul.devices').html('');
         var devices = data['data'];
@@ -48,7 +50,7 @@ var List = {
             //console.log("genDeviceLi", d);
             var li = $(' <li class="device"></li>');
             //ip
-            var ip = $('<h3><a href="#' + d.ip + d.ip + '"></a></h3>').appendTo(li);
+            var ip = $('<h3><a href="#' + d.ip + '">' + d.ip + '</a></h3>').appendTo(li);
             //详细内容
             var row = $('<div class="row"></div>').appendTo(li);
             //all tags
@@ -84,7 +86,8 @@ var List = {
             if (ports != '' && ports.length > 0) {
                 for (var i = 0; i < ports.length; i++) {
                     for (var key in ports[i]) {
-                        var $port = $('<article><h3><a href="#">' + key + '</a></article>').appendTo(info);
+                        var url = key.split(': ')[0] + d.ip + key.split(': ')[1];
+                        var $port = $('<article><h3><a href="' + url + '">' + key + '</a></article>').appendTo(info);
                         var banner = ports[i][key];
                         if (banner || banner == '') {
                             banner = banner.replace(/</g, "&lt;");
@@ -147,16 +150,17 @@ var List = {
                         //console.log('{{page}}');
                         //console.log(num + ", " + type);
                         //searchViaAjax(URL, $('#wd').val(), num);
-                        this.listPageNum = num;
-                        this.search(num);
+                        List.listPageNum = num;
+                        List.search(num);
                     }
                 }
             })
         }
     },
     search: function (pageNumber) {  //updateSidebar为boolean，true则更新侧边栏，否则不更新
-        console.log("List search starts ----wd before search" + MySessionStorage.get('wd'));
-        var wd = MySessionStorage.get('wd') ? MySessionStorage.get('wd') : $('.global-search-input').val();
+        console.log("FUNCTION CALL: List.search");
+        var wd = $('.global-search-input').val();
+        wd = wd ? wd : MySessionStorage.get('wd');
         var checkedStr = MySessionStorage.getCheckedAsStr();
         if (wd && wd != '') {
             var obj = {
@@ -170,10 +174,12 @@ var List = {
         }
     },
     showNoData: function () {
+        console.log("FUNCTION CALL: List.showNoData");
         $('.empty-result-desc-container').show();
         this.wrapper.hide();
     },
     hideNoData: function () {
+        console.log("FUNCTION CALL: List.hideNoData");
         $('.empty-result-desc-container').hide();
         this.wrapper.show();
     }
@@ -181,6 +187,7 @@ var List = {
 
 /*
  var List = {
+
  show: function () {
  MySessionStorage.set('currentPage', 'list');
  $('header').css('visibility', ' visible').show();

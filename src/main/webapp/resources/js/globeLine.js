@@ -1,5 +1,5 @@
 var GlobeLine = {
     show: function (data) {
-        console.log('GlobeLine page is showing', data);
+        console.log("FUNCTION CALL: GlobeLine.show");
     }
 };

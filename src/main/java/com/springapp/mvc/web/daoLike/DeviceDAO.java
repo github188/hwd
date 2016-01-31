@@ -25,7 +25,7 @@ public class DeviceDAO {
     //URL将来从配置文件获取
     private static final String uri4List = "http://10.10.2.143:8083/se/search?wd={wd}&page={page}";
     private static final String uri4Map = "http://10.10.2.143:8083/se/search/map?q={q}";  //传入json字符串，{"key1":"value1", "key2":"value2", ...}
-    private static final String uri4Globe = "http://10.10.2.143:8083/se/search/mapcluster?q={q}";  //传入json字符串，{"key1":"value1", "key2":"value2", ...}
+    private static final String uri4Globe = "http://10.10.12.72:8083/se/search/mapcluster?q={q}";  //传入json字符串，{"key1":"value1", "key2":"value2", ...}
     private static final Logger logger = LoggerFactory.getLogger(DeviceDAO.class);
 
     List<Device> devices;
@@ -252,7 +252,7 @@ public class DeviceDAO {
     //返回用于3d设备展示的数据（数据访问层）-----------------------------------------------------√
     public JSONObject getDevices4Globe(String criteria) {
         logger.debug("DAO ==>> getResponse4Globe starts =================");
-//        System.out.println("DAO ==>> getResponse4Globe starts =======================");
+        System.out.println("DAO ==>> getResponse4Globe starts =======================");
         JSONObject result = JSON.parseObject(rc.get(uri4Globe, criteria));
         if ("200".equals(result.getString("statuscode"))) {
             JSONArray data = result.getJSONArray("data");

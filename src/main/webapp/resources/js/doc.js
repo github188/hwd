@@ -209,7 +209,7 @@ var MyObject = {};
 
 var MyFunction = {};
 {
-    MyFunction.search.description =
+    MyFunction.newSearch.description =
         "1. ajax搜索功能，所有对数据的搜索都使用此方法，也仅能使用此方法。" +
         "2. parameters：obj{" +
         "       url：String。请求的地址。" +
@@ -226,7 +226,7 @@ var MyFunction = {};
         "       如果返回数据不为空（data.statuscode==200），则根据sessionStorage中的currentPage来调用对应页面的show方法，显示该页面。" +
         "       如果为空，则调用noData方法，显示无数据。" +
         "5. error：执行全局错误方法errorHandler。";
-}//search
+}//newSearch
 
 {
     MyFunction.errorHandler.description =

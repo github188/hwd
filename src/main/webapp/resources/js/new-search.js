@@ -1,6 +1,6 @@
 /*---------------------------------------Function Search--------------------------*/
 function newSearch(obj) {
-    console.log("search starts ... ");
+    console.log("FUNCTION CALL: newSearch");
     var homeSearchBtn = $('#home-search-btn'),
         globalSearchBtn = $('.global-search-button'),
         globalSearchInput = $('.global-search-input'),
@@ -24,9 +24,9 @@ function newSearch(obj) {
             //设置sessionStorage
             MySessionStorage.set('data', data);
             //设置global_search_input.val的值为sessionStorage.wd
-            if (MySessionStorage.get('wd')) {
+           /* if (MySessionStorage.get('wd')) {
                 globalSearchInput.val(MySessionStorage.get('wd'));
-            }
+            }*/
             if (statuscode == 200) {
                 var currentPage = MySessionStorage.get('currentPage');
                 if (currentPage) {

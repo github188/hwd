@@ -15,7 +15,7 @@ import java.util.Set;
 public class NewSuggestions {
     public static List<String> suggestions = new ArrayList<String>();
     //    private static String suggestionURL = AppConfig.suggestionURL;
-    private static String suggestionURL = "http://10.10.12.72:8083/se/search/advanced/completionsuggest";
+    private static String suggestionURL = "http://10.10.2.143:8083/se/search/advanced/completionsuggest";
 
     public NewSuggestions() {
         //可以用来初始化映射表
@@ -31,7 +31,7 @@ public class NewSuggestions {
     public static void initSuggestions() {
         RestClient rc = new RestClient();
         if (suggestionURL == null) {
-            suggestionURL = "http://10.10.12.72:8083/se/search/advanced/completionsuggest";
+            suggestionURL = "http://10.10.2.143:8083/se/search/advanced/completionsuggest";
         }
         String respStr = rc.get(suggestionURL);
         JSONObject resp = JSONObject.parseObject(respStr);

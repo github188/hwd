@@ -164,3 +164,4 @@
         </form>
     </div>
 </div>
+<script src="resources/js/advSearch.js"></script>

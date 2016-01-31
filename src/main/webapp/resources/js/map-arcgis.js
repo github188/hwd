@@ -1,16 +1,14 @@
 /*---------------------------------------------↓Map-----------------------------------------------*/
 var mapSearchURL = basePath + "api/mapSearch",
     basemapURL = 'http://10.10.2.81:6080/arcgis/rest/services/China_Community_BaseMap/MapServer',
-//countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince1/FeatureServer/2',
     countryLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/world/MapServer/0',
     provinceLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince1/FeatureServer/1',
-//    cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/testprovince1/FeatureServer/0';
     cityLayerURL = 'http://10.10.2.81:6080/arcgis/rest/services/area/MapServer/1';
-var MAP_PAGE_SIZE = 5;
-var countryGL, cityGL, map, countryFS = {}, provinceFS = {}, cityFS = {}, featureGL, deviceGL, countryLayer, provinceLayer, cityLayer;
-var clusterLayer, featureLayer;
+var MAP_PAGE_SIZE = 5, featuresDisplayed = {};
+var map, countryFS = {}, provinceFS = {}, cityFS = {}, cityLayer, clusterLayer, featureLayer;
 
 function initMap() {
+    console.log("FUNCTION CALL: initMap");
     require(
         [
             "esri/map",
@@ -30,7 +28,7 @@ function initMap() {
                 minZoom: 3,
                 maxZoom: 8,
                 zoom: 4,
-                sliderPosition: "bottom-right",
+                sliderPosition: "top-right",
                 logo: false
             });
             //（1）添加底图
@@ -40,6 +38,13 @@ function initMap() {
             //（2）添加用于显示分布图的graphic layer
             var featureLayerInfoTemplate = new InfoTemplate("${Name_CHN}", "国家：<b>${Name_CHN}<b><br>共发现目标：<b>${count}</b>个");
             featureLayer = new GraphicsLayer(featureLayerInfoTemplate);
+            featureLayer.on('click', function (evt) {
+                console.log("aaa");
+                var attr = evt.graphic.attributes;
+                var name = attr.Name_CHN ? attr.Name_CHN : attr.NAME;
+                $('.f-country').text(name);
+                $('.f-count').text(attr.count);
+            });
             /* var legend = new Legend({
              map: map,
              layerInfos: [{layer: featureLayer}]
@@ -55,12 +60,32 @@ function initMap() {
                     outFields: ["*"]
                 });
                 cityLayer.setMaxAllowableOffset(map.extent.getWidth() / map.width);
-                map.addLayer(cityLayer);
+                //map.addLayer(cityLayer);
 
                 //（4）listener
-                $('.sidebarCtrl').on('click', function (e) {
+                $('#sidebarCtrl').on('click', function (e) {
                     e.preventDefault();
-                    $('#mapSidebar').toggleClass('active');
+                    var $this = $(this);
+                    $this.toggleClass('open');
+                    if ($this.hasClass('open')) {
+                        Sidebar.show();
+                        $this.html('<span class="glyphicon glyphicon-triangle-left"></span>' + '显示侧栏');
+                    } else {
+                        Sidebar.hide();
+                        $this.html('<span class="glyphicon glyphicon-triangle-right"></span>' + '显示侧栏');
+                    }
+                });
+                $('#mapSidebarCtrl').on('click', function (e) {
+                    e.preventDefault();
+                    var $this = $(this), mapSidebar = $('#mapSidebar');
+                    //mapSidebar.toggleClass('active');
+                    if (!mapSidebar.hasClass('active')) {
+                        MapSidebar.show();
+                        $this.html('隐藏数据' + '<span class="glyphicon glyphicon-triangle-left"></span>');
+                    } else {
+                        MapSidebar.hide();
+                        $this.html('显示数据' + '<span class="glyphicon glyphicon-triangle-right"></span>');
+                    }
                 });
                 $('.map-sidebar-link')
                     .on('click', function (e) {
@@ -72,26 +97,29 @@ function initMap() {
                         $('#mapSidebar').addClass('onHover');
                     });
                 //监听tool bar的分布图点击事件
-                $('.map-layer a').on('click', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $this.toggleClass('open');
-                    if ($this.hasClass('open')) {
-                        $('.map-layer a').removeClass('open').find('span').removeClass('glyphicon-eye-open');
-                        $this.addClass('open').find('span').addClass('glyphicon-eye-open');
-                        MyFeatureLayer.show($this.attr('id'));
-                    } else {
-                        MyFeatureLayer.hide();
-                        $this.removeClass('open').find('span').removeClass('glyphicon-eye-open');
-                    }
-                });
+                $('.map-layer a')
+                    .on('click', function (e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        $this.toggleClass('open');
+                        if ($this.hasClass('open')) {
+                            $('.map-layer a').removeClass('open').find('span').removeClass('glyphicon-eye-open');
+                            $this.addClass('open').find('span').addClass('glyphicon-eye-open');
+                            MyFeatureLayer.show($this.attr('id'));
+                            $('#featureInfo').show()
+                        } else {
+                            MyFeatureLayer.hide();
+                            $this.removeClass('open').find('span').removeClass('glyphicon-eye-open');
+                            $('#featureInfo').hide()
+                        }
+                    });
             });
             map.on('zoom-end', function (e) {
                 console.log("zoom levle: " + map.getZoom());
                 //research on zoom------------需要添加这样一个按钮（如果用户点击了则执行MyMap.search，否则缩放不重新搜索）
-                MyMap.search(1);
-                if ($('.map-layer a').hasClass('open')) {
-                    MyFeatureLayer.show($(this).attr('id'));
+                //MyMap.search(1);
+                if ($('#city').hasClass('open')) {
+                    MyFeatureLayer.updateCityLayer(featuresDisplayed);
                 }
             });
 
@@ -108,6 +136,7 @@ var MyMap = {
     mapPageNum: 1,
     wrapper: $('.map-wrapper-inner'),
     show: function (data) { //滑动到地图页时调用此方法
+        console.log("FUNCTION CALL: MyMap.show");
         MySessionStorage.set('currentPage', 'map');
         $('header').css('visibility', ' visible').show();
         if (data && data['statuscode'] == 200) {
@@ -121,22 +150,23 @@ var MyMap = {
         this.wrapper.show();
     },
     hide: function () {
+        console.log("FUNCTION CALL: MyMap.hide");
         this.wrapper.hide();
     },
     render: function (data) {//向地图添加设备标注
-        console.log("map render starts--", data);
+        console.log("FUNCTION CALL: MyMap.render");
         if (map) {
             //（1）添加设备层
             addClusters(data['data']);
             //（2）显示地图右侧边栏
-            MapSidebar.show(data);
+            MapSidebar.init(data);
         } else {
             var interval = setInterval(function () {
                 if (map) {
                     //（1）添加设备层
                     addClusters(data['data']);
                     //（2）显示地图右侧边栏
-                    MapSidebar.show(data);
+                    MapSidebar.init(data);
                     clearInterval(interval);
                 }
             }, 1000);
@@ -174,27 +204,32 @@ var MyMap = {
                 devicesInfo.data = $.map(devices, function (d) {
                     var latlng = new Point(parseFloat(d.lon), parseFloat(d.lat), wgs);
                     var webMercator = webMercatorUtils.geographicToWebMercator(latlng);
-                    var ports = d.ports, vuls = d.vuls, portsStr = '', vulsStr = '';
+                    var ports = d.ports, vuls = d.vuls, portsStr = '', vulsStr = '', imgArr = [];
                     for (var i = 0; i < ports.length; i++) {
                         for (var p in ports[i]) {
-                            portsStr += ', ' + ports[i][p];
+                            portsStr += p + ' ';
                         }
                     }
                     for (var j = 0; j < vuls.length; j++) {
                         for (var key in vuls[j]) {
-                            vulsStr += ", " + vuls[j][key];
+                            vulsStr += key + " ";
+                            if (vuls[j][key].hasOwnProperty('imgURL') && vuls[j][key]['imgURL'] != '') {
+                                imgArr.push(vuls[j][key]['imgURL']);
+                            }
                         }
                     }
 
                     var attributes = {
                         "IP": d.ip,
                         "Location": d.location,
+                        //"Ports": portsStr.substr(0, portsStr.length - 2),
                         "Ports": portsStr,
                         "Tags": d.tags,
                         "Vuls": vulsStr,
+                        //"Vuls": vulsStr.substr(0, vulsStr.length - 2),
                         "Timestamp": d.timestamp,
-                        "Image": basePath + "resources/img/home.png",
-                        "Link": d.link
+                        "Image": imgArr[0]
+                        //"Link": d.link
                     };
                     return {
                         "x": webMercator.x,
@@ -207,7 +242,7 @@ var MyMap = {
                 var popupTemplate = new PopupTemplate({
                     "title": "",
                     "fieldInfos": [{
-                        "fieldName": "Ip",
+                        "fieldName": "IP",
                         visible: true
                     }, {
                         "fieldName": "Location",
@@ -287,8 +322,9 @@ var MyMap = {
         }
     },
     search: function (pageNum) {//updateSidebar, boolean，true，表示更新sidebar，否则不更新
-        console.log("map search function starts--");
-        var wd = MySessionStorage.get('wd') ? MySessionStorage.get('wd') : $('.global-search-input').val();
+        console.log("FUNCTION CALL: MyMap.search");
+        var gValue = $('.global-search-input').val();
+        var wd = gValue ? gValue : MySessionStorage.get('wd');
         var checkedStr = MySessionStorage.getCheckedAsStr();
         if (wd && wd != '') {
             var extent = getVisibleExtent();//获取并设置屏幕所在范围的经纬度geo
@@ -334,13 +370,14 @@ var MyMap = {
         }
     },
     showNoData: function () {
+        console.log("FUNCTION CALL: MyMap.showNoData");
         console.log("map no data");
     }
 };
 
 var MyFeatureLayer = {
     show: function (which) {
-        console.log('show feature layer');
+        console.log("FUNCTION CALL: MyFeatureLayer.show");
         var dd = MySessionStorage.get('data');
         if (dd && dd['statuscode'] == 200) {
             map.removeLayer(featureLayer);
@@ -479,6 +516,7 @@ var MyFeatureLayer = {
                             g.attributes.count = count;
                             featureLayer.add(g);
                             setMinMax(count);
+                            featuresDisplayed[key] = count;
                         }
                     }
                 }
@@ -522,30 +560,96 @@ var MyFeatureLayer = {
         }
     },
     hide: function () {
+        console.log("FUNCTION CALL: MyFeatureLayer.hide");
         featureLayer.clear();
         cityLayer.hide();
+    },
+    updateCityLayer: function (citiesDisplayed) {
+        console.log("city is rendering ...");
+        var cities = citiesDisplayed;
+
+        if (cityLayer && cityLayer.graphics && cityLayer.graphics.length > 0) {
+            render(cities, cityLayer.graphics);
+        } else {
+            console.log("city layer is not loaded yet. wait...");
+            var wait = setInterval(function () {
+                if (cityLayer && cityLayer.graphics && cityLayer.graphics.length > 0) {
+                    render(cities, cityLayer.graphics);
+                }
+            }, 1000);
+        }
+
+        function render(cities, features) {
+            console.log("cityLayer rendering ...", features);
+            var min = Number.MAX_VALUE, max = 0;
+            /*map.removeLayer(featureLayer);
+             featureLayer.clear();*/
+            for (var key in cities) {
+                for (var i = 0; i < features.length; i++) {
+                    if (features[i].attributes['Name_CHN'].indexOf(key) >= 0) {
+                        var count = cities[key];
+                        var g = features[i];
+                        g.attributes.count = count;
+                        featureLayer.add(g);
+                        setMinMax(count);
+                    }
+                }
+            }
+            renderFeatureLayer(featureLayer, 0, max);
+            function setMinMax(count) {
+                if (count < min) {
+                    min = count;
+                }
+                if (count > max) {
+                    max = count;
+                }
+            }
+        }
+
+        function renderFeatureLayer(layer, min, max) {
+            require([
+                "esri/graphic",
+                "esri/renderers/SimpleRenderer", "esri/Color",
+                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+                "esri/dijit/Legend"
+            ], function (Graphic, SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol, Legend) {
+                var sfs = new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128])));
+                var renderer = new SimpleRenderer(sfs);
+                renderer.setColorInfo({
+                    field: "count",
+                    minDataValue: min,
+                    maxDataValue: max,
+                    colors: [
+                        //new Color([244, 238, 246, 0]),
+                        new Color([221, 200, 225, 0.75]),
+                        //new Color([244, 238, 246, 0.7]),
+                        new Color([121, 37, 135, 0.7])
+                    ]
+                });
+                layer.setRenderer(renderer);
+                map.addLayer(layer, 3);
+                layer.show();
+                map.reorderLayer(clusterLayer, 100);
+            });
+        }
     }
 };
 
 var MapSidebar = {
     wrapper: $('#mapSidebar'),
-    /*
-     *      "          监听设备点击事件：显示其详细内容，在地图上选中该设备并zoomAndCenter到那个设备" +-----------待开发
-     "          监听分页的换页事件：设置mapPageNum为用户点击的页面号，调用this.search查询" +
-     * */
     show: function () {
+        console.log("FUNCTION CALL: MapSidebar.show");
         this.wrapper.show().addClass('active');
     },
     hide: function () {
+        console.log("FUNCTION CALL: MapSidebar.hide");
         this.wrapper.removeClass('active');
     },
     init: function (data) {
-        //popup_sidepanel， ArcGis 自带的侧边栏
+        console.log("FUNCTION CALL: MapSidebar.init");
         var devices = data['data'];
-        console.log("init map sidebar", devices);
-
         //添加设备
-        var deviceList = $('.map-device-list').html('');
+        $('.map-device-list').html('');
         $.each(devices, function (index, d) {
             addDevices(d);
         });
@@ -555,44 +659,49 @@ var MapSidebar = {
             currpage = data['currpage'];
         paginator(total, pagesize, currpage);
 
-        this.wrapper.find('a').on('click', function (e) {
+        $('.map-device-list li a').on('click', function (e) {
             e.preventDefault();
             console.log($(this).closest('li').attr('id'));
+            $(this).closest('h3').next().toggleClass('on');
+        }).hover(function () {
+            $(this).closest('h3').next().addClass('on');
+        }, function () {
+            $(this).closest('h3').next().removeClass('on');
         });
-        this.wrapper.on('hover', function (e) {
-            $(this).addClass('hover');
-        });
+        /*  this.wrapper.on('hover', function (e) {
+         $(this).addClass('active');
+         });*/
 
         //添加设备，待补充
         function addDevices(device) {
-            console.log('map sidebar init',device);
-           /* var $li = $('<li id="' + device.ip + '"></li>').appendTo($('.map-device-list'));
-            var $title = $('<a href="#" class="title">' + device.ip + '</a>').appendTo($li);
-            var $info = $('<div class="info"></div>').appendTo($li);
-            var loc = device.location, time = device.timestamp, tags = device.tags, ports = device.ports, vuls = device.vuls;
-            if (loc && loc != '') {
-                $info.append($('<span class="label label-default location">' + loc + '</span>'));
-            }
-            //if (time && time != '') {
-            //    $info.append($('<span class="label label-default timestamp">' + dateLocalize(time) + '</span>'));
-            //}
-            if (tags && tags != '') {
-                $info.append($('<span class="label label-default tags">' + tags + '</span>'));
-            }
+            console.log('map sidebar init', device);
+            var $li = $('<li id="' + device.ip + '"></li>').appendTo($('.map-device-list'));
+            var $title = $('<h3><a href="#">' + device.ip + '</a></h3>').appendTo($li);
+            $('#mapa').on('click', function (e) {
+                e.preventDefault();
+            });
+
+            var $info = $('<div class="well"></div>').appendTo($li);
+            var loc = device.location, time = device.timestamp, tags = device.tags, ports = device.ports, portsStr = '', vuls = device.vuls;
+            $info.append($('<span>位置：' + loc + '</span><br>'));
 
             if (ports && ports != '' & ports.length > 0) {
                 for (var i = 0; i < ports.length; i++) {
                     for (var key in ports[i]) {
-                        $info.append($('<span class="label label-default port">' + key + '</span>'));
+                        portsStr += key + ' '
                     }
                 }
             }
+
+            $info.append($('<span>服务：' + portsStr + '</span><br>'));
+            var vulsStr = '';
             if (vuls && vuls != '') {
                 for (var key in vuls) {
-                    $info.append($('<span class="label label-default vul">' + key + '</span>'));
-
+                    vulsStr += key + ' ';
                 }
-            }*/
+            }
+            $info.append($('<span>漏洞：' + vulsStr + '</span>'));
+            $info.append($('<span>标签：' + tags + '</span><br>'));
         }
 
         function paginator(totalCounts, pageSize, currentPageNum) {
@@ -600,9 +709,10 @@ var MapSidebar = {
                 totalPages: totalCounts,
                 visiblePages: 1,
                 currentPage: currentPageNum,
-                prev: '<li class="prev"><a href="javascript:void(0);">上一页<\/a><\/li>',
-                next: '<li class="next"><a href="javascript:void(0);">下一页<\/a><\/li>',
-                page: '<li class="page"><a href="javascript:void(0);"> {{page}} / {{totalPages}} <\/a><\/li>',
+                prev: '<li class="prev"><a href="javascript:void(0);"><span class="glyphicon glyphicon-triangle-left"><\/span><\/a><\/li>',
+                next: '<li class="next"><a href="javascript:void(0);"><span class="glyphicon glyphicon-triangle-right"><\/a><\/li>',
+                page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+                //page: '<li class="page"><a href="javascript:void(0);"> {{page}} / {{totalPages}} <\/a><\/li>',
                 onPageChange: function (n) {
                     if (type == 'change') {
                         MyMap.search(n);
@@ -612,6 +722,7 @@ var MapSidebar = {
         }
     },
     onSelectionChange: function () {    //用户选择了一个设备的时候，在地图上弹出对应设备的infowindow
+        console.log("FUNCTION CALL: MapSidebar.onSelectionChange");
         var selected = map.infoWindow.getSelectedFeature();
         console.log("on selection  change, selected = ", selected);
     }

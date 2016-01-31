@@ -18,7 +18,7 @@ public class FeatureSetService {
         JSONObject featureSets = new JSONObject();
         featureSets.put("countryFS", FeatureSetsFillerOnStartup.getCountryFeatureSet());
         featureSets.put("provinceFS", FeatureSetsFillerOnStartup.getProvinceFeatureSet());
-        featureSets.put("cityFS", FeatureSetsFillerOnStartup.getCityFeatureSet());
+//        featureSets.put("cityFS", FeatureSetsFillerOnStartup.getCityFeatureSet());
         JSONObject result = new JSONObject();
         result.put("errmsg", "");
         result.put("statuscode", "200");
@@ -43,6 +43,7 @@ public class FeatureSetService {
         result.put("data", featureSet);
         return result.toString();
     }
+/*
 
     public String getCityFeatureSet() {
         JSONObject featureSet = FeatureSetsFillerOnStartup.getCityFeatureSet();
@@ -52,8 +53,9 @@ public class FeatureSetService {
         result.put("data", featureSet);
         return result.toString();
     }
+*/
 
-
+/*
     public String getFeatureSetsByNames(String names) {
         JSONObject featureSets = new JSONObject();
         List<String> list = new ArrayList<String>();
@@ -66,7 +68,7 @@ public class FeatureSetService {
         result.put("data", featureSets);
 //        System.out.println(featureSets.getJSONObject("cityFS"));
         return result.toString();
-    }
+    }*/
 
 /*    public static void main(String[] args) {
         FeatureSetService f = new FeatureSetService();

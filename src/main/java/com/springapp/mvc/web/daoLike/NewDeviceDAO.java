@@ -170,6 +170,7 @@ public class NewDeviceDAO {
                         //getString("data").replace("\"", "\\\"")
                         vulValue.setDesc(item.getString("description"));
                         vulValue.setPlatform(item.getString("platform"));
+                        vulValue.setImgURL(item.getString("get_picture"));
                         vul.put(vulKey, vulValue);
                         vuls.add(vul);
                     }

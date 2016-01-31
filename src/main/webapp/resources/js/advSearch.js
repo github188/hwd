@@ -4,18 +4,21 @@ var AdvSearch = {
     form: $('#advs'),
     wrapper: $('#advs_wrapper'),
     show: function () {
+        console.log("FUNCTION CALL: AdvSearch.show");
         this.wrapper.addClass('active');
         $('.advs-link-main').find('span')
             .removeClass('glyphicon-menu-left')
             .addClass('glyphicon-menu-right');
     },
     hide: function () {
+        console.log("FUNCTION CALL: AdvSearch.hide");
         this.wrapper.removeClass('active');
         $('.advs-link-main').find('span')
             .removeClass('glyphicon-menu-right')
             .addClass('glyphicon-menu-left');
     },
     search: function (form) {
+        console.log("FUNCTION CALL: AdvSearch.search");
         if (!form) {
             form = this.form;
         }
@@ -63,8 +66,8 @@ var AdvSearch = {
             }
             return criteria;
         };
-
         var criteria = getCriteria();
+        $('.global_search_input').val(JSON.stringify(criteria));
         MySessionStorage.set('advsCriteria', criteria);
         newSearch({
             url: advancedSearchURL,

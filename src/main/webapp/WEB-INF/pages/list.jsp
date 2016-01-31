@@ -15,7 +15,7 @@
         </ul>
 
     </div>
-    <div class="pager-wrapper demo customBootstrap">
+    <div class="pager-wrapper demo customBootstrap" style="margin-bottom: 2rem">
         <ul id="pager" class="pagination"></ul>
     </div>
 </div>
