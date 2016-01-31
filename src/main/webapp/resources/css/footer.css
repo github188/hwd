@@ -13,6 +13,7 @@ footer {
 
 footer.navbar-fixed-bottom {
     bottom: -2rem;
+    -webkit-transition: all .6s;
     transition: all .6s;
 }
 

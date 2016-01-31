@@ -138,14 +138,17 @@ public class NewDeviceDAO {
                         //(1.b)tags.type
                         if (!"".equals(type) && !contains(tags, type)) {
                             tags.add(type);
+//                            System.out.println("Type---------" + type);
                         }
                         //(1.c)tags.brand
                         if (!"".equals(brand) && !contains(tags, brand)) {
                             tags.add(brand);
+//                            System.out.println("Brand---------" + brand);
                         }
                         //(1.d)tags.model
                         if (!"".equals(model) && !contains(tags, model)) {
                             tags.add(model);
+//                            System.out.println("Model---------" + model);
                         }
                     }
                     device.setPorts(ports);
@@ -163,9 +166,12 @@ public class NewDeviceDAO {
                     for (int i = 0; i < vul_info.size(); i++) {
                         Map<String, NewDevice.VulValueEntity> vul = new HashMap<String, NewDevice.VulValueEntity>();
                         JSONObject item = vul_info.getJSONObject(i), vul_ID = item.getJSONObject("vul_ID");
+//                        System.out.println("Vul---------" + item);
+
                         NewDevice.VulValueEntity vulValue = new NewDevice.VulValueEntity();
                         String vulKey;
                         vulKey = !"".equals(vul_ID.getString("CVE")) ? vul_ID.getString("CVE") : vul_ID.getString("CNVD");
+//                        System.out.println("Vul Key--------------" + vulKey);
                         vulValue.setData(item.getJSONObject("data"));
                         //getString("data").replace("\"", "\\\"")
                         vulValue.setDesc(item.getString("description"));
@@ -199,7 +205,7 @@ public class NewDeviceDAO {
         }
         return has;
     }
-
+/*
     public static void main(String[] args) {
         NewDeviceDAO dd = new NewDeviceDAO();
         Map<String, Object> criteria = new HashMap<String, Object>();
@@ -212,5 +218,5 @@ public class NewDeviceDAO {
         //dd.getResponse4Globe(JSONObject.fromObject(search).toString());
 //        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/advanced?q={q}", criteria));
 //        System.out.println(dd.getResult4DeviceSearch("http://10.10.12.72:8083/se/search/map?q={q}", criteria));
-    }
+    }*/
 }

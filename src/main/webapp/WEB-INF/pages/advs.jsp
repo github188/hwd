@@ -12,17 +12,17 @@
                 <legend>使用以下条件来搜索</legend>
                 <div class="row form-group">
                     <label class="col-md-3 col-sm-3 col-xs-4" for="must">包含以下全部字词：</label>
-                    <input type="text" class="col-md-7 col-sm-7 col-xs-8" id="must" name="must" autofocus="autofocus" placeholder="多个字词用空格分隔">
+                    <input type="text" class="col-md-7 col-sm-7 col-xs-8" id="must" name="must" autofocus="autofocus" placeholder="输入重要字词：webcam">
                     <span class="col-md-2 col-sm-2 hidden-xs">多个字词用空格分隔</span>
                 </div>
                 <div class="row form-group">
                     <label class="col-md-3 col-sm-3 col-xs-4" for="should">包含以下任意字词：</label>
-                    <input type="text" class="col-md-7 col-sm-7 col-xs-8" id="should" name="should" placeholder="">
+                    <input type="text" class="col-md-7 col-sm-7 col-xs-8" id="should" name="should" placeholder="输入可以包含的字词：camera">
                     <span class="col-md-2 col-sm-2 hidden-xs">多个字词用空格分隔</span>
                 </div>
                 <div class="row form-group">
                     <label class="col-md-3 col-sm-3 col-xs-4" for="mustnot">不包含以下任意字词：</label>
-                    <input type="text" class="col-md-7 col-sm-7 col-xs-8" id="mustnot" name="mustnot" placeholder="多个字词用空格分隔">
+                    <input type="text" class="col-md-7 col-sm-7 col-xs-8" id="mustnot" name="mustnot" placeholder="输入需要过滤掉的字词：">
                     <span class="col-md-2 col-sm-2 hidden-xs">多个字词用空格分隔</span>
                 </div>
             </fieldset>
@@ -52,11 +52,11 @@
                         <div class="row">
                             <label class="col-md-1 col-sm-2 col-xs-2" for="country">国家</label>
                             <input type="text" id="country" name="country" class="col-md-3 col-sm-10 col-xs-10"
-                                   placeholder="中国  印度">
+                                   placeholder="任何国家/地区：中国">
                             <label class="col-md-1 col-sm-2 col-xs-2" for="province">省份</label>
-                            <input type="text" id="province" name="province" class="col-md-3 col-sm-10 col-xs-10" placeholder="北京  江苏">
+                            <input type="text" id="province" name="province" class="col-md-3 col-sm-10 col-xs-10" placeholder="任何省份：江苏">
                             <label class="col-md-1 col-sm-2 col-xs-2" for="city">城市</label>
-                            <input type="text" id="city" name="city" class="col-md-3 col-sm-10 col-xs-10" placeholder="北京  南京">
+                            <input type="text" id="city" name="city" class="col-md-3 col-sm-10 col-xs-10" placeholder="任何城市：北京 Istanbul">
                         </div>
                     </div>
                     <span class="right-tip hidden-xs">多个字词用空格分隔</span>
@@ -67,11 +67,11 @@
                     <div class="col-md-offset-1 col-md-11 col-sm-offset-1 col-sm-11">
                         <div class="row">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="type">类型</label>
-                            <input type="text" id="type" class="col-md-3 col-sm-10 col-xs-10" name="type" placeholder="Webcam">
+                            <input type="text" id="type" class="col-md-3 col-sm-10 col-xs-10" name="type" placeholder="设备类型：camera NVR">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="brand">品牌</label>
-                            <input type="text" id="brand" class="col-md-3 col-sm-10 col-xs-10" name="brand" placeholder="Hikvision">
+                            <input type="text" id="brand" class="col-md-3 col-sm-10 col-xs-10" name="brand" placeholder="设备品牌：Hikvision">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="model">型号</label>
-                            <input type="text" id="model" class="col-md-3 col-sm-10 col-xs-10" name="model" placeholder="DE34">
+                            <input type="text" id="model" class="col-md-3 col-sm-10 col-xs-10" name="model" placeholder="设备型号：DE34">
                         </div>
                     </div>
                     <span class="right-tip">多个字词用空格分隔</span>
@@ -83,9 +83,9 @@
                         <div class="row">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="device_service">协议</label>
                             <input type="text" id="device_service" name="device_service" class="col-md-3 col-sm-10 col-xs-10"
-                                   placeholder="http  ftp">
+                                   placeholder="协议名称：http ftp">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="port">端口</label>
-                            <input type="text" id="port" class="col-md-3 col-sm-10 col-xs-10" name="port" placeholder="80  21">
+                            <input type="text" id="port" class="col-md-3 col-sm-10 col-xs-10" name="port" placeholder="端口号：80  21">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="banner">banner</label>
                             <input type="text" id="banner" class="col-md-3 col-sm-10 col-xs-10" name="banner">
                         </div>
@@ -98,12 +98,12 @@
                     <div class="col-md-offset-1 col-md-11 col-sm-offset-1 col-sm-11">
                         <div class="row">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="vul">ID</label>
-                            <input type="text" id="vul" class="col-md-3 col-sm-10 col-xs-10" name="vul" placeholder="CVE-2009_5149">
+                            <input type="text" id="vul" class="col-md-3 col-sm-10 col-xs-10" name="vul" placeholder="漏洞ID：CVE-2009_5149">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="vulType">类型</label>
                             <input type="text" id="vulType" class="col-md-3 col-sm-10 col-xs-10" name="vulType"
-                                   placeholder="weak_password">
+                                   placeholder="漏洞类型：XSS weak_password">
                             <label class="col-md-1  col-sm-2 col-xs-2" for="vulName">名称</label>
-                            <input type="text" id="vulName" class="col-md-3 col-sm-10 col-xs-10" name="vulName" placeholder="dots_POC">
+                            <input type="text" id="vulName" class="col-md-3 col-sm-10 col-xs-10" name="vulName" placeholder="漏洞名称：dots_POC">
                         </div>
                     </div>
                     <span class="right-tip">多个字词用空格分隔</span>
@@ -132,7 +132,7 @@
                     </div>
                     <span class="right-tip hiddex-xs">(仅内部开放)</span>
                 </div>
-                <div class="row form-group">
+              <%--  <div class="row form-group">
                     <label for="vpsIp">IP（段）</label>
 
                     <div class="col-md-offset-1 col-md-11 col-sm-offset-1 col-sm-11 col-xs-offset-1 col-xs-11">
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <span class="right-tip hidden-xs">(仅内部开放)</span>
-                </div>
+                </div>--%>
                 <div class="row form-group">
                     <label>更新日期</label>
 

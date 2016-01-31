@@ -233,6 +233,12 @@ header .advs-link-wrapper a:hover {
 #main {
     padding-top: 4rem;
     height: 100%;
+    width: 100%;
+    /*text-align: center;*/
+}
+.full-height{
+    height: 100%;
+    width: 100%;
 }
 
 .sidebar .advs-link-main {
@@ -408,6 +414,8 @@ header .advs-link-wrapper a:hover {
 .result-count-duration {
     padding: .5rem;
     border-bottom: 1px solid hsla(0, 30%, 21%, .6);
+    margin-top: 1rem;
+    text-align: left;
 }
 
 .pivot-bar {

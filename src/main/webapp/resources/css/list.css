@@ -6,6 +6,11 @@
     font-size: 1.8rem;
     height: 100%;
     overflow: auto;
+    /*text-align: center;*/
+}
+
+.list-wrapper .result-container h3 {
+    text-align: left;
 }
 
 .list-wrapper .empty-result-desc-container {
@@ -14,16 +19,12 @@
     text-align: center;
 }
 
-.list-wrapper .result-count-duration {
-    /*position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 30;*/
-}
+/*------li.device begins here------*/
 
 .list-wrapper .device .tag {
     display: block;
     padding: 3px 0;
+    margin: 0 1px;
     /*height: 3rem;*/
 }
 
@@ -41,15 +42,28 @@
     font-weight: normal;
 }
 
+.list-wrapper .device .left {
+    /*  display: inline-block;
+      float: left;*/
+    text-align: left;
+}
+
 .list-wrapper .device .right {
+    position: relative;
     height: 10rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
     border-radius: 5px;
+    -webkit-transition: height .5s;
     transition: height .5s;
+    margin: 0 0 .5rem 2rem;
+    text-align: left;
 }
 
 .list-wrapper .right h3 {
     font-size: inherit;
+    margin: 0 auto;
 }
 
 .list-wrapper .device .right.active {
@@ -60,18 +74,46 @@
 }
 
 .list-wrapper .device .right button {
-    display: none;
+    position: absolute;
+    /*top: 9rem;*/
+    bottom: 0;
+    right: 2rem;
+    /*right: 0;*/
+    display: block;
     background: hsla(0, 30%, 21%, .3);
-    width: 100%;
-    text-align: center;
-    border: none;
+    width: 95%;
+    text-align: right;
+    border: none!important;
     color: #666;
     cursor: pointer;
+    outline: none;
+    margin: 0 auto;
+    z-index: 1000;
+    box-sizing: content-box;
+}
+
+.list-wrapper .device .right button span {
+    margin: 0 auto;
+    -webkit-transition: -webkit-transform 0.2s ease-out;
+    -moz-transition: -moz-transform 0.2s ease-out;
+    -o-transition: -o-transform 0.2s ease-out;
+    -ms-transition: -ms-transform 0.2s ease-out;
 }
 
 .list-wrapper .device .right.active button {
-    display: block;
+    top: auto;
+    /*bottom: 0;*/
+    right: 0;
+    border: none!important;
+    text-align: center;
+}
 
+.list-wrapper .device .right.active button span {
+    -webkit-transform: rotateZ(180deg);
+    -moz-transform: rotateZ(180deg);
+    -o-transform: rotateZ(180deg);
+    -ms-transform: rotateZ(180deg);
+    transform: rotateZ(180deg);
 }
 
 .list-wrapper .right article pre {
@@ -83,6 +125,10 @@
 
 .list-wrapper .right.active article pre {
     cursor: auto;
+}
+#pager{
+    display: inline-block;
+    margin: 0 auto;
 }
 
 /* ------------------------  List Wrapper ↑ ---------------------- */

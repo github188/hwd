@@ -23,6 +23,7 @@ var AdvSearch = {
             form = this.form;
         }
         //show loading--------------------待开发
+        var noInputTag = true;
         var getCriteria = function () {
             var criteria = {}, ipSegment = '', timeSegment = '',
                 inputs = $(form).find('fieldset').find('input');
@@ -67,12 +68,31 @@ var AdvSearch = {
             return criteria;
         };
         var criteria = getCriteria();
-        $('.global_search_input').val(JSON.stringify(criteria));
-        MySessionStorage.set('advsCriteria', criteria);
+        for (var key in criteria) {
+            if (key == 'lastModified' && criteria[key].indexOf('-') <= 0) {
+                continue;
+            }
+            if (criteria[key] && criteria[key] != '') {
+                noInputTag = false;
+            }
+        }
+        if (!noInputTag) {
+            $('.global_search_input').val(JSON.stringify(criteria));
+            MySessionStorage.set('advsCriteria', criteria);
+        } else {
+            $('.global_search_input').val('*');
+        }
+        if (!MySessionStorage.get('currentPage')) {
+            MySessionStorage.set('currentPage', 'list');
+            homepage_search_flag = true;
+        }
+
+        $('.carousel').carousel(1);
         newSearch({
             url: advancedSearchURL,
             criteria: criteria
         });
+        homepage_search_flag = false;
         //hide loading-------------------待开发
         this.hide();
     }
