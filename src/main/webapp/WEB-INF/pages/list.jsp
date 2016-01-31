@@ -3,7 +3,7 @@
     <div class="result-count-duration">
         <p>搜索到约 <strong class="badge resultCount">0</strong> 条结果，
             共用时 <strong class="badge duration">0</strong> ms。
-            当前为第<strong class="badge" id="pageTip"></strong>页</p>
+            当前为第<strong class="badge" id="pageTip">0</strong>页</p>
     </div>
     <div class="pivot-bar-container">
         <div id="pivot-bar" class="pivot-bar">
