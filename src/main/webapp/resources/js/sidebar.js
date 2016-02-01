@@ -6,7 +6,7 @@ var Sidebar = {
         this.wrapper.show();
     },
     show: function (agg) {
-        console.log("FUNCTION CALL: Sidebar.show");
+        console.log("FUNCTION CALL: Sidebar.show",agg);
         Pivot.hide();
         this.render(agg);
         this.wrapper.show();

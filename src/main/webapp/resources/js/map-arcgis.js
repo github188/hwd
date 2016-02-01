@@ -723,7 +723,7 @@ var MapSidebar = {
                 next: '<li class="next"><a href="javascript:void(0);"><span class="glyphicon glyphicon-triangle-right"><\/a><\/li>',
                 page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
                 //page: '<li class="page"><a href="javascript:void(0);"> {{page}} / {{totalPages}} <\/a><\/li>',
-                onPageChange: function (n) {
+                onPageChange: function (n, type) {
                     if (type == 'change') {
                         MyMap.search(n);
                     }
