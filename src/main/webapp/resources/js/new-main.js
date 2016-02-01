@@ -20,7 +20,7 @@ $(function () {
     Sidebar.onlyUpdate = false;
 
     //初始化之后，跳转到用户当前所在页（同一个session的情况下）
-   /* if (sessionStorage) {
+    if (sessionStorage) {
         var currentPage = MySessionStorage.get('currentPage');
         if (!currentPage) {
             $('.carousel').carousel(0);
@@ -35,7 +35,7 @@ $(function () {
         } else {
             $('.carousel').carousel(0);
         }
-    }*/
+    }
 
     //~~~~~~~~~~~~~~~~~~~listeners~~~~~~~~~~~~~~~~~~~~~~~~
     //input suggestions
