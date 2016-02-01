@@ -7,12 +7,12 @@
 
 footer {
     position: absolute;
-    bottom: -1rem;
+    bottom: -.5rem;
     text-align: center;
 }
 
 footer.navbar-fixed-bottom {
-    bottom: -2rem;
+    bottom: -1rem;
     -webkit-transition: all .6s;
     transition: all .6s;
 }

@@ -236,7 +236,8 @@ header .advs-link-wrapper a:hover {
     width: 100%;
     /*text-align: center;*/
 }
-.full-height{
+
+.full-height {
     height: 100%;
     width: 100%;
 }
@@ -457,4 +458,25 @@ header .advs-link-wrapper a:hover {
     border: none;
 }
 
+.home-search-form {
+    color: #000 !important;
+}
+
+.popover-content {
+    color: #333 !important;
+}
+
 /*-------------------------- 跟sidebar联动的部分 ↑-----------------*/
+/***************************loading********************************/
+.loading-indicator {
+    margin-top: 20%;
+    height: 80px;
+    width: 80px;
+    background: url('../img/loading.gif') no-repeat center center;
+}
+
+.loading-indicator-overlay {
+    background-color: #FFFFFF;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}

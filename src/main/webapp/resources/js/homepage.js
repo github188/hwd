@@ -14,14 +14,15 @@ var Homepage = {
         this.wrapper.hide();
     },
     search: function () {
-        var wd = $('#home_search_input').val();
+        var wd = $('#home_search_input').val().replace(/\//g, ' ');
         console.log("FUNCTION CALL: HomePage.search, wd = ", wd);
         if (wd == '')return;
         $('.global-search-input').val(wd);
         MySessionStorage.set('wd', wd);
         MySessionStorage.set('currentPage', List.tag);
+        MySessionStorage.set('checked', '', 'add');
         homepage_search_flag = true;
-        $('.carousel').carousel(1);
+        //$('.carousel').carousel(1);
         List.search(1);
         homepage_search_flag = false;
     }

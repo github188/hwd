@@ -96,6 +96,7 @@
 }
 
 #legend-wrapper {
+    display: none;
     position: absolute;
     left: 21rem;
     bottom: 0;
@@ -110,7 +111,7 @@
 #tool-wrapper {
     position: absolute;
     top: 1rem;
-    right: 5rem;
+    right: 8rem;
     z-index: 50;
 
     /*color: #333;*/

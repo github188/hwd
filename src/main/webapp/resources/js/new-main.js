@@ -2,12 +2,13 @@ var CheckboxId_SEPARATOR = '_s0s_',//分隔符：key_s0s_value（s零s）
     PivotId_SEPARATOR = '_pivot_',
     CountryId_SEPARATOR = '_all_';
 var homepage_search_flag = false;
-var suggestionSearchURL = basePath + 'api/getSuggestions?search=',
-    imgUrl = basePath + "resources/img/",
-    getCountryFeatureSetURL = basePath + 'api/getCountryFeatureSet',
-    getProvinceFeatureSetURL = basePath + 'api/getProvinceFeatureSet';
+var suggestionSearchURL = 'api/getSuggestions?search=',
+    imgUrl = "resources/img/",
+    getCountryFeatureSetURL = 'api/getCountryFeatureSet',
+    getProvinceFeatureSetURL = 'api/getProvinceFeatureSet';
 var featureSets = {}, countryFS = {};       //全局变量
 
+var is_loaded = false;  // 全局变量：初始化完成标记
 $(function () {
     "use strict";
     jQAddress();
@@ -16,9 +17,10 @@ $(function () {
 
     //~~~~~~~~~~~~~~~~~~~全文必须~~~~~~~~~~~~~~~~~~~~~~~~~
     pageSlide();//carousel页面导航
+    Sidebar.onlyUpdate = false;
 
     //初始化之后，跳转到用户当前所在页（同一个session的情况下）
-    if (sessionStorage) {
+   /* if (sessionStorage) {
         var currentPage = MySessionStorage.get('currentPage');
         if (!currentPage) {
             $('.carousel').carousel(0);
@@ -33,7 +35,7 @@ $(function () {
         } else {
             $('.carousel').carousel(0);
         }
-    }
+    }*/
 
     //~~~~~~~~~~~~~~~~~~~listeners~~~~~~~~~~~~~~~~~~~~~~~~
     //input suggestions
@@ -133,11 +135,11 @@ function pageSlide() {
             case 'globe-point':
                 MySessionStorage.set('currentPage', 'globe-point');
                 GlobePoint.show();
-                //window.location.href = basePath + 'device-globe';
+                //window.location.href = 'device-globe';
                 break;
             case 'globe-line':
                 GlobeLine.show();
-                //window.location.href = basePath + 'device-probe-globe';
+                //window.location.href = 'device-probe-globe';
 
                 break;
             case 'charts':
@@ -204,6 +206,7 @@ function getProvinceFeatureSet() {
 
 //输入框实时提示
 function inputSuggest(input, sourceURL) {
+    $.address.value('/');
     var $form = input.closest('form');
     var suggestions = function (sourceURL) {
         var bloodHound = new Bloodhound({

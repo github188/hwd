@@ -1,5 +1,5 @@
 /*---------------------------------------------↓List-----------------------------------------------*/
-var listSearchURL = basePath + 'api/listSearch';
+var listSearchURL = 'api/listSearch';
 var PAGE_SIZE = 10, //每一页的条目数
     VISIBLE_PAGES = 7; //页码个数
 
@@ -9,12 +9,17 @@ var List = {
     wrapper: $('.result-col'),
     show: function (data) {
         console.log("FUNCTION CALL: List.show");
+
         MySessionStorage.set('currentPage', this.tag);
         $('header').css('visibility', ' visible').show();
         if (data && data['statuscode'] == 200) {
             this.render(data);
             this.wrapper.show();
-            Sidebar.show(data['aggregation']);
+            if (!Sidebar.onlyUpdate) {
+                Sidebar.show(data['aggregation']);
+            } else {
+                Sidebar.update();
+            }
         } else {
             this.search(this.listPageNum);
         }
@@ -50,7 +55,7 @@ var List = {
             //console.log("genDeviceLi", d);
             var li = $(' <li class="device"></li>');
             //ip
-            var ip = $('<h3 class="col-md-offset-1 col-sm-offset-1"><a href="#' + d.ip + '">' + d.ip + '</a></h3>').appendTo(li);
+            var ip = $('<h3 class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1"><a href="#' + d.ip + '">' + d.ip + '</a></h3>').appendTo(li);
             //详细内容
             var row = $('<div class="row"></div>').appendTo(li);
             //all tags
@@ -87,7 +92,7 @@ var List = {
                 for (var i = 0; i < ports.length; i++) {
                     for (var key in ports[i]) {
                         var url = key.split(': ')[0] + d.ip + key.split(': ')[1];
-                        var $port = $('<article><h3><a href="' +url+ '">' + key + '</a></article>').appendTo(info);
+                        var $port = $('<article><h3><a href="' + url + '">' + key + '</a></article>').appendTo(info);
                         var banner = ports[i][key];
                         if (banner || banner == '') {
                             banner = banner.replace(/</g, "&lt;");

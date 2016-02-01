@@ -127,7 +127,7 @@ public class DataApiController {
             @PathVariable("permitfilter") String permitfilter,
             @PathVariable("lossycompress") Integer lossycompress) {
         logger.debug("DataApiController ==>> getResponse4Globe starts-----------");
-        System.out.println("getDevices4Globe "+typefilter);
+        System.out.println("getDevices4Globe " + typefilter);
         permitfilter = !"all".equals(permitfilter) ? permitfilter : "";
         SearchCriteria search = new SearchCriteria();
         search.setPermitfilter(permitfilter);
@@ -175,7 +175,7 @@ public class DataApiController {
     @RequestMapping(value = "/api/advancedSearch")
     public String advancedSearch(@RequestBody AdvancedSearchCriteria criteria) {
         logger.debug("DataApiController advancedSearch starts-----------");
-//        System.out.println("DataApiController advancedSearch starts-----------");
+        System.out.println("DataApiController advancedSearch starts-----------" + JSONObject.fromObject(criteria));
         String result = newDeviceService.getResponse4AdvanceSearch(criteria);
 //        System.out.println("advancedSearch====" + result);
         return result;
@@ -226,7 +226,7 @@ public class DataApiController {
     @JsonView(Views.Public.class)
     @RequestMapping(value = "/api/listSearch")
     public String listSearch(@RequestBody SearchCriteria search) {
-        logger.debug("DataApiController --> listSearch starts-----------");
+        logger.debug("DataApiController --> listSearch starts-----------" + JSONObject.fromObject(search));
         String result = newDeviceService.getResponse4ListSearch(search);
 //        System.out.println("Controller-->Result for list: " + result);
         return result;

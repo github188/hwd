@@ -1,5 +1,5 @@
 /* ----------------------------- Advanced Search 精确搜索 - ----------------------------- */
-var advancedSearchURL = basePath + 'api/advancedSearch';
+var advancedSearchURL = 'api/advancedSearch';
 var AdvSearch = {
     form: $('#advs'),
     wrapper: $('#advs_wrapper'),
@@ -68,19 +68,23 @@ var AdvSearch = {
             return criteria;
         };
         var criteria = getCriteria();
+        var inputStr = '';
         for (var key in criteria) {
             if (key == 'lastModified' && criteria[key].indexOf('-') <= 0) {
                 continue;
             }
-            if (criteria[key] && criteria[key] != '') {
+            inputStr += criteria[key];
+            if (criteria[key] && criteria[key].replace(/\s+/g, '') != '') {
                 noInputTag = false;
             }
         }
         if (!noInputTag) {
-            $('.global_search_input').val(JSON.stringify(criteria));
+            $('.global_search_input').val(inputStr);
             MySessionStorage.set('advsCriteria', criteria);
-        } else {
-            $('.global_search_input').val('*');
+        } else {//如果用户未输入，则不提交
+            $('.global_search_input').val('');
+            $('#must').focus();
+            return;
         }
         if (!MySessionStorage.get('currentPage')) {
             MySessionStorage.set('currentPage', 'list');
