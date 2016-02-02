@@ -13,11 +13,12 @@
     <link rel="stylesheet" href="${baseCss}">
     <spring:url value="/resources/css/device-probe-globe.css" var="probeCss"/>
     <link rel="stylesheet" href="${probeCss}">
+
 </head>
 <body>
 <%@include file="header.jsp" %>
 <div id="main">
-    <div id="globe4LineHolder"></div>
+    <div id="globe4LineHolder" style="width: 800px;height: 600px;margin-left: 25rem"></div>
 </div>
 <%@include file="footer.jsp" %>
 <spring:url value="resources/plugins/echarts-2.2.7/build/dist/echarts.js" var="echarts"/>
@@ -26,5 +27,8 @@
 <script src="${echartsX}"></script>
 <spring:url value="/resources/js/device-probe-globe.js" var="probeJs"/>
 <script src="${probeJs}"></script>
+<script>
+
+</script>
 </body>
 </html>

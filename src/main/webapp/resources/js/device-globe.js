@@ -20,7 +20,9 @@ $(function () {
         "brand2": "orange",
         "brand3": "cyan"
     };
-
+    $('a').on('click', function () {
+        console.log(this.href.split());
+    });
     require.config({
         paths: {
             'echarts': basePath + "/resources/plugins/echarts-2.2.7/build/dist",
@@ -107,12 +109,12 @@ $(function () {
             timeout: 10000
         })
             .success(function (data) {
-                console.log(data.data);
+                //console.log(data.data);
                 if (data.statuscode == 200) {
                     /*for multi type of device*/
                     $.each(data.data, function (key, value) {
                         if (value.length > 0) {
-                            console.log("value", value);
+                            //console.log("value", value);
                             var markPointColor = COLORS[key] == undefined ? "yellow" : COLORS[key],
                                 legendData = [],
                                 series = [

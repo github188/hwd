@@ -11,9 +11,11 @@ var featureSets = {}, countryFS = {};       //全局变量
 var is_loaded = false;  // 全局变量：初始化完成标记
 $(function () {
     "use strict";
+    //setIframe();
     jQAddress();
     getCountryFeatureSet();
     getProvinceFeatureSet();
+
 
     //~~~~~~~~~~~~~~~~~~~全文必须~~~~~~~~~~~~~~~~~~~~~~~~~
     pageSlide();//carousel页面导航
@@ -322,18 +324,31 @@ function dateLocalize(timestamp) {
 var GlobePoint = {
     show: function () {
         var width = window.innerWidth, height = window.innerHeight;
-        console.log("width: " + width, "height" + height);
+        //console.log("width: " + width, "height" + height);
+        Sidebar.hide();
     }
 };
 var GlobeLine = {
     show: function () {
         var width = window.innerWidth, height = window.innerHeight;
-        console.log("width: " + width, "height" + height);
+        //console.log("width: " + width, "height" + height);
+        Sidebar.hide();
     }
 };
 var Charts = {
     show: function () {
         var width = window.innerWidth, height = window.innerHeight;
-        console.log("width: " + width, "height" + height);
+        console.log("width: " + width, "height" + height);s
     }
 };
+function setIframe() {
+    console.log("iframe set ");
+    var width = window.innerWidth, height = window.innerHeight;
+
+    $('iframe').css({
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+    console.log($(window.parent).find("iframe[id='poine']"));
+    $(window.parent).find("iframe[id='line']").document.getElementById('globe4LineHolder').width(width).height(height);
+}

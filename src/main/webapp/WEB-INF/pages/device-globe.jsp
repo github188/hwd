@@ -213,7 +213,7 @@
             </div>
         </div>
     </div>
-    <div id="brand">
+    <%--<div id="brand">
         <div class="label label-default">摄像头品牌</div>
         <ul>
             <li>
@@ -230,8 +230,8 @@
                 <a href="<%=basePath%>api/getDevices4Globe/brand/three/2" class="subItem">品牌3</a>
             </li>
         </ul>
-    </div>
-    <div id="globe4DeviceHolder" style="width: 600px;height: 600px; margin-left: 200px"></div>
+    </div>--%>
+    <div id="globe4DeviceHolder" style="height: 600px;width: 800px;margin-left: 25rem"></div>
 </div>
 <%@include file="footer.jsp" %>
 <spring:url value="resources/plugins/echarts-2.2.7/build/dist/echarts.js" var="echarts"/>
