@@ -15,8 +15,6 @@ $(function () {
     jQAddress();
     getCountryFeatureSet();
     getProvinceFeatureSet();
-
-
     //~~~~~~~~~~~~~~~~~~~全文必须~~~~~~~~~~~~~~~~~~~~~~~~~
     pageSlide();//carousel页面导航
     Sidebar.onlyUpdate = false;
@@ -323,33 +321,18 @@ function dateLocalize(timestamp) {
 
 var GlobePoint = {
     show: function () {
-        var width = window.innerWidth, height = window.innerHeight;
-        //console.log("width: " + width, "height" + height);
         Sidebar.hide();
+        point.window.starts();
     }
 };
 var GlobeLine = {
     show: function () {
-        var width = window.innerWidth, height = window.innerHeight;
-        //console.log("width: " + width, "height" + height);
         Sidebar.hide();
+        line.window.starts();
     }
 };
 var Charts = {
     show: function () {
-        var width = window.innerWidth, height = window.innerHeight;
-        //console.log("width: " + width, "height" + height);
         Sidebar.hide();
     }
 };
-function setIframe() {
-    console.log("iframe set ");
-    var width = window.innerWidth, height = window.innerHeight;
-
-    $('iframe').css({
-        width: window.innerWidth,
-        height: window.innerHeight
-    });
-    console.log($(window.parent).find("iframe[id='poine']"));
-    $(window.parent).find("iframe[id='line']").document.getElementById('globe4LineHolder').width(width).height(height);
-}

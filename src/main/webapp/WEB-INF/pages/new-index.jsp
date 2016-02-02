@@ -99,7 +99,7 @@
                 <%@include file="map.jsp" %>
             </section>
             <section class="globe-point-wrapper tbd item" tag="globe-point" tabindex="4">
-                <iframe src="device-globe" class="tbd" id="point"></iframe>
+                <iframe src="device-globe" class="tbd" id="point" name="point"></iframe>
 
 
                 <%-- <div><p>原3D地球设备展示，暂未合并</p>
@@ -109,7 +109,7 @@
             </section>
             <section class="globe-line-wrapper tbd item" tag="globe-line" tabindex="5">
                 <%--<div><p>原3D数据流，暂未合并</p>--%>
-                <iframe src="device-probe-globe" class="tbd" id="line"></iframe>
+                <iframe src="device-probe-globe" class="tbd" id="line" name="line" ></iframe>
 
                 <%--<p><a href="http://10.10.2.174:8080/device-probe-globe">过去看看</a></p></div>--%>
             </section>

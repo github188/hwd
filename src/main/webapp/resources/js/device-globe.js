@@ -1,28 +1,34 @@
-$(function () {
-    var chart, COLORS = {
-        "monitor_accessible": "hsl(128, 99%, 65%)",
-        "monitor_image_available": "hsl(128, 99%, 43%)",
-        "monitor_controllable": "hsl(129, 100%, 31%)",
-        "monitor_implantable": "hsl(128, 100%, 17%)",
-        "industry_control_accessible": "hsla(5, 73%, 74%, 1)",
-        "industry_control_image_available": "hsla(6, 79%, 63%, 1)",
-        "industry_control_controllable": "hsla(6, 73%, 53%, 1)",
-        "industry_control_implantable": "hsla(6, 100%, 43%, 1)",
-        "security_matter_accessible": "hsl(273, 97%, 87%)",
-        "security_matter_image_available": "hsl(271, 100%, 73%)",
-        "security_matter_controllable": "hsl(272, 100%, 60%)",
-        "security_matter_implantable": "hsl(272, 99%, 47%)",
-        "network_device_accessible": "hsl(0, 0%, 68%)",
-        "network_device_image_available": "hsl(0, 0%, 48%)",
-        "network_device_controllable": "hsl(0, 0%, 31%)",
-        "network_device_implantable": "hsl(0, 0%, 0%)",
-        "brand1": "#ff69b4",
-        "brand2": "orange",
-        "brand3": "cyan"
-    };
-    /*$('a').on('click', function () {
-        console.log(this.href.split());
-    });*/
+var pointChart, initPointOpts;
+var COLORS = {
+    "monitor_accessible": "hsl(128, 99%, 65%)",
+    "monitor_image_available": "hsl(128, 99%, 43%)",
+    "monitor_controllable": "hsl(129, 100%, 31%)",
+    "monitor_implantable": "hsl(128, 100%, 17%)",
+    "industry_control_accessible": "hsla(5, 73%, 74%, 1)",
+    "industry_control_image_available": "hsla(6, 79%, 63%, 1)",
+    "industry_control_controllable": "hsla(6, 73%, 53%, 1)",
+    "industry_control_implantable": "hsla(6, 100%, 43%, 1)",
+    "security_matter_accessible": "hsl(273, 97%, 87%)",
+    "security_matter_image_available": "hsl(271, 100%, 73%)",
+    "security_matter_controllable": "hsl(272, 100%, 60%)",
+    "security_matter_implantable": "hsl(272, 99%, 47%)",
+    "network_device_accessible": "hsl(0, 0%, 68%)",
+    "network_device_image_available": "hsl(0, 0%, 48%)",
+    "network_device_controllable": "hsl(0, 0%, 31%)",
+    "network_device_implantable": "hsl(0, 0%, 0%)",
+    "brand1": "#ff69b4",
+    "brand2": "orange",
+    "brand3": "cyan"
+};
+function starts() {
+    //监听点击事件
+    $('#main a').on('click', function (e) {
+        e.preventDefault();
+        var url = this.href;
+        if (url != undefined) {
+            SetChart(url, pointChart);
+        }
+    });
     require.config({
         paths: {
             'echarts': basePath + "/resources/plugins/echarts-2.2.7/build/dist",
@@ -30,7 +36,6 @@ $(function () {
         }
     });
 
-    var initOpts;
     require([
         'echarts/echarts',
         'echarts/chart/map',
@@ -38,8 +43,9 @@ $(function () {
         'echarts-x/chart/map3d'
     ], function (ec) {
         //初始化地球和charts
-        chart = ec.init(document.getElementById('globe4DeviceHolder'));
-        initOpts = {
+        beforeInit();
+        pointChart = ec.init(document.getElementById('globe4DeviceHolder'));
+        initPointOpts = {
             tooltip: {
                 formatter: '{b}'
             },
@@ -84,17 +90,8 @@ $(function () {
                 }
             ]
         };
-        chart.setOption(initOpts);
-        chart.hideLoading();
-    });
-
-//监听点击事件
-    $('#main a').on('click', function (e) {
-        e.preventDefault();
-        var url = this.href;
-        if (url != undefined) {
-            SetChart(url, chart);
-        }
+        pointChart.setOption(initPointOpts);
+        pointChart.hideLoading();
     });
 
     /*
@@ -106,7 +103,7 @@ $(function () {
             type: "POST",
             url: url,
             dataType: 'json',
-            timeout: 10000
+            timeout: 100000
         })
             .success(function (data) {
                 //console.log(data.data);
@@ -182,28 +179,28 @@ $(function () {
                                 tooltip: {
                                     formatter: '{b}'
                                 },
-                                legend: {
-                                    show: false,
-                                    data: legendData,
-                                    selected: {},
-                                    x: 'left',
-                                    orient: 'vertical',
-                                    textStyle: {
-                                        color: 'white'
-                                    }
-                                },
+                                /*legend: {
+                                 show: false,
+                                 data: legendData,
+                                 selected: {},
+                                 x: 'left',
+                                 orient: 'vertical',
+                                 textStyle: {
+                                 color: 'white'
+                                 }
+                                 },*/
                                 series: series
                             };
                             chart.setOption(opts, true);
                             chart.hideLoading();
                         } else {
                             alert("暂无该类型设备！");
-                            chart.setOption(initOpts);
+                            chart.setOption(initPointOpts);
                         }
                     });
                 } else {
                     console.log(data.statuscode + ": " + data.errmsg);
-                    chart.setOption(initOpts, true);
+                    chart.setOption(initPointOpts, true);
                     alert("暂无数据!");
                 }
             })
@@ -217,6 +214,13 @@ $(function () {
                 console.log("AJAX Done", d);
             });
     }
-
-
-});
+}
+function beforeInit() {
+    console.log("beforeInit      starts");
+    var width = $(window).width(), height = $(window).height();
+    $('#globe4DeviceHolder').css({
+        "width": width,
+        "height": height,
+        "margin-bottom": "5rem"
+    });
+}

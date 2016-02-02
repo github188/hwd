@@ -133,7 +133,10 @@ public class DataApiController {
         search.setPermitfilter(permitfilter);
         search.setTypefilter(typefilter);
         search.setLossycompress(lossycompress);
-        return deviceService.getResponse4Globe(search);
+        String result = deviceService.getResponse4Globe(search);
+        System.out.println("globe point");
+        System.out.println(result);
+        return result;
     }
 
     /*
