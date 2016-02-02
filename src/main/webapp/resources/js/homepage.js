@@ -23,6 +23,7 @@ var Homepage = {
         MySessionStorage.set('checked', '', 'add');
         homepage_search_flag = true;
         //$('.carousel').carousel(1);
+        Sidebar.onlyUpdate = false;
         List.search(1);
         homepage_search_flag = false;
     }

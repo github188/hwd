@@ -20,9 +20,9 @@ $(function () {
         "brand2": "orange",
         "brand3": "cyan"
     };
-    $('a').on('click', function () {
+    /*$('a').on('click', function () {
         console.log(this.href.split());
-    });
+    });*/
     require.config({
         paths: {
             'echarts': basePath + "/resources/plugins/echarts-2.2.7/build/dist",

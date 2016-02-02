@@ -338,7 +338,8 @@ var GlobeLine = {
 var Charts = {
     show: function () {
         var width = window.innerWidth, height = window.innerHeight;
-        console.log("width: " + width, "height" + height);s
+        //console.log("width: " + width, "height" + height);
+        Sidebar.hide();
     }
 };
 function setIframe() {

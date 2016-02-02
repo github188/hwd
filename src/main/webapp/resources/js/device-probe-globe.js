@@ -235,10 +235,10 @@ var SetMapOption = function (chart, url) {
         }).fail(function (f) {
             console.log("Ajax failed!", f);
         }).done(function (d) {
-            console.log("Ajax done", d);
+            //console.log("Ajax done", d);
             timeout = setTimeout(function () {
                 pageId++;
-                console.log("pageId: ", pageId);
+                //console.log("pageId: ", pageId);
                 SetMapOption(chart, URL + pageId);
             }, 3000);
 

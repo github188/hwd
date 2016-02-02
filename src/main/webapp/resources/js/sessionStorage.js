@@ -21,7 +21,7 @@ MySessionStorage = {
         if (!value || value == 'undefined' || value == '') {
             value = undefined;
         }
-        console.log("get sessionStorage " + key + " = ", value);
+        //console.log("get sessionStorage " + key + " = ", value);
         return value;
 
         function getAdvsCriteria() {
@@ -93,7 +93,7 @@ MySessionStorage = {
         }
 
         function setChecked(value, operation) {//JSONObject。用户选中的复选框数据。每一个key:value对为（checkbox的id）:（将分隔符替换为“:”后的值）。
-            console.log("FUNCTION CALL: MySessionStorage.setChecked, param = ", value);
+            //console.log("FUNCTION CALL: MySessionStorage.setChecked, param = ", value);
             if (value == undefined || value == 'undefined' || value == '') {
                 sessionStorage.checked = value;
                 return
@@ -150,7 +150,7 @@ MySessionStorage = {
         for (var key in checkedObj) {
             checkedStr += ' ' + checkedObj[key];
         }
-        console.log("all the checked str: ", checkedStr);
+        //console.log("all the checked str: ", checkedStr);
         return checkedStr.replace('undefined', '');
     }
 };

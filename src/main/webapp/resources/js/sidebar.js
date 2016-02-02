@@ -6,7 +6,7 @@ var Sidebar = {
         this.wrapper.show();
     },
     show: function (agg) {
-        console.log("FUNCTION CALL: Sidebar.show",agg);
+        console.log("FUNCTION CALL: Sidebar.show", agg);
         Pivot.hide();
         this.render(agg);
         this.wrapper.show();
@@ -16,39 +16,42 @@ var Sidebar = {
         this.wrapper.hide();
     },
     render: function (agg) {
-        console.log("FUNCTION CALL: Sidebar.render");
+        console.log("FUNCTION CALL: Sidebar.render", agg);
         //set sidebar input
         $.each(agg, function (key, value) {
-            if (JSON.stringify(value).indexOf('/') < 0) {
-                if (key == 'country@%city') {
-                    var $country = $('#countryList').find('ol.facet-values').html(''); //清空以前的数据
-                    if (!isEmptyObject(value)) {
-                        $.each(value, function (name, countryObj) {
-                            var total = countryObj['count'],
-                                countryLi = genSidebarCountryLi('country', name, total).appendTo($country),
-                                id = 'collapse' + name,
-                                citiesContainer = $('<div class="collapse" id="' + id + '"></div>').appendTo(countryLi),
-                                $cities = $('<ol class="inner-facet-values"></ol>').appendTo(citiesContainer);
-                            $cities.append(genSidebarLi('country' + CheckboxId_SEPARATOR + name, '全国', total));
-                            $.each(countryObj['cities'], function (name, count) {
-                                $cities.append(genSidebarLi('city', name, count));
-                            });
+            if (key == 'country@%city') {
+                var $country = $('#countryList').find('ol.facet-values').show().html(''); //清空以前的数据
+                if (!isEmptyObject(value)) {
+                    $.each(value, function (name, countryObj) {
+                        if (name.indexOf('/')) {
+                            name = name.replace('/', '');
+                        }
+                        var total = countryObj['count'],
+                            countryLi = genSidebarCountryLi('country', name, total).appendTo($country),
+                            id = 'collapse' + name,
+                            citiesContainer = $('<div class="collapse" id="' + id + '"></div>').appendTo(countryLi),
+                            $cities = $('<ol class="inner-facet-values"></ol>').appendTo(citiesContainer);
+                        $cities.append(genSidebarLi('country' + CheckboxId_SEPARATOR + name, '全国', total));
+                        $.each(countryObj['cities'], function (name, count) {
+                            if (name.indexOf('/')) {
+                                name = name.replace('/', '');
+                            }
+                            $cities.append(genSidebarLi('city', name, count));
                         });
-                    } else {
-                        $country.closest('div.panel').hide();
-                    }
+                    });
                 } else {
-                    var $ol = $('#' + key + 'List').find('ol.facet-values').html('');   //清空以前的数据
-                    if (!isEmptyObject(value)) {
-                        $.each(value, function (name, count) {
-                            $ol.append(genSidebarLi(key, name, count)).closest('div.panel').show();
-                        });
-                    } else {
-                        $ol.closest('div.panel').hide();
-                    }
+                    $country.closest('div.panel').hide();
+                }
+            } else {
+                var $ol = $('#' + key + 'List').find('ol.facet-values').html('');   //清空以前的数据
+                if (!isEmptyObject(value)) {
+                    $.each(value, function (name, count) {
+                        $ol.append(genSidebarLi(key, name, count)).closest('div.panel').show();
+                    });
+                } else {
+                    $ol.closest('div.panel').hide();
                 }
             }
-
         });
 
         //listeners for the up and down icon

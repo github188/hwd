@@ -17,8 +17,8 @@ function initMap() {
             "esri/layers/GraphicsLayer",
             "esri/InfoTemplate",
             "esri/layers/FeatureLayer",
-            "esri/dijit/HomeButton",
-            "esri/dijit/Legend",
+            //"esri/dijit/HomeButton",
+            //"esri/dijit/Legend",
             "dojo/domReady!"
         ],
         function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, FeatureLayer, HomeButton, Legend) {
@@ -546,8 +546,8 @@ var MyFeatureLayer = {
             require([
                 "esri/graphic",
                 "esri/renderers/SimpleRenderer", "esri/Color",
-                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
-                "esri/dijit/Legend"
+                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol"
+                //"esri/dijit/Legend"
             ], function (Graphic, SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol, Legend) {
                 var sfs = new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128])));
                 var renderer = new SimpleRenderer(sfs);
@@ -620,8 +620,8 @@ var MyFeatureLayer = {
             require([
                 "esri/graphic",
                 "esri/renderers/SimpleRenderer", "esri/Color",
-                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
-                "esri/dijit/Legend"
+                "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol"
+                //"esri/dijit/Legend"
             ], function (Graphic, SimpleRenderer, Color, SimpleFillSymbol, SimpleLineSymbol, Legend) {
                 var sfs = new SimpleFillSymbol().setOutline(new SimpleLineSymbol().setWidth(0.1).setColor(new Color([128, 128, 128])));
                 var renderer = new SimpleRenderer(sfs);

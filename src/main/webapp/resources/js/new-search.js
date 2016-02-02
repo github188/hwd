@@ -36,7 +36,7 @@ function newSearch(obj) {
                 if (currentPage) {
                     if (currentPage == 'list') {
                         $('.carousel').carousel(1);
-                        List.show(data);
+                        //List.show(data);
                     } else if (currentPage == 'map') {
                         MyMap.show(data);
                     }
