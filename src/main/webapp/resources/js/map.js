@@ -63,33 +63,7 @@ function initMap() { //网站加载时调用此方法
         });
 }
 initMap();
-/*
- *
 
- "esri/tasks/query",
- "esri/tasks/QueryTask",
- "esri/graphic",
- "esri/SpatialReference",
-
- //feature layer related↓
-
- "esri/tasks/FeatureSet",
- "esri/layers/FeatureLayer",
-
- "esri/symbols/SimpleFillSymbol",
- "esri/symbols/SimpleLineSymbol",
- "esri/renderers/SimpleRenderer",
-
- "esri/lang",
- "esri/Color",
- "dojo/number",
- "dojo/dom-style",
- "dijit/TooltipDialog",
- "dijit/popup",
- *cityLayer = new FeatureLayer(cityLayerURL, featureLayerOption);
- cityLayer.setMaxAllowableOffset(map.extent.getWidth() / map.width);
- map.addLayer(cityLayer);
- *  */
 MyMap = {
     //显示地图页
     show: function () {

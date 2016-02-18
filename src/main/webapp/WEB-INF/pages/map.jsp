@@ -46,17 +46,16 @@
         地理位置：<strong class="f-country"></strong><br>
         目标数量：<strong class="f-count"></strong></div>
     <div id="mapSidebar" class="">
-        <div class="tool-bar">
+<%--        <div class="tool-bar">
             <a class="map-sidebar-link advs-link-main" href="#" role="button" aria-controls="mapSidebar">
                 <span class="glyphicon glyphicon-menu-right"></span>
 
             </a>
-        </div>
+        </div>--%>
         <div class="clearfix"></div>
-        <div></div>
+        <%--<div></div>--%>
         <div class="content">
-            <ul class="map-device-list">
-            </ul>
+            <ul class="map-device-list"></ul>
         </div>
         <div class="pager-wrapper demo4 customBootstrap map">
             <%--<p id="demo4-text"></p>--%>

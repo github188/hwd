@@ -1,0 +1,171 @@
+body {
+    font: 100% "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    background: #fff url(../img/login_bg.jpg) 50% 0 no-repeat;
+    /*position: relative;*/
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+section {
+    display: block;
+    position: absolute;
+    top: 40%;
+    margin-top: -200px;
+    width: 100%;
+    height: 300px;
+    text-align: center;
+}
+
+.sec-wholepage .sec-hd {
+    padding: 0 12px;
+    /*border-bottom: 1px #d8d8d8 solid;*/
+    line-height: 120%;
+}
+
+.sec-forget .sec-hd h1 {
+    margin: 25px -9px 27px;
+}
+
+/*.sec-wholepage .sec-hd h1 {
+    margin: 17px -9px 23px;
+    height: 21px;
+    text-indent: -9999px;
+}*/
+
+.sec-wholepage .sec-hd .extra {
+    /*float: right;*/
+    margin-top: -27px;
+}
+
+.sec-wholepage .sec-bd .extra {
+    float: right;
+    font-size: 120%;
+    margin-top: -27px;
+}
+
+.sec-wholepage .sec-bd {
+    display: inline-block;
+    margin: 0 auto;
+    width: auto;
+    background: rgba(255, 255, 255, 1);
+    border: 1px #d8d8d8 solid;
+    border-top: none;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.form-forget {
+    padding: 20px;
+}
+
+.form-forget h2 {
+    line-height: 200%;
+    font-weight: 100;
+    margin-bottom: 14px;
+}
+
+.form .row {
+    padding-left: 114px;
+    padding-top: 5px;
+    padding-bottom: 4px;
+}
+
+.form .label {
+    margin-left: -114px;
+    _display: inline;
+}
+
+.form .label, .form .label label, .form .enter, .form .msg {
+    float: left;
+}
+
+.form-forget .label label, .form-forget .content {
+    line-height: 33px;
+}
+
+.form .label label, .form .label .inner {
+    display: block;
+    width: 92px;
+    padding-right: 22px;
+    text-align: right;
+}
+
+.form .enter {
+    margin-right: 0.5em;
+}
+
+.form-forget .enter input.text {
+    padding: 7px 5px;
+}
+
+.form .enter input.text, .form .enter select {
+    border: 1px #bbb solid;
+    padding: 4px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.w8 {
+    width: 200px;
+}
+
+.msg {
+    zoom: 1;
+    padding: 2px 6px 1px 27px;
+    white-space: nowrap;
+}
+
+.msg:after {
+    content: ".";
+    display: block;
+    clear: both;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.form .submit {
+    padding-bottom: 1em;
+    text-align: left;
+}
+
+.btnpositive .btn {
+    padding: 0 12px;
+    height: 35px;
+    font-size: 117%;
+    font-weight: bold;
+    line-height: 35px;
+    color: #fff;
+}
+
+.btnwrap .btn {
+    border: none;
+    padding: 0 8px;
+    /*margin-left: -8px;*/
+    overflow: hidden;
+    text-decoration: none !important;
+    background-color: #f60;
+    border-radius: 4px;
+}
+
+input.button, button {
+    cursor: pointer;
+    overflow: visible;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}

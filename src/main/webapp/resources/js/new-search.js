@@ -30,13 +30,18 @@ function newSearch(obj) {
             var statuscode = data['statuscode'];
             //设置global_search_input.val的值为sessionStorage.wd
             if (statuscode == 200) {
+                var wd = MySessionStorage.get('wd');
+                if (wd) {
+                    globalSearchInput.val(wd);
+                }
                 //设置sessionStorage
                 MySessionStorage.set('data', data);
                 var currentPage = MySessionStorage.get('currentPage');
+                console.log("currentPage", currentPage);
                 if (currentPage) {
                     if (currentPage == 'list') {
                         $('.carousel').carousel(1);
-                        //List.show(data);
+                        List.show(data);
                     } else if (currentPage == 'map') {
                         MyMap.show(data);
                     }

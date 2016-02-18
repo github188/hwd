@@ -70,7 +70,7 @@
         </form>
     </div>
 </header>
-<div id="main">
+<div id="main" style="padding-bottom: 2rem">
     <%@include file="advs.jsp" %>
     <%@include file="sidebar.jsp" %>
     <div id="content" class="carousel slide full-height">

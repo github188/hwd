@@ -6,8 +6,8 @@ var Sidebar = {
         this.wrapper.show();
     },
     show: function (agg) {
-        console.log("FUNCTION CALL: Sidebar.show", agg);
-        Pivot.hide();
+        console.log("FUNCTION CALL: Sidebar.show");
+        //Pivot.hide();
         this.render(agg);
         this.wrapper.show();
     },
@@ -16,27 +16,29 @@ var Sidebar = {
         this.wrapper.hide();
     },
     render: function (agg) {
-        console.log("FUNCTION CALL: Sidebar.render", agg);
+        console.log("FUNCTION CALL: Sidebar.render");
         //set sidebar input
         $.each(agg, function (key, value) {
             if (key == 'country@%city') {
                 var $country = $('#countryList').find('ol.facet-values').show().html(''); //清空以前的数据
                 if (!isEmptyObject(value)) {
-                    $.each(value, function (name, countryObj) {
-                        if (name.indexOf('/')) {
-                            name = name.replace('/', '');
+                    $.each(value, function (countryName, countryObj) {
+                        if (countryName.indexOf('/')) {
+                            countryName = countryName.replace('/', '');
                         }
                         var total = countryObj['count'],
-                            countryLi = genSidebarCountryLi('country', name, total).appendTo($country),
-                            id = 'collapse' + name,
+                            countryLi = genSidebarCountryLi('country', countryName, total).appendTo($country),
+                            id = 'collapse' + countryName,
                             citiesContainer = $('<div class="collapse" id="' + id + '"></div>').appendTo(countryLi),
                             $cities = $('<ol class="inner-facet-values"></ol>').appendTo(citiesContainer);
-                        $cities.append(genSidebarLi('country' + CheckboxId_SEPARATOR + name, '全国', total));
-                        $.each(countryObj['cities'], function (name, count) {
-                            if (name.indexOf('/')) {
-                                name = name.replace('/', '');
+                        $cities.append(genSidebarLi('country' + CheckboxId_SEPARATOR + countryName, '全国', total));
+                        $.each(countryObj['cities'], function (cityName, count) {
+                            if (cityName.indexOf('/')) {
+                                cityName = cityName.replace('/', '');
                             }
-                            $cities.append(genSidebarLi('city', name, count));
+                            var li = genSidebarLi('city', cityName, count);
+                            li.find('input:first-child').attr('data-country', countryName);
+                            $cities.append(li);
                         });
                     });
                 } else {
@@ -53,6 +55,24 @@ var Sidebar = {
                 }
             }
         });
+        //根据pivots，设置复选框的选中状态
+        var pivots = MySessionStorage.get('pivots');
+        if (pivots) {
+            Pivot.init();
+            var pivotsList = pivots.trim().split(' ');
+            for (var i = 0; i < pivotsList.length; i++) {
+                Pivot.add(pivotsList[i]); //添加pivot
+                var id = pivotsList[i].replace(PivotId_SEPARATOR, CheckboxId_SEPARATOR);
+                var chkbox = $('#' + id).prop('checked', true); //选中复选框
+                //展开被选中的项所在的列表
+                var panelId = id.split(CheckboxId_SEPARATOR)[0] + 'List';
+                if (id.indexOf('city' + CheckboxId_SEPARATOR)) {//如果是城市，则展开国家面板以及该城市所在国家的列表
+                    $('#countryList').addClass('in');
+                    chkbox.closest('div.collapse').addClass('in');
+                }
+                $('#' + panelId).addClass('in');
+            }
+        }
 
         //listeners for the up and down icon
         $('.panel-title a').on('click', function () {
@@ -151,8 +171,7 @@ var Sidebar = {
                 }
                 else if ($this.hasClass('city')) {
                     var all = $this.closest('li').siblings("li:first-child").find('input');
-                    console.log("all is checked or not", all.is(':checked'));
-
+                    //console.log("all is checked or not", all.is(':checked'));
                     if (all.is(':checked') && !this.checked) {
                         console.log("all is checked");
                         siblings.each(function (index, item) {
@@ -161,7 +180,12 @@ var Sidebar = {
                                 //（1.a）添加对应的全国所有其他城市sessionStorage
                                 MySessionStorage.set('checked', itemId, 'add');
                                 //（1.b）添加对应的全国所有其他pivot
-                                Pivot.add(itemId.replace(CheckboxId_SEPARATOR, PivotId_SEPARATOR));
+                                console.log($this.attr('data-country'));
+                                if ($this.attr('data-country')) {
+                                    Pivot.add(itemId.replace(CheckboxId_SEPARATOR, PivotId_SEPARATOR), $this.attr('data-country'));
+                                } else {
+                                    Pivot.add(itemId.replace(CheckboxId_SEPARATOR, PivotId_SEPARATOR));
+                                }
                             }
                         });
                         //（2.a）移除全国sessionStorage
@@ -179,7 +203,12 @@ var Sidebar = {
                             //（1）设置sessionStorage
                             MySessionStorage.set('checked', id, 'add');
                             //（2）添加对应的pivot
-                            Pivot.add(pivotId);
+                            //Pivot.add(pivotId);
+                            if ($this.attr('data-country')) {
+                                Pivot.add(pivotId, $this.attr('data-country'));
+                            } else {
+                                Pivot.add(pivotId);
+                            }
                         } else {
                             //（1）设置sessionStorage
                             MySessionStorage.set('checked', id, 'remove');
@@ -223,19 +252,6 @@ var Sidebar = {
             //console.log(index, item);
 
         });
-        /*//设置checkbox的选中状态和pivot的显示
-         var cd = MySessionStorage.get('checked');
-         if (cd) {
-         $.each(cd, function (key, value) {
-         $('#' + key).prop('checked', true);
-         Pivot.add(key.replace(CheckboxId_SEPARATOR, PivotId_SEPARATOR));//添加pivot
-         if (key.indexOf('country' + CheckboxId_SEPARATOR) !== -1) {    //如果国家被选中，则其所有城市均被选中;
-         $('#collapse' + key.split(CheckboxId_SEPARATOR)[1] + ' ol li').find('input').prop('checked', true);
-         //展开
-         $('#collapse' + key.split(CheckboxId_SEPARATOR)[1]).collapse('show');
-         }
-         });
-         }*/
     }
 };
 
@@ -246,6 +262,7 @@ var Pivot = {
         console.log("FUNCTION CALL: Pivot.init");
         this.wrapper.hide();
         this.$pivots.html('');
+        sessionStorage.removeItem('pivots');
     },
     show: function () {
         console.log("FUNCTION CALL: Pivot.show");
@@ -254,27 +271,35 @@ var Pivot = {
     hide: function () {
         console.log("FUNCTION CALL: Pivot.hide");
         this.wrapper.hide();
-        this.$pivots.html('');
+        //this.$pivots.html('');
     },
-    add: function (id) {//id,not the jquery object
-        console.log("FUNCTION CALL: Pivot.add, param = ", id);
+    add: function (id, dataAttr) {//id,not the jquery object；dataAttr为城市特加的属性，表示该城市所属的国家，可选
+        //console.log("FUNCTION CALL: Pivot.add, param = ", id);
         if (id.indexOf(CountryId_SEPARATOR) !== -1) {
             id = id.replace(CountryId_SEPARATOR, '');
         }
         if (!this.$pivots.find('#' + id))return;
-        this.$pivots.append(genPivot(id));
-        console.log("add pivot succeed.");
+        this.$pivots.append(genPivot(id, dataAttr));
+        MySessionStorage.set('pivots', id, 'add');
         if (this.$pivots.find('li').length == 1) {
             this.show();
         }
 
         //生成一个pivot，key为搜索关键字（也是aggregation中的每一项），value为用户选择的checkbox的值
-        function genPivot(id) {
+        function genPivot(id, _dataAttr) {
             var $pivot = $('<li class="pivot"></li>').attr({
-                    'id': id
-                    //'id': key + PivotId_SEPARATOR + value
-                }).html(id.split(PivotId_SEPARATOR)[1]),
-                closeBtn = $('<button class="remove-pivot" type="submit">&times;</button>').appendTo($pivot);
+                'id': id,
+                'data-country': _dataAttr
+            });
+
+            if (_dataAttr) {
+                $pivot.html(_dataAttr + ': ' + id.split(PivotId_SEPARATOR)[1]);
+            } else {
+                $pivot.html(id.split(PivotId_SEPARATOR)[1]);
+            }
+
+            var closeBtn = $('<button class="remove-pivot" type="submit">&times;</button>').appendTo($pivot);
+
             //listener
             closeBtn.on('click', function () {
                 var pid = $(this).closest('li.pivot').attr('id');
@@ -282,7 +307,8 @@ var Pivot = {
                 var k = k_v[0], v = k_v[1];
 
                 //（1）移除对应pivot
-                $(this).parent('li.pivot').remove();
+                //$(this).parent('li.pivot').remove();
+                Pivot.remove($(this).parent('li.pivot'));
 
                 //（2）取消选中复选框
                 var checkboxId = pid.replace(PivotId_SEPARATOR, CheckboxId_SEPARATOR);
@@ -312,9 +338,22 @@ var Pivot = {
         console.log("FUNCTION CALL: Pivot.remove");
         if (pivot) {
             pivot.remove();
+            console.log(pivot.attr('id'));
+            MySessionStorage.set('pivots', pivot.attr('id'), 'remove');
         }
         if (this.$pivots.find('li').length <= 0) {
             this.wrapper.hide();
         }
+    },
+    getAllPivotsAsStr: function () {
+        var result = '';
+        console.log("FUNCTION CALL: Pivot.getAllPivotsAsStr");
+        this.$pivots.find('li').each(function (idx, item) {
+            if ($(item).attr('data-country')) {
+                result += 'country:' + $(this).attr('data-country') + ' ';
+            }
+            result += item.id.replace(PivotId_SEPARATOR, ':') + ' ';
+        });
+        return result;
     }
 };

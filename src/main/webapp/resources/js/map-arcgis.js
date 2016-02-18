@@ -70,7 +70,7 @@ function initMap() {
                     $this.toggleClass('open');
                     if ($this.hasClass('open')) {
                         Sidebar.showOnly();
-                        $this.html('<span class="glyphicon glyphicon-triangle-left"></span>' + '显示侧栏');
+                        $this.html('<span class="glyphicon glyphicon-triangle-left"></span>' + '隐藏侧栏');
                     } else {
                         Sidebar.hide();
                         $this.html('<span class="glyphicon glyphicon-triangle-right"></span>' + '显示侧栏');
@@ -138,7 +138,6 @@ var MyMap = {
     wrapper: $('.map-wrapper-inner'),
     show: function (data) { //滑动到地图页时调用此方法
         console.log("FUNCTION CALL: MyMap.show");
-
         MySessionStorage.set('currentPage', 'map');
         $('header').css('visibility', ' visible').show();
         if (data) {
@@ -146,11 +145,12 @@ var MyMap = {
                 //（1）渲染地图
                 this.render(data);
                 //（2）显示左侧边栏
-                if (!Sidebar.onlyUpdate) {
-                    Sidebar.show(data['aggregation']);
-                } else {
-                    Sidebar.update();
-                }
+                Sidebar.show(data['aggregation']);
+                /*if (!Sidebar.onlyUpdate) {
+                 Sidebar.show(data['aggregation']);
+                 } else {
+                 Sidebar.update();
+                 }*/
             } else {
                 this.search(1);
             }
@@ -338,7 +338,8 @@ var MyMap = {
             var extent = getVisibleExtent();//获取并设置屏幕所在范围的经纬度geo
             var criteria = {
                 "geo": extent,
-                "wd": wd + checkedStr,
+                //"wd": wd + checkedStr,
+                "wd": wd + ' '+Pivot.getAllPivotsAsStr(),
                 //"zoomlevel": map.getZoom(),
                 "pagesize": MAP_PAGE_SIZE,
                 "page": pageNum ? pageNum : this.mapPageNum
@@ -347,6 +348,7 @@ var MyMap = {
                 "url": mapSearchURL,
                 "criteria": criteria
             };
+            MySessionStorage.clearChecked();
             newSearch(searchObj);
 
             //获取地图的可视范围的经纬度

@@ -1,0 +1,356 @@
+html {
+
+}
+
+body {
+    font-family: "Microsoft Yahei", "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    background: #fff url(../img/login_bg.jpg) 50% 0 no-repeat;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #f00;
+}
+
+.cl {
+    clear: both;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+}
+
+.container {
+    margin: 0 auto;
+    width: 370px;
+    border: 2px solid #eee;
+    border-bottom: none;
+    position: relative;
+}
+
+.header {
+    height: 50px;
+    border-bottom: 1px solid #e2e2e2;
+    position: relative;
+}
+
+.header .switch {
+    height: 45px;
+    position: absolute;
+    left: 60px;
+    bottom: 0;
+    font-size: 16px;
+}
+
+.header .switch #switchToReg {
+    margin-right: 85px;
+}
+
+.header .switch .switch_btn {
+    color: #999;
+    display: inline-block;
+    height: 45px;
+    line-height: 45px;
+    outline: none;
+    *hide-focus: expression(this.hideFocus=true);
+}
+
+.header .switch .switch_btn_focus {
+    color: #333;
+    display: inline-block;
+    height: 45px;
+    line-height: 45px;
+    outline: none;
+    *hide-focus: expression(this.hideFocus=true);
+}
+
+.header .switch .switch_btn:hover {
+    color: #333;
+    text-decoration: none;
+}
+
+.header .switch .switch_btn_focus:hover {
+    text-decoration: none;
+}
+
+.switch-bottom {
+    position: absolute;
+    width: 64px;
+    left: 0;
+    bottom: -1px;
+    /*_bottom: -2px;*/
+    border-bottom: 2px solid #848484;
+}
+
+.form-wrapper {
+    width: 370px;
+    position: relative;
+}
+
+#loginInner {
+    _left: 60px;
+    *left: 0;
+}
+
+.form-wrapper .reg-form-list {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.form-wrapper .login-input-label {
+    float: left;
+    margin-top: 10px;
+    width: 60px;
+    height: 42px;
+    font-size: 16px;
+    text-align: right;
+    padding-right: 10px;
+    line-height: 42px;
+    font-family: "Hiragino Sans GB", "Microsoft Yahei", Helvetica, Arial, sans-serif;
+}
+
+.form-wrapper .reg-input-label {
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+    width: 7px;
+    height: 30px;
+    font-size: 16px;
+    margin-top: 10px;
+    clear: both;
+    line-height: 30px;
+    font-family: "Hiragino Sans GB", "Microsoft Yahei", Helvetica, Arial, sans-serif;
+}
+
+.form-wrapper .login-input-wrapper {
+    width: 200px;
+    height: 42px;
+    margin-top: 10px;
+    float: left;
+
+}
+
+.form-wrapper .reg-input-wrapper {
+    width: 200px;
+    margin-top: 6px;
+    margin-top: 5px \9;
+    float: left;
+
+}
+
+.form-wrapper label em {
+    color: #ff0000;
+}
+
+.form-wrapper .login-input-wrapper input {
+    width: 200px;
+    height: 38px;
+    padding-left: 5px;
+    line-height: 38px;
+    border: 1px solid #D7D7D7;
+    background: #fff;
+    color: #333;
+    border-radius: 2px;
+    font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    ime-mode: disabled;
+}
+
+.form-wrapper input.reg-input-style:focus, .form-wrapper input.login-input-wrapper input:focus {
+    border: 1px solid #198BD4;
+    box-shadow: 0 0 2px #198BD4;
+}
+
+.form-wrapper .reg-input-style {
+    width: 200px;
+    height: 34px;
+    padding-left: 5px;
+    line-height: 34px;
+    border: 1px solid #D7D7D7;
+    background: #fff;
+    color: #333;
+    border-radius: 2px;
+    font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    ime-mode: disabled;
+}
+
+.form-wrapper .uinArea {
+    height: 55px;
+    position: relative;
+    z-index: 10;
+}
+
+.form-wrapper .pwdArea {
+    height: 55px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 3;
+}
+
+.login-wrapper {
+    position: relative;
+    display: block;
+    height: 235px;
+    overflow: hidden;
+}
+
+.cue {
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    border: 1px #CCCCCC solid;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    font-family: "Hiragino Sans GB", "Microsoft Yahei", Helvetica, Arial, sans-serif;
+}
+
+.container {
+    margin-top: 50px;
+    background-color: #ffffff;
+}
+
+h1 {
+    margin: 80px auto 50px auto;
+    text-align: center;
+    color: #fff;
+    padding: -25px;
+    font-size: 35px;
+    font-weight: bold;
+    text-shadow: 0 1px 1px #555;
+}
+
+h1 sup {
+    font-size: 18px;
+    font-style: normal;
+    position: absolute;
+    margin-left: 10px;
+}
+
+.container {
+    border: 0;
+    padding: 5px 0;
+    background: #fff;
+    margin: 0 auto;
+    -webkit-box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, .3);
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, .3);
+}
+
+.form-wrapper {
+    padding-bottom: 20px;
+}
+
+.reg-form-list li {
+    height: 55px;
+}
+
+.cue {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
+
+.form-wrapper input.reg-input-style:focus, .form-wrapper input.login-input-wrapper input:focus {
+    border: 1px solid #5796ff;
+    box-shadow: 0 0 0;
+}
+
+.form-wrapper .reg-form-list {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.form-wrapper .reg-input-style {
+    border-radius: 2px;
+    width: 210px;
+}
+
+.form-wrapper .reg-input-label {
+    padding-right: 5px;
+    width: 80px;
+    _width: 75px;
+    _font-size: 12px;
+}
+
+.button_blue {
+    display: inline-block;
+    float: left;
+    height: 41px;
+    border-radius: 4px;
+    background: #2795dc;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid #0078b3;
+    *border-bottom: none;
+    color: #fff;
+    font-size: 16px;
+    padding: 0 10px;
+    *width: 140px;
+    text-align: center;
+    outline: none;
+    font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif;
+}
+
+input.button_blue:hover {
+    background: #0081c1;
+    border-bottom: 3px solid #006698;
+    *border-bottom: none;
+    color: #fff;
+    text-decoration: none;
+}
+
+a.zcxy {
+    text-decoration: underline;
+    line-height: 58px;
+    margin-left: 15px;
+    /*color: #959ca8;*/
+}
+
+#login_form {
+    width: 300px;
+    margin: 30px auto 0 auto;
+    /*margin-top: 30px;*/
+}
+
+#login_form > div:last-child {
+    padding-left: 70px;
+    margin-top: 20px;
+}
+
+#login_form > div:last-child > input {
+    width: 120px;
+}
+
+.form-wrapper .uinArea {
+    height: 60px;
+}
+
+.header .switch {
+    left: 70px;
+}
+
+.inputArea input[type="button"] {
+    margin-top: 10px;
+    margin-left: 85px;
+}
+
+.reg-wrapper {
+    display: none;
+}

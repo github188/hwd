@@ -5,6 +5,9 @@ MySessionStorage = {
             case 'wd':  //字符串。搜索框中用户的输入，当currentPage为home时，wd值为home_search_input的val，否则为global_search_input的val。
                 value = getWd();
                 break;
+            case 'pivots': //string，多个pivot id的拼接，每个id用空格分隔
+                value = getPivots();
+                break;
             case 'checked': //JSONObject。用户选中的复选框数据。每一个key:value对为（checkbox的id）:（将分隔符替换为“:”后的值）。
                 value = getChecked();
                 break;
@@ -23,6 +26,10 @@ MySessionStorage = {
         }
         //console.log("get sessionStorage " + key + " = ", value);
         return value;
+
+        function getPivots() {
+            return sessionStorage.getItem('pivots');
+        }
 
         function getAdvsCriteria() {
             return JSON.parse(sessionStorage.advsCriteria);
@@ -68,6 +75,9 @@ MySessionStorage = {
             case 'checked':
                 setChecked(value, operation);
                 break;
+            case 'pivots':
+                setPivots(value, operation);
+                break;
             case 'data':    //JSONObject。搜索到的数据（ajax返回的原始数据数据），只能由全局search方法设置，其他方法只能读取。
                 setData(value);
                 break;
@@ -82,6 +92,23 @@ MySessionStorage = {
         function setAdvsCriteria(value) {
             //console.log("FUNCTION CALL: MySessionStorage.setAdvsCriteria, param = ", value);
             sessionStorage.advsCriteria = JSON.stringify(value);
+        }
+
+        function setPivots(value, operation) {
+            var oldPivots = sessionStorage.getItem('pivots');
+            if (!oldPivots || oldPivots == 'undefined') {
+                oldPivots = '';
+            }
+            if (operation == 'add') {
+                if (oldPivots.indexOf(value) == -1) {
+                    sessionStorage.setItem('pivots', oldPivots + value + ' ');
+                }
+            } else if (operation == 'remove') {
+                if (oldPivots.indexOf(value) !== -1) {
+                    sessionStorage.setItem('pivots', oldPivots.replace(value + ' ', ''));
+                    console.log(MySessionStorage.get('pivots'));
+                }
+            }
         }
 
         //字符串。搜索框中用户的输入，当currentPage为home时，wd值为home_search_input的val，否则为global_search_input的val。
@@ -152,6 +179,14 @@ MySessionStorage = {
         }
         //console.log("all the checked str: ", checkedStr);
         return checkedStr.replace('undefined', '');
+    },
+    clearChecked: function () {
+        console.log("FUNCTION CALL: MySessionStorage.clearChecked");
+        sessionStorage.removeItem('checked');
+    },
+    clearPivots: function () {
+        console.log("FUNCTION CALL: MySessionStorage.clearPivots");
+        sessionStorage.removeItem('pivots');
     }
 };
 

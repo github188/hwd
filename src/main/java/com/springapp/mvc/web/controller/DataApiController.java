@@ -194,7 +194,7 @@ public class DataApiController {
         logger.debug("DataApiController advancedSearch starts-----------");
         System.out.println("DataApiController advancedSearch starts-----------" + JSONObject.fromObject(search));
         String result = newDeviceService.getResponse4MapSearch(search);
-//        System.out.println("mapSearch====" + result);
+        System.out.println("mapSearch====" + result);
         return result;
     }
 
@@ -218,20 +218,14 @@ public class DataApiController {
         return fs;
     }
 
-/*
-    @RequestMapping(value = "/api/getFeatureSetsByNames")
-    public String getFeatureSetsByNames(@RequestParam(value = "names") String names) {
-        return featureSetService.getFeatureSetsByNames(names);
-    }
-*/
-
 
     @JsonView(Views.Public.class)
     @RequestMapping(value = "/api/listSearch")
     public String listSearch(@RequestBody SearchCriteria search) {
         logger.debug("DataApiController --> listSearch starts-----------" + JSONObject.fromObject(search));
+        System.out.println("DataApiController --> listSearch starts-----------" + JSONObject.fromObject(search));
         String result = newDeviceService.getResponse4ListSearch(search);
-//        System.out.println("Controller-->Result for list: " + result);
+        System.out.println("Controller-->Result for list: " + result);
         return result;
     }
 

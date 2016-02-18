@@ -11,7 +11,6 @@ var featureSets = {}, countryFS = {};       //全局变量
 var is_loaded = false;  // 全局变量：初始化完成标记
 $(function () {
     "use strict";
-    //setIframe();
     jQAddress();
     getCountryFeatureSet();
     getProvinceFeatureSet();
@@ -51,6 +50,7 @@ $(function () {
         if (criteria == '')return;
         MySessionStorage.set('wd', criteria);
         var currentPage = MySessionStorage.get('currentPage') ? MySessionStorage.get('currentPage') : $('section.active').attr('tag');
+        Pivot.init();
         if (currentPage == 'list') {
             List.search(1);
         } else if (currentPage == 'map') {

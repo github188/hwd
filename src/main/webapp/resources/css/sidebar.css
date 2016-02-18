@@ -9,16 +9,12 @@
     max-height: 100%;
     padding: 5rem 1rem 0 1rem;
     float: left;
-    overflow-y: auto;
-    background: no-repeat top center fixed -webkit-linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));
-    background: no-repeat top center fixed linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));
+    overflow: auto;
+    background: no-repeat top center  -webkit-linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));
+    background: no-repeat top center  linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));
     box-sizing: border-box;
 }
 
-.sidebar.list{
-
-
-}
 /*.sidebar.map {*/
 /*color: #333!important;*/
 /*background: hsla(201, 100%, 77%, 1);*/
@@ -28,6 +24,7 @@
 .sidebar a {
     font-size: 2rem;
     color: hsla(206, 85%, 65%, 1);
+    /*margin-top: 5rem;*/
 }
 
 .sidebar a:hover {

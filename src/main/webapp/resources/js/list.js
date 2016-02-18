@@ -9,17 +9,12 @@ var List = {
     wrapper: $('.result-col'),
     show: function (data) {
         console.log("FUNCTION CALL: List.show");
-
         MySessionStorage.set('currentPage', this.tag);
         $('header').css('visibility', ' visible').show();
         if (data && data['statuscode'] == 200) {
             this.render(data);
             this.wrapper.show();
-            if (!Sidebar.onlyUpdate) {
-                Sidebar.show(data['aggregation']);
-            } else {
-                Sidebar.update();
-            }
+            Sidebar.show(data['aggregation']);
         } else {
             this.search(this.listPageNum);
         }
@@ -55,12 +50,14 @@ var List = {
             //console.log("genDeviceLi", d);
             var li = $(' <li class="device"></li>');
             //ip
-            var ip = $('<h3 class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1"><a href="#' + d.ip + '">' + d.ip + '</a></h3>').appendTo(li);
+            var ip = $('<h3><a href="#' + d.ip + '">' + d.ip + '</a></h3>').appendTo(li);
+            //var ip = $('<h3 class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1"><a href="#' + d.ip + '">' + d.ip + '</a></h3>').appendTo(li);
             //详细内容
             var row = $('<div class="row"></div>').appendTo(li);
             //all tags
             //tag
-            var facets = $(' <div class="col-md-offset-1 col-md-2 col-md-offset-1 col-sm-3 left"></div>').appendTo(row);
+            //var facets = $(' <div class="col-md-offset-1 col-md-2 col-md-offset-1 col-sm-3 left"></div>').appendTo(row);
+            var facets = $(' <div class="col-md-3 col-sm-4 left"></div>').appendTo(row);
             if (d.hasOwnProperty('tags') && d.tags != '' && d.tags.length > 0) {
                 var $tags = $('<div class="tag"></div>').appendTo(facets);
                 d.tags.forEach(function (tag) {
@@ -90,8 +87,9 @@ var List = {
             var ports = d.ports;
             if (ports != '' && ports.length > 0) {
                 for (var i = 0; i < ports.length; i++) {
+                    if (ports[i] == '' || ports[i] == null)continue;
                     for (var key in ports[i]) {
-                        var url = key.split(': ')[0] + d.ip + key.split(': ')[1];
+                        var url = key.split(': ')[0] + '://' + d.ip + ':' + key.split(': ')[1];
                         var $port = $('<article><h3><a href="' + url + '">' + key + '</a></article>').appendTo(info);
                         var banner = ports[i][key];
                         if (banner || banner == '') {
@@ -108,11 +106,14 @@ var List = {
                 }
             }
             var vuls = d.vuls;
-
             if (vuls != '' && vuls.length > 0) {
-                for (var key in vuls) {
-                    var $vul = $('<article><h3><a href="#">' + key + '</a></article>').appendTo(info);
-                    $('<pre>' + vuls[key] + '</pre>').appendTo($vul);
+                for (var i = 0; i < ports.length; i++) {
+                    if (!vuls[i] || vuls[i] == '')continue;
+                    $('<hr>').appendTo(info);
+                    for (var key in vuls[i]) {
+                        var $vul = $('<article><h3><a href="#">' + key + '</a></article>').appendTo(info);
+                        $('<pre>' + JSON.stringify(vuls[i][key]['desc']) + '</pre>').appendTo($vul);
+                    }
                 }
             }
             var closeBtn = $('<button class="up"><span class="glyphicon glyphicon-menu-down"></span></button>').appendTo(info);
@@ -171,10 +172,12 @@ var List = {
             var obj = {
                 "url": listSearchURL,
                 "criteria": {
-                    "wd": wd + checkedStr,
+                    //"wd": wd + checkedStr,
+                    "wd": wd + ' ' + Pivot.getAllPivotsAsStr(),
                     "page": pageNumber ? pageNumber : this.listPageNum
                 }
             };
+            MySessionStorage.clearChecked();
             newSearch(obj);
         }
     },

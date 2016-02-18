@@ -81,8 +81,8 @@ public class RestClient {
     public String get(String uri, String requestParam) {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put("q", requestParam);
-//        System.out.println(uri);
-//        System.out.println(requestParam);
+        System.out.println(uri);
+        System.out.println(requestParam);
         try {
             String result = rest.getForObject(uri, String.class, urlVariables);
 //            System.out.println("map or globe");

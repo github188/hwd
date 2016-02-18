@@ -130,4 +130,16 @@ public class WebPageController {
         logger.debug("newIndex() starts----------------------");
         return "new-index";
     }
+
+    @RequestMapping(value = "/forgetPwd", method = RequestMethod.GET)   //忘记密码
+    public String forgetPwd() {
+        logger.debug("forgetPwd() starts----------------------");
+        return "forgetPwd";
+    }
+
+    @RequestMapping(value = "/agreement", method = RequestMethod.GET)   //注册协议
+    public String agreement() {
+        logger.debug("agreement() starts----------------------");
+        return "agreement";
+    }
 }

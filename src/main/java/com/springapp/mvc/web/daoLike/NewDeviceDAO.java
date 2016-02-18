@@ -167,6 +167,7 @@ public class NewDeviceDAO {
                         Map<String, NewDevice.VulValueEntity> vul = new HashMap<String, NewDevice.VulValueEntity>();
                         JSONObject item = vul_info.getJSONObject(i), vul_ID = item.getJSONObject("vul_ID");
 //                        System.out.println("Vul---------" + item);
+//                        System.out.println("vul_ID---------" + vul_ID);
 
                         NewDevice.VulValueEntity vulValue = new NewDevice.VulValueEntity();
                         String vulKey;
