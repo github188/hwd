@@ -349,7 +349,7 @@ var MyMap = {
                 "criteria": criteria
             };
             MySessionStorage.clearChecked();
-            newSearch(searchObj);
+            AjaxLoadData(searchObj);
 
             //获取地图的可视范围的经纬度
             function getVisibleExtent() {

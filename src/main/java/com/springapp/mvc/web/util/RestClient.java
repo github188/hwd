@@ -31,18 +31,17 @@ public class RestClient {
 
     /*
    * @function http get请求，参数写在uri中，参数中不能有特殊字符，比如#（锚点）
-   * @param uri：请求地址，包含请求参数。示例："http://10.10.2.84:8082/devicescan/getSuggestions"
+   * @param uri：请求地址，包含请求参数。示例："http://10.10.2.84:8082/devicescan/getSuggestions?name=value"
    * @return JSONObject
    * @used for ANY REQUEST FOR JSONObject without any parameter
    */
     public JSONObject getJSONObject(String uri) {
         try {
+            System.out.println("uri= " + uri);
             HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
             ResponseEntity<JSONObject> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, JSONObject.class);
             this.setStatus(responseEntity.getStatusCode());
             return responseEntity.getBody();
-            /*String suggestions = "{\"iscompress\":3,\"wd\":\"ss \",\"zoomlevel\":4,\"data\":{\"port\":[80,88,21],\"os\":[\"linux\",\"windows\",\"mac\"],\"type\":[\"camera\",\"router\",\"printer\",\"switch\"],\"country\":[\"中国\",\"Turkey\",\"USA\"],\"city\":[\"北京\",\"上海\",\"Istanbul\",\"New York\",\"南京\"]},\"statuscode\":\"200\",\"total\":56,\"took\":15,\"realsize_cluster\":31,\"errmsg\":\"\"}";
-            return JSON.parseObject(suggestions);*/
         } catch (Exception e) {
             System.out.println("public String get(String uri) exception!");
             e.printStackTrace();
@@ -76,7 +75,7 @@ public class RestClient {
     * @param uri：请求地址，包含请求参数。示例：http://10.10.10.10?q={q}，其中q为参数名；{q}表示参数值，必须和本方法中urlVariables的key一致
     * @param requestParam，json格式的字符串
     * @return String，结果为json字符串（取决去http服务器返回的数据，可能不是json）
-    * @used for map, point(globe),advanced search
+    * used for map, point(globe),advanced search
     */
     public String get(String uri, String requestParam) {
         HashMap<String, Object> urlVariables = new HashMap<String, Object>();
@@ -109,7 +108,7 @@ public class RestClient {
     * @param uri：请求地址，包含请求参数。示例：http://10.10.10.10?wd={wd}&page={page}，多个参数用&连接
     * @param requestParam，Map，每一个key对应一个请求参数名，value为对应的参数值
     * @return String，结果为json字符串（取决去http服务器返回的数据，可能不是json）
-    * @used for list accepting special characters，such as #,
+    * used for list accepting special characters，such as #,
     */
     public String get(String uri, Map<String, Object> requestParam) {
 //        System.out.println("url = " + uri);
@@ -157,6 +156,25 @@ public class RestClient {
             System.out.println("public String get(String uri) exception!");
             e.printStackTrace();
             return new JSONObject().toString();
+        }
+    }
+
+    /*
+     * @function name
+     * @param {uri"请求地址",requestParam:"请求参数，为map，key是参数名，value是传入的值"}
+     * @return 服务提供放返回的json数据；如果请求失败返回null
+     * @description http请求远程服务器，返回json格式的原始数据
+     * @author lyp
+     * @date 2016-02-18
+     */
+    public JSONObject getJSONObject(String uri, Map<String, Object> requestParam) {
+        try {
+            System.out.println("uri = " + uri + ", requestParam = " + requestParam);
+            return rest.getForObject(uri, JSONObject.class, requestParam);
+        } catch (Exception e) {
+            System.out.println("JSONObject getJSONObject(String uri, Map<String, Object> requestParam) exception!");
+            e.printStackTrace();
+            return null;
         }
     }
 

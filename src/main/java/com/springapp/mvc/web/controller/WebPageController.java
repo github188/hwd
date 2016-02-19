@@ -98,18 +98,6 @@ public class WebPageController {
         return "device-map-leaflet";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        logger.debug("login() starts----------------------");
-        return "login";
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register() {
-        logger.debug("register() starts----------------------");
-        return "register";
-    }
-
     //错误处理页面
     String errorPage = "error/error";
 
@@ -131,15 +119,27 @@ public class WebPageController {
         return "new-index";
     }
 
-    @RequestMapping(value = "/forgetPwd", method = RequestMethod.GET)   //忘记密码
-    public String forgetPwd() {
-        logger.debug("forgetPwd() starts----------------------");
-        return "forgetPwd";
+    @RequestMapping(value = "/user/login", method = RequestMethod.GET)
+    public String login() {
+        logger.debug("login() starts----------------------");
+        return "user/login";
     }
 
-    @RequestMapping(value = "/agreement", method = RequestMethod.GET)   //注册协议
+    @RequestMapping(value = "/user/register", method = RequestMethod.GET)
+    public String register() {
+        logger.debug("register() starts----------------------");
+        return "user/register";
+    }
+
+    @RequestMapping(value = "/user/forgetPwd", method = RequestMethod.GET)   //忘记密码
+    public String forgetPwd() {
+        logger.debug("forgetPwd() starts----------------------");
+        return "user/forgetPwd";
+    }
+
+    @RequestMapping(value = "/user/agreement", method = RequestMethod.GET)   //注册协议
     public String agreement() {
         logger.debug("agreement() starts----------------------");
-        return "agreement";
+        return "user/agreement";
     }
 }

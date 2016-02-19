@@ -92,7 +92,7 @@ var AdvSearch = {
         }
 
         $('.carousel').carousel(1);
-        newSearch({
+        AjaxLoadData({
             url: advancedSearchURL,
             criteria: criteria
         });

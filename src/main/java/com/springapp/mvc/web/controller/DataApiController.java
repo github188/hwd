@@ -243,10 +243,15 @@ public class DataApiController {
         return fs;
     }
 
-/*    @RequestMapping(value = "/api/getCityFeatureSet")
-    public String getCityFeatureSet() {
-        String fs = featureSetService.getCityFeatureSet();
-//        System.out.println(fs);
+    /*    @RequestMapping(value = "/api/getCityFeatureSet")
+        public String getCityFeatureSet() {
+            String fs = featureSetService.getCityFeatureSet();
+    //        System.out.println(fs);
+            return fs;
+        }*/
+    @RequestMapping(value = "/api/uniqueUserNameCheck")
+    public String uniqueUserNameCheck() {
+        String fs = featureSetService.getProvinceFeatureSet();
         return fs;
-    }*/
+    }
 }

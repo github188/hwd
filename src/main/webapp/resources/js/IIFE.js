@@ -11,3 +11,4 @@ var model1 = (function () {
  };
  return {m1: m1, m2: m2};
 })();
+//http://blog.csdn.net/qq838419230/article/details/8030078

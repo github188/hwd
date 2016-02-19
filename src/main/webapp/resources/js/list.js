@@ -178,7 +178,7 @@ var List = {
                 }
             };
             MySessionStorage.clearChecked();
-            newSearch(obj);
+            AjaxLoadData(obj);
         }
     },
     showNoData: function () {

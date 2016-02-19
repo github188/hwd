@@ -28,7 +28,7 @@ var GlobePoint = {
                 "success": success,
                 "noDataFunc": noDataFunc
             };
-            newSearch(obj);
+            AjaxLoadData(obj);
         }
     }
 };
