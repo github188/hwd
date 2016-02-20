@@ -33,6 +33,7 @@ public class NewDeviceDAO {
         return result;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private JSONObject rawData2ResponseBody(JSONObject resp) {
         JSONObject zh2en = Tool.getCountryMapping();
         //aggregation中的country@%city的处理
