@@ -1,7 +1,6 @@
 package com.springapp.mvc.web.daoLike;
 
 import com.springapp.mvc.web.model.NewSuggestions;
-import com.springapp.mvc.web.util.RestClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -13,8 +12,6 @@ import java.util.List;
  */
 @Repository
 public class SuggestionDAO {
-    private RestClient rc = new RestClient();
-
     public List<String> getSuggestions(String query) {
         List<String> suggestions = NewSuggestions.getSuggestions();
         List<String> result = new ArrayList<String>();
@@ -25,7 +22,8 @@ public class SuggestionDAO {
                     result.add(s);
                 }
             }
-;        }
+            ;
+        }
         return result;
     }
 

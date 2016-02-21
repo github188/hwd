@@ -142,4 +142,12 @@ public class WebPageController {
         logger.debug("agreement() starts----------------------");
         return "user/agreement";
     }
+
+    // ----------------fresh new----------------
+    @RequestMapping(value = "/a_Index", method = RequestMethod.GET)
+    public String a_Index() {
+        logger.debug("a_Index() starts----------------------");
+        System.out.println("Inside a_Index()----------------");
+        return "a_Index";
+    }
 }

@@ -24,7 +24,7 @@ function initMap() {
         function (Map, ArcGISTiledMapServiceLayer, GraphicsLayer, InfoTemplate, FeatureLayer, HomeButton, Legend) {
             //（1）Create map and add layer
             map = new Map("mapHolder", {
-                //basemap: 'gray',
+                basemap: 'gray',    //arcgis js server
                 center: [114.25, 24.1167],
                 minZoom: 3,
                 maxZoom: 8,
@@ -32,9 +32,9 @@ function initMap() {
                 sliderPosition: "top-right",
                 logo: false
             });
-            //（1）添加底图
-            var basemap = new ArcGISTiledMapServiceLayer(basemapURL);
-            map.addLayer(basemap);
+            //（1）添加底图，iie arcgis server
+            /*var basemap = new ArcGISTiledMapServiceLayer(basemapURL);
+            map.addLayer(basemap);*/
 
             //（2）添加用于显示分布图的graphic layer
             var featureLayerInfoTemplate = new InfoTemplate("${Name_CHN}", "国家：<b>${Name_CHN}<b><br>共发现目标：<b>${count}</b>个");

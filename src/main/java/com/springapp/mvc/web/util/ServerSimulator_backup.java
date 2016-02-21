@@ -14,7 +14,7 @@ import com.springapp.mvc.web.config.Constant;
 
 import java.util.Map;
 
-public class RestClient {
+public class ServerSimulator_backup {
     /*
     * @function name: get
     * @param: {uri:"String，请求地址；requestParam: "Map，请求参数，其中的key必须和uri中的参数一致"}

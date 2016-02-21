@@ -125,7 +125,7 @@ public class DeviceService {
         System.out.println("Service ==>> getResponse4Globe starts-------" );
         JSONObject result;
         if (isValidSearchCriteriaOld(search)) {
-            result = deviceDAO.getDevices4Globe(JSONObject.toJSON(search).toString());
+            result = deviceDAO.getDevices4Globe(search.toMap());
             if (result.getJSONObject("data").isEmpty()) {
                 result.put("statuscode", "204");
                 result.put("errmsg", "No related data!");
@@ -145,7 +145,7 @@ public class DeviceService {
 //        System.out.println("Service ==>> getResponse4Map starts: " + JSONObject.fromObject(search));
         JSONObject result;
         if (isValidSearchCriteriaOld(search)) {
-            result = deviceDAO.getDevices4Map(JSONObject.toJSON(search).toString());
+            result = deviceDAO.getDevices4Map(search.toMap());
 //            System.out.println("Service getResponse4Map -> " + result);
             if (result.getJSONArray("data").size() <= 0) {
                 result.put("statuscode", "204");

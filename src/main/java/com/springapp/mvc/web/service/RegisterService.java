@@ -26,7 +26,7 @@ public class RegisterService {
     * @description 用户注册时，用户名唯一性检查。调用用户管理平台的接口，根据接口返回值来处理
     */
     public ValidformResponseBody uniqueUserNameCheck(String name, String param) {
-        String url = Constant.getWumUniqueUsernameCheckUrl() + "?" + name + "=" + param;
+        String url = Constant.WUM_UNIQUE_USERNAME_CHECK_URL + "?" + name + "=" + param;
         JSONObject response = rc.getJSONObject(url);
 //        System.out.println(response);
         ValidformResponseBody vrb = new ValidformResponseBody();
@@ -50,7 +50,7 @@ public class RegisterService {
     * @description 用户注册时，邮箱唯一性检查。调用用户管理平台的接口，根据接口返回值来处理
     */
     public ValidformResponseBody uniqueEmailCheck(String name, String param) {
-        String url = Constant.getWumUniqueEmailCheckUrl() + "?" + name + "=" + param;
+        String url = Constant.WUM_UNIQUE_EMAIL_CHECK_URL + "?" + name + "=" + param;
         JSONObject response = rc.getJSONObject(url);
 //        System.out.println(response);
         ValidformResponseBody vrb = new ValidformResponseBody();
@@ -74,7 +74,7 @@ public class RegisterService {
     * @description 用户注册。调用用户管理平台的接口，根据接口返回值来处理
     */
     public JSONObject register(String params) {
-        String url = Constant.getWumRegisterUrl() + "?" + params;
+        String url = Constant.WUM_REGISTER_URL + "?" + params;
         JSONObject response = rc.getJSONObject(url);
         System.out.println(response);
         if (response == null) {

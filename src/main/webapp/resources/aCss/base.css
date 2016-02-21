@@ -1,0 +1,132 @@
+@charset "UTF-8";
+/* Reset CSS
+ * --------------------------------------- */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre,
+form, fieldset, input, textarea, p, blockquote, th, td {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+table {
+    border-spacing: 0;
+}
+
+fieldset, img {
+    border: 0;
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-weight: normal;
+    font-style: normal;
+}
+
+strong {
+    font-weight: bold;
+}
+
+ol, ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+caption, th {
+    text-align: left;
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    color: #444;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+q:before, q:after {
+    content: '';
+}
+
+abbr, acronym {
+    border: 0;
+}
+
+/* Custom CSS (General)
+ * --------------------------------------- */
+body {
+    font-family: arial, helvetica, simsun, sans-serif;
+    color: #333;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+/* Fixed header and footer.
+* --------------------------------------- */
+.header, .footer {
+    position: fixed;
+    height: 4.6rem;
+    display: block;
+    width: 100%;
+    background: #333;
+    z-index: 9;
+    text-align: center;
+    color: #f2f2f2;
+    padding: .3rem 0 0 0;
+    border: none;
+}
+
+.header {
+    top: 0px;
+}
+
+.footer {
+    bottom: 0px;
+    height: 2.6rem;
+}
+
+/* Style for header texts
+  * --------------------------------------- */
+.header h1 {
+    line-height: 4rem;
+    font-weight: normal;
+    font-family: "microsoft yahei", Verdana, Tahoma, Helvetica, Arial, sans-serif;
+    color: #fff;
+    border: none;
+}
+
+.header h1 a {
+    color: #fff;
+}
+
+/* Style for sections
+* --------------------------------------- */
+.section {
+    text-align: center;
+}
+
+.section .intro p {
+    width: 50%;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+/* Style for slides
+  * --------------------------------------- */
+.fp-slidesNav .tooltip {
+    white-space: nowrap;
+}
+
+.fp-slidesNav.bottom {
+    bottom: 2rem;
+}
+
+/* Style for footer texts
+  * --------------------------------------- */

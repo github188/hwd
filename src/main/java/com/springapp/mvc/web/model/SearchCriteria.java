@@ -2,6 +2,9 @@ package com.springapp.mvc.web.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by lyp on 2015/12/10.
  * The “json data” will be converted into this object, via @RequestBody.
@@ -98,8 +101,32 @@ public class SearchCriteria {
         this.wd = wd;
     }
 
+    @JSONField(name = "prilevel")
+    public int getPrilevel() {
+        return prilevel;
+    }
+
+    @JSONField(name = "prilevel")
+    public void setPrilevel(int prilevel) {
+        this.prilevel = prilevel;
+    }
+
     @Override
     public String toString() {  //为了校验所有字段是否均为空
         return wd + geo + typefilter + permitfilter + zoomlevel + lossycompress + page;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("wd", wd);
+        result.put("geo", geo);
+        result.put("typefilter", typefilter);
+        result.put("permitfilter", permitfilter);
+        result.put("zoomlevel", zoomlevel);
+        result.put("lossycompress", lossycompress);
+        result.put("page", page);
+        result.put("pagesize", pagesize);
+        result.put("prilevel", prilevel);
+        return result;
     }
 }

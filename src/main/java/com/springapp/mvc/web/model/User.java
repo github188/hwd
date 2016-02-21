@@ -19,7 +19,7 @@ public class User {
     private int level;         //（可选）用户等级，不传或者超过5都为5
 
     public String getUrlString() {
-        level = Constant.getWumUserLevel(); //默认设置用户级别
+        level = Constant.WUM_USER_LEVEL; //默认设置用户级别
         return "username=" + username +
                 "&password=" + password +
                 "&email=" + email +
@@ -74,6 +74,6 @@ public class User {
 
     public void setLevel(int level) {
 //        this.level = level;
-        this.level = Constant.getWumUserLevel();
+        this.level = Constant.WUM_USER_LEVEL;
     }
 }

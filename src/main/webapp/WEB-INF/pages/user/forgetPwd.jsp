@@ -110,7 +110,6 @@
             beforeSubmit: function (curform) {
                 //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。
                 requestObj = {
-//                    url: 'http://10.10.2.174:8080/wum/login/forgetpwd.json?email=' + $('#email').val(),
                     url: '${requestURL}?email=' + $('#email').val(),
                     success: successCallback,
                     error: errorCallback

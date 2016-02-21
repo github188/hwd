@@ -15,3 +15,6 @@ public class AppConfig {
     public String suggestionURL;
 }
 */
+public class AppConfig {
+
+}
