@@ -18,7 +18,7 @@ $(function () {
     $('.fullpage').fullpage({
         //↓Navigation
         menu: '#menu',
-        anchors: ['home', 'search', 'user'],
+        anchors: ['fp_sec_home', 'fp_sec_search', 'fp_sec_user'],
         navigation: true,
         navigationPosition: 'right',
         navigationTooltips: ['首页', '搜索', '用户'],
@@ -28,6 +28,7 @@ $(function () {
 
         //↓Accessibility
         animateAnchor: false,//scroll with animation or will directly load on the given section; default to true
+        keyboardScrolling: false,
 
         //↓Design
         controlArrows: false,
@@ -45,17 +46,33 @@ $(function () {
         //↓events
         afterRender: function () {  //initialize
             addTooltip4Slides();//为设备搜索添加导航提示
-            $('.section:last-child .fp-slidesNav').hide();//去除用户相关操作slide导航
+            //$('.section:last-child .fp-slidesNav').hide();//去除用户相关操作slide导航
         },
         afterResize: function () {
         },
         onLeave: function (index, nextIndex, direction) {
+            if (index == 1) {
+                $('#menu li[data-menuanchor="search"]').removeClass('active');
+            }
         },
         afterLoad: function (anchorLink, index) {
+            //↓修正menu的active项（否则fullpage.js默认将同一section下的所有slide对应的菜单都active）
+            $('#menu li[data-menuanchor="fp_sec_search"]').removeClass('active');
+            if (anchorLink == 'fp_sec_search') {
+                var slideAnchor = $('div.slide.active').attr('data-anchor');
+                $('#menu a[href="#fp_sec_search/' + slideAnchor + '"]').closest('li').addClass('active');
+            }
+
         },
         afterSlideLoad: function (anchorLink, index, slideAnchor, slideIndex) {
+            $('.fp-slidesNav a').tooltip('hide');//隐藏slide的提示框
+            //↓修正menu的active项（否则fullpage.js默认将同一section下的所有slide对应的菜单都active）
+            $('#menu li[data-menuanchor="' + anchorLink + '"]').removeClass('active');
+            $('#menu a[href="#' + anchorLink + '/' + slideAnchor + '"]').closest('li').addClass('active');
+
         },
         onSlideLeave: function (anchorLink, index, slideIndex, direction, nextSlideIndex) {
+            $('#menu a[href="#' + anchorLink + '/' + slideIndex + '"]').closest('li').removeClass('active');
         }
     });
 });

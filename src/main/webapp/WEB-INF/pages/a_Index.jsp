@@ -18,9 +18,14 @@
     <meta name="keywords"
           content="fullpage, jquery, bootstrap, cyberspace,device,fingerprint,security,search engine,scan,web"/>
 
-    <link rel="stylesheet" type="text/css" href="resources/aCss/libs/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="resources/aCss/libs/jquery.fullpage.css"/>
+    <%--↓basic css--%>
+    <link rel="stylesheet" type="text/css" href="resources/aCss/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/aCss/jquery.fullpage.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/aCss/validform.css"/>
     <link rel="stylesheet" type="text/css" href="resources/aCss/base.css"/>
+
+    <%--↓user-related css--%>
+    <%--<link rel="stylesheet" type="text/css" href="resources/aCss/user-pages-style.css"/>--%>
 
     <!--[if IE]>
     <script type="text/javascript">
@@ -31,13 +36,18 @@
         };
     </script>
     <![endif]-->
-
+    <%--↓basic js--%>
     <script src="resources/aJS/libs/jquery-1.11.3.min.js"></script>
     <script src="resources/aJS/libs/bootstrap.min.js"></script>
     <script src="resources/aJS/libs/jquery.slimscroll.min.js"></script>
-    <script src="resources/aJS/libs/jquery.fullpage.js"></script>
-    <%--<script src="resources/aJS/libs/jquery.fullpage.min.js"></script>--%>
-    <script src="resources/aJS/a_main.js"></script>
+    <script src="resources/aJS/libs/jquery.fullpage.min.js"></script>
+    <script src="resources/aJS/main.js"></script>
+
+    <%--↓user-related js--%>
+    <script src="resources/aJS/libs/Validform_v5.3.2_min.js"></script>
+    <script src="resources/aJS/libs/jquery.sha1.js"></script>
+    <script src="resources/aJS/user.js"></script>
+
 </head>
 <body>
 <%@include file="a_header.jsp" %>
@@ -48,35 +58,36 @@
         </div>
     </div>
     <div class="section">
-        <div class="slide" data-anchor="list">
+        <div class="slide" data-anchor="fp_slide_list">
             <h1>搜索列表</h1>
         </div>
-        <div class="slide" data-anchor="map">
+        <div class="slide" data-anchor="fp_slide_map">
             <h1>地图</h1>
         </div>
-        <div class="slide" data-anchor="point">
+        <div class="slide" data-anchor="fp_slide_point">
             <h1>设备3D</h1>
         </div>
-        <div class="slide" data-anchor="line">
+        <div class="slide" data-anchor="fp_slide_line">
             <h1>数据流3D</h1>
         </div>
 
     </div>
     <div class="section">
-        <div class="slide" data-anchor="register">
-            <h1>注册</h1>
-        </div>
-        <div class="slide" data-anchor="agreement">
-            <h1>注册协议</h1>
-        </div>
-        <div class="slide" data-anchor="login">
+        <div class="slide" data-anchor="fp_slide_login">
             <h1>登陆</h1>
         </div>
-        <div class="slide" data-anchor="pswRetrive">
+        <div class="slide" data-anchor="fp_slide_pswRetrive">
             <h1>忘记密码</h1>
+        </div>
+        <div class="slide" data-anchor="fp_slide_register">
+            <%--<iframe src="a_register"></iframe>--%>
+            <%@include file="user/test.jsp" %>
+        </div>
+        <div class="slide" data-anchor="fp_slide_agreement">
+            <h1>注册协议</h1>
         </div>
     </div>
 </div>
-<div class="footer">Footer</div>
+<%@include file="a_footer.jsp" %>
 </body>
 </html>

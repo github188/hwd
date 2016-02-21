@@ -1,15 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<div class="header">
-    <div class="wrapper">
-        <h1 data-menuanchor="home"><a href="#home">HWD</a></h1>
-        <ul id="menu">
-            <li data-menuanchor="home" class="active"><a href="#home">首页</a></li>
-            <li data-menuanchor="search"><a href="#search">设备搜索</a></li>
-            <li data-menuanchor="globe"><a href="#globe">3D展示</a></li>
-            <li data-menuanchor="user"><a href="#user">登陆</a></li>
-        </ul>
-    </div>
-</div>--%>
 <div class="navbar navbar-default header" role="navigation">
     <div class="container-fluid">
         <div class="row-fluid">
@@ -25,14 +14,16 @@
                     <a class="navbar-brand" href="#"><img src="">HWD</a>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li data-menuanchor="home"><a href="#home">首页</a></li>
-                        <li data-menuanchor="search"><a href="#search">数据搜索</a></li>
-                        <li data-menuanchor="search"><a href="#search/map">设备定位</a></li>
-                        <li data-menuanchor="search"><a href="#search/point">全球视觉</a></li>
-                        <li data-menuanchor="search"><a href="#search/line">数据探测</a></li>
-                        <li><a href="resources/search_result_display/autoplay.html">静态数据分析</a></li>
-                        <li data-menuanchor="user"><a href="#user/login">登录</a></li>
+                    <ul class="nav navbar-nav navbar-right" id="menu">
+                        <li data-menuanchor="fp_sec_home"><a href="#fp_sec_home">首页</a></li>
+                        <li data-menuanchor="fp_sec_search"><a href="#fp_sec_search/fp_slide_list">搜索</a></li>
+                        <li data-menuanchor="fp_sec_search"><a href="#fp_sec_search/fp_slide_map">定位</a></li>
+                        <li data-menuanchor="fp_sec_search"><a href="#fp_sec_search/fp_slide_point">全球视觉</a></li>
+                        <li data-menuanchor="fp_sec_search"><a href="#fp_sec_search/fp_slide_line">数据探测</a></li>
+                        <%--<li><a href="resources/search_result_display/autoplay.html">数据分析</a></li>--%>
+                        <li data-menuanchor="user">
+                            <a href="#fp_sec_user"><i class="glyphicon glyphicon-user"></i> 登录</a>
+                        </li>
                     </ul>
                 </div>
             </div>

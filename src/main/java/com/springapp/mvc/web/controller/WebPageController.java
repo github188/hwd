@@ -113,7 +113,7 @@ public class WebPageController {
         return "index2";
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/new-index", method = RequestMethod.GET)
     public String newIndex() {
         logger.debug("newIndex() starts----------------------");
         return "new-index";
@@ -144,10 +144,38 @@ public class WebPageController {
     }
 
     // ----------------fresh new----------------
-    @RequestMapping(value = "/a_Index", method = RequestMethod.GET)
-    public String a_Index() {
-        logger.debug("a_Index() starts----------------------");
-        System.out.println("Inside a_Index()----------------");
-        return "a_Index";
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String a_index() {
+        logger.debug("Inside a_index()----------------------");
+        System.out.println("Inside a_index()----------------");
+        return "a_index";
+    }
+
+    @RequestMapping(value = "/a_register", method = RequestMethod.GET)
+    public String a_register() {
+        logger.debug("Inside a_register()----------------------");
+        System.out.println("Inside a_register()----------------");
+        return "a_register";
+    }
+
+    @RequestMapping(value = "/a_login", method = RequestMethod.GET)
+    public String a_login() {
+        logger.debug("Inside a_login()----------------------");
+        System.out.println("Inside a_login()----------------");
+        return "a_login";
+    }
+
+    @RequestMapping(value = "/a_forgetPwd", method = RequestMethod.GET)
+    public String a_forgetPwd() {
+        logger.debug("Inside a_forgetPwd()----------------------");
+        System.out.println("Inside a_forgetPwd()----------------");
+        return "a_forgetPwd";
+    }
+
+    @RequestMapping(value = "/a_agreement", method = RequestMethod.GET)
+    public String a_agreement() {
+        logger.debug("Inside a_agreement()----------------------");
+        System.out.println("Inside a_agreement()----------------");
+        return "a_agreement";
     }
 }

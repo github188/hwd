@@ -1,4 +1,10 @@
 @charset "UTF-8";
+/* Colors
+ * --------------------------------------- */
+.orange {
+    color: #f27f02;
+}
+
 /* Reset CSS
  * --------------------------------------- */
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre,
@@ -8,7 +14,13 @@ form, fieldset, input, textarea, p, blockquote, th, td {
 }
 
 a {
+    color: #f27f02;
     text-decoration: none;
+}
+
+a:hover {
+    color: #f27f02;
+    text-decoration: underline;
 }
 
 table {
@@ -67,6 +79,18 @@ body {
     color: rgba(0, 0, 0, 0.5);
 }
 
+.fl {
+    /*float left*/
+    float: left;
+    display: inline;
+}
+
+.fr {
+    /*float right*/
+    float: right;
+    display: inline;
+}
+
 /* Fixed header and footer.
 * --------------------------------------- */
 .header, .footer {
@@ -80,6 +104,7 @@ body {
     color: #f2f2f2;
     padding: .3rem 0 0 0;
     border: none;
+    box-sizing: border-box;
 }
 
 .header {
@@ -88,7 +113,6 @@ body {
 
 .footer {
     bottom: 0px;
-    height: 2.6rem;
 }
 
 /* Style for header texts
@@ -101,8 +125,30 @@ body {
     border: none;
 }
 
-.header h1 a {
-    color: #fff;
+.header .nav li a {
+    font-size: 2rem;
+    text-decoration: none;
+    text-align: center;
+    color: #ccc;
+    box-sizing: content-box;
+}
+
+.header .nav li:last-child a {
+    font-size: 1.8rem;
+}
+
+.header .nav li a.current, .header .nav li a:hover,
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+    background: transparent;
+    border-bottom: 3px solid #f27f02;
+    color: #eee;
+}
+
+.header .navbar-brand {
+    font-size: 3.6rem;
+    color: #ccc;
 }
 
 /* Style for sections
@@ -130,3 +176,9 @@ body {
 
 /* Style for footer texts
   * --------------------------------------- */
+.footer {
+    height: 2.6rem;
+    padding: .4rem 10rem 0 10rem;
+    color: #ccc;
+    /*border-top: 5px solid #eee;*/
+}

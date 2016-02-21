@@ -1,0 +1,183 @@
+@charset "UTF-8";
+form, ul, ol, dl, dd, p {
+    margin: 0;
+    padding: 0;
+}
+li {
+    list-style-type: none;
+}
+
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+button, input, select, textarea {
+    font-size: 1em;
+    margin: 0;
+    font-family: tahoma, arial, simsun, sans-serif;
+    color: #484848;
+    border-radius: 2px;
+}
+
+input[type="reset"] {
+    border: none;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    color: #fff;
+    font-size: 120%;
+    border: none;
+    background-color: #f27f02;
+    border-radius: 5px;
+}
+
+a {
+    color: #f27f02;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+sup {
+    vertical-align: text-top;
+}
+
+sub {
+    vertical-align: text-bottom;
+}
+
+del {
+    color: #686868;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ /*for font & text & tag =================================== */
+.red {
+    color: red !important;
+}
+
+.gray {
+    color: #686868 !important;
+}
+
+.hasDefaultText {
+    color: #999;
+}
+
+.orange {
+    color: #f60 !important;
+}
+
+.green {
+    color: #79a605 !important;
+}
+
+.blue {
+    color: #0057b0 !important;
+}
+
+b {
+    font-weight: normal;
+    display: inline-block;
+    margin: 0 8px;
+    color: #f27f02;
+}
+
+ /*for margin & padding | width & height =================== */
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mb18 {
+    margin-bottom: 18px;
+}
+
+.mb22 {
+    margin-bottom: 22px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.mr20 {
+    margin-right: 20px;
+}
+
+.p10 {
+    padding: 10px;
+}
+
+.tl {
+    text-align: left
+}
+
+.tr {
+    text-align: right
+}
+
+.tc {
+    text-align: center
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+
+.user-page-wrapper {
+    background-color: #fff;
+    color: #424242;
+    padding: 20px 0 30px;
+    line-height: 2rem;
+}
+
+.user-page-wrapper h3,
+.user-page-wrapper h2 {
+    color: #212222;
+    font-size: 1.5em;
+    font-weight: normal;
+    line-height: 1.2em;
+    margin-bottom: 2em;
+    font-family: "microsoft yahei", Verdana, Tahoma, Helvetica, Arial, sans-serif;
+}
+
+.user-page-wrapper h3 span,
+.user-page-wrapper h2 span {
+    color: #888;
+}
+
+
+.user-page-wrapper > div:last-child {
+    padding-left: .5rem;
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.form li {
+    padding-bottom: 20px;
+}
+
+.Validform_checktip {
+    margin-left: 10px;
+}
+
+.form .label {
+    display: inline-block;
+    width: 70px;
+}
+
+.action {
+    padding-left: 92px;
+}
