@@ -125,12 +125,19 @@ body {
     border: none;
 }
 
+.header .nav {
+    padding-bottom: 3px;
+}
+
+.header .nav li {
+    box-sizing: border-box;
+}
+
 .header .nav li a {
     font-size: 2rem;
     text-decoration: none;
     text-align: center;
     color: #ccc;
-    box-sizing: content-box;
 }
 
 .header .nav li:last-child a {
@@ -215,6 +222,10 @@ body {
     float: right;
 }
 
+.global-search-wrapper .advs-link-wrapper a{
+    font-size: 1.6rem;
+}
+
 .global-search-wrapper .advs-link-wrapper a:hover {
     color: #287bbc;
 }
@@ -258,6 +269,22 @@ body {
     margin: 0 auto;
     font-size: 1.5rem;
     color: #fff;
+}
+
+.section iframe {
+    height: 100%;
+    width: 100%;
+}
+
+#fp-nav .fp-tooltip {
+    filter: alpha(opacity=50);
+    opacity: .5;
+    max-width: 200px;
+    padding: 3px 8px;
+    color: #fff;
+    text-align: center;
+    background-color: #333;
+    border-radius: 4px;
 }
 
 /* Style for slides

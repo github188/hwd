@@ -3,8 +3,14 @@
  */
 
 $(function () {
+    //variables
+    var SEARCH_SLIDE_NAV_TOOLTIPS = ['搜索', '定位', '展示', '探测'],
+        SECTION_ANCHOR_LIST = ['fp_sec_home', 'fp_sec_search', 'fp_sec_user'],
+        SECTION_NAV_TOOLTIP_LIST = ['首页', '搜索', '用户'],
+        SECTION_BACKGROUND_LIST = ['#C63D0F', '#1BBC9B', '#7E8F7C'];
+
+    //functions
     var addTooltip4Slides = function () {
-        var SEARCH_SLIDE_NAV_TOOLTIPS = ['搜索', '定位', '展示', '探测'];
         var slideNavList = $('.fp-slidesNav a');
         $.each(SEARCH_SLIDE_NAV_TOOLTIPS, function (idx, tip) {
             $(slideNavList[idx]).attr({
@@ -14,14 +20,30 @@ $(function () {
         });
         slideNavList.tooltip();
     };
+    var correctMenu = function () {
+        console.log('Inside correctMenu() ==========');
+        var currentSection = $('.fp-section.active');
+        var currentSectionAnchor = currentSection.attr('data-anchor');
+        if (currentSection.find('div.fp-slides')) {
+            var currentSlide = currentSection.find('.fp-slide.active');
+            var currentSlideAnchor = currentSlide.attr('data-anchor');
+            var activeMenuItem = $('a[href="#' + currentSectionAnchor + '/' + currentSlideAnchor + '"]');
+            if (activeMenuItem.length == 0) {
+                activeMenuItem = $('a[href="#' + currentSectionAnchor);
+            }
+            $('#menu').find('li[data-menuanchor="' + currentSectionAnchor + '"]').removeClass('active');
+            activeMenuItem.closest('li').addClass('active');
+        }
+    };
 
+    //execute
     $('.fullpage').fullpage({
         //↓Navigation
         menu: '#menu',
-        anchors: ['fp_sec_home', 'fp_sec_search', 'fp_sec_user'],
+        anchors: SECTION_ANCHOR_LIST,
         navigation: true,
         navigationPosition: 'right',
-        navigationTooltips: ['首页', '搜索', '用户'],
+        navigationTooltips: SECTION_NAV_TOOLTIP_LIST,
         //showActiveTooltip: true,
         slidesNavigation: true,
         slidesNavPosition: 'bottom',
@@ -32,7 +54,7 @@ $(function () {
 
         //↓Design
         controlArrows: false,
-        sectionsColor: ['#C63D0F', '#1BBC9B', '#7E8F7C'],
+        sectionsColor: SECTION_BACKGROUND_LIST,
         fixedElements: '.header, .footer, .sidebar, .pivots,.global-search-wrapper',
         resize: true,
         paddingTop: '4rem',     //header height = 3.6rem
@@ -46,34 +68,42 @@ $(function () {
 
         //↓events
         afterRender: function () {  //initialize
-            addTooltip4Slides();//为设备搜索添加导航提示
-            //$('.section:last-child .fp-slidesNav').hide();//去除用户相关操作slide导航
+            //console.log('Inside afterRender() ==========');
+            //（init-1）updates the DOM structure to fit the new window
+            $.fn.fullpage.reBuild();
+            //（init-2）add slides nav tips for devices search
+            addTooltip4Slides();
+            //（init-3）hide slides nav for user operation
+            //$('.section:last-child .fp-slidesNav').hide();
         },
         afterResize: function () {
+            //console.log('Inside afterResize() ==========');
         },
         onLeave: function (index, nextIndex, direction) {
-            if (index == 1) {
-                $('#menu li[data-menuanchor="search"]').removeClass('active');
+            //console.log('Inside onLeave() ==========, index = ' + index + ', nextIndex = ' + nextIndex + ', direction = ' + direction);
+            //BE CAREFUL! 这里的index和nextIndex的值要严格和HTML的DOM中的section一一对应
+            //↓如果下一个section是用户登陆、注册等操作，则隐藏全局搜索框
+            if (nextIndex == 3 && !GlobalSearchForm.isHidden()) {
+                GlobalSearchForm.hide();
+            } else if (GlobalSearchForm.isHidden()) {
+                GlobalSearchForm.show();
             }
+            /*//↓remove the active menu item, to make it animate more smoothly
+            $('#menu').find('a[href="#' + anchorLink + '/' + slideIndex + '"]').closest('li').removeClass('active');*/
         },
         afterLoad: function (anchorLink, index) {
-            //↓修正menu的active项（否则fullpage.js默认将同一section下的所有slide对应的菜单都active）
-            $('#menu li[data-menuanchor="fp_sec_search"]').removeClass('active');
-            if (anchorLink == 'fp_sec_search') {
-                var slideAnchor = $('div.slide.active').attr('data-anchor');
-                $('#menu a[href="#fp_sec_search/' + slideAnchor + '"]').closest('li').addClass('active');
-            }
-
+            //console.log('Inside afterLoad() ==========, anchorLink = ' + anchorLink + ', index = ' + index);
+            correctMenu();
         },
         afterSlideLoad: function (anchorLink, index, slideAnchor, slideIndex) {
-            $('.fp-slidesNav a').tooltip('hide');//隐藏slide的提示框
-            //↓修正menu的active项（否则fullpage.js默认将同一section下的所有slide对应的菜单都active）
-            $('#menu li[data-menuanchor="' + anchorLink + '"]').removeClass('active');
-            $('#menu a[href="#' + anchorLink + '/' + slideAnchor + '"]').closest('li').addClass('active');
-
+            //console.log('Inside afterSlideLoad() ==========, anchorLink = ' + anchorLink + ', index = ' + index + ', slideAnchor = ' + slideAnchor + ', slideIndex' + slideAnchor);
+            $('.fp-slidesNav a').tooltip('hide');//隐藏slide的tooltip
+            correctMenu();
         },
         onSlideLeave: function (anchorLink, index, slideIndex, direction, nextSlideIndex) {
-            $('#menu a[href="#' + anchorLink + '/' + slideIndex + '"]').closest('li').removeClass('active');
+            //console.log('Inside onSlideLeave() ==========, anchorLink = ' + anchorLink + ', index = ' + index + ', slideIndex = ' + slideIndex + ', nextSlideIndex = ' + nextSlideIndex);
+          /*  //↓remove the active menu item, to make it animate more smoothly
+            $('#menu').find('a[href="#' + anchorLink + '/' + slideIndex + '"]').closest('li').removeClass('active');*/
         }
     });
 });

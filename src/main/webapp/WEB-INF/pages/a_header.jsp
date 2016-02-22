@@ -21,7 +21,7 @@
                         <li data-menuanchor="fp_sec_search"><a href="#fp_sec_search/fp_slide_point">全球视觉</a></li>
                         <li data-menuanchor="fp_sec_search"><a href="#fp_sec_search/fp_slide_line">数据探测</a></li>
                         <%--<li><a href="resources/search_result_display/autoplay.html">数据分析</a></li>--%>
-                        <li data-menuanchor="user">
+                        <li data-menuanchor="fp_sec_user">
                             <a href="#fp_sec_user"><i class="glyphicon glyphicon-user"></i> 登录</a>
                         </li>
                     </ul>

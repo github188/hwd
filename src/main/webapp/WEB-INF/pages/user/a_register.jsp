@@ -1,12 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://"
-            + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
-    pageContext.setAttribute("basePath", basePath);// 将 "项目路径basePath" 放入pageContext中，待以后用EL表达式读出。
-%>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -17,11 +10,9 @@
     <spring:url value="/resources/newCss/demo.css" var="demoCss"/>
     <link rel="stylesheet" href="${demoCss}">
     <style>
-/*
         .wraper {
             height: 100%;
         }
-*/
 
         .wraper > div:last-child {
             padding-left: .5rem;
@@ -49,6 +40,7 @@
 </head>
 
 <body>
+<%@ include file="../new-header.jsp" %>
 <div class="main">
     <div class="wraper">
         <p class="tr"><a href="javascript:history.go(-1); " class="blue ml10 fz12">返回上一页&raquo;</a></p>
@@ -116,16 +108,16 @@
         </div>
     </div>
 </div>
-<spring:url value="/resources/js/lib/jquery-1.11.3.min.js" var="jQuery"/>
-<script src="${jQuery}"></script>
-<spring:url value="/resources/js/lib/loading/jquery.showLoading.min.js" var="loading"/>
-<script src="${loading}"></script>
-<spring:url value="/resources/js/ajax.js" var="ajax"/>
-<script src="${ajax}"></script>
+
+<%@ include file="../new-footer.jsp" %>
+<%--<spring:url value="/resources/js/lib/jquery-1.11.3.min.js" var="jQuery"/>
+<script src="${jQuery}"></script>--%>
 <spring:url value="/resources/js/lib/Validform_v5.3.2_min.js" var="validform"/>
 <script src="${validform}"></script>
 <spring:url value="/resources/js/lib/jquery.sha1.js" var="sha1"/>
 <script src="${sha1}"></script>
+<%--<spring:url value="/resources/js/lib/loading/jquery.showLoading.min.js" var="loading"/>
+<script src="${loading}"></script>--%>
 <script type="text/javascript">
     $(function () {
         var pswStr = $("#psw").val(),

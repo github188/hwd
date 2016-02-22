@@ -41,13 +41,14 @@
     <script src="resources/aJS/libs/jquery-1.11.3.min.js"></script>
     <script src="resources/aJS/libs/bootstrap.min.js"></script>
     <script src="resources/aJS/libs/jquery.slimscroll.min.js"></script>
-    <script src="resources/aJS/libs/jquery.fullpage.min.js"></script>
+    <script src="resources/aJS/libs/jquery.fullpage.js"></script>
+    <script src="resources/aJS/GlobalSearchForm.js"></script>
     <script src="resources/aJS/main.js"></script>
 
     <%--↓user-related js--%>
-    <script src="resources/aJS/libs/Validform_v5.3.2_min.js"></script>
-    <script src="resources/aJS/libs/jquery.sha1.js"></script>
-    <script src="resources/aJS/user.js"></script>
+    <%--    <script src="resources/aJS/libs/Validform_v5.3.2_min.js"></script>
+        <script src="resources/aJS/libs/jquery.sha1.js"></script>
+        <script src="resources/aJS/user.js"></script>--%>
 
 </head>
 <body>
@@ -75,27 +76,16 @@
     </div>
     <div class="section">
         <div class="slide" data-anchor="fp_slide_login">
-            <h1>登陆</h1>
+            <%--<iframe src="user/a_login"></iframe>--%>
         </div>
-        <div class="slide" data-anchor="fp_slide_pswRetrive">
-            <h1>忘记密码</h1>
-
-            <form style="width: 80%">
-                <div style="display: block;">
-                    <label>xx</label>
-                    <input value="sssxss" type="text" name="name">
-                </div>
-                <div style="display:block;">
-                   a
-                </div>
-            </form>
+        <div class="slide" data-anchor="fp_slide_pswRetrieve">
+            <%--<iframe src="user/a_pwdRetrieve"></iframe>--%>
         </div>
         <div class="slide" data-anchor="fp_slide_register">
-            <%--<iframe src="a_register"></iframe>--%>
-            <%@include file="user/test.jsp" %>
+            <%@include file="user/a_agreement.jsp" %>
         </div>
         <div class="slide" data-anchor="fp_slide_agreement">
-            <h1>注册协议</h1>
+            <%@include file="user/a_agreement.jsp" %>
         </div>
     </div>
 </div>

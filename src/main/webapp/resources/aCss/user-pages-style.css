@@ -20,6 +20,7 @@ button, input, select, textarea {
     color: #484848;
     border-radius: 2px;
 }
+
 input[type="reset"] {
     border: none;
     border-radius: 5px;
@@ -136,29 +137,34 @@ b {
     margin-right: 10px;
 }
 
-.user-page-wrapper {
+.wraper {
     background-color: #fff;
     color: #424242;
-    padding: 2rem 0 3rem;
+    padding: 2rem;
     line-height: 2rem;
+    text-align: left;
 }
 
-.user-page-wrapper h3,
-.user-page-wrapper h2 {
+.wraper h3,
+.wraper h2 {
     color: #212222;
-    font-size: 1.5em;
+    font-size: 2rem;
     font-weight: normal;
-    line-height: 1.2em;
+    line-height: 1.6rem;
     margin-bottom: 2em;
     font-family: "microsoft yahei", Verdana, Tahoma, Helvetica, Arial, sans-serif;
 }
 
-.user-page-wrapper h3 span,
-.user-page-wrapper h2 span {
+.wraper h3 span,
+.wraper h2 span {
     color: #888;
 }
 
-.user-page-wrapper > div:last-child {
+.wraper pre {
+    border: none;
+}
+
+.wraper > div:last-child {
     padding-left: .5rem;
     font-size: 120%;
     font-weight: bold;

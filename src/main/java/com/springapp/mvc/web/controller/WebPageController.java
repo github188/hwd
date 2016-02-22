@@ -151,31 +151,59 @@ public class WebPageController {
         return "a_index";
     }
 
-    @RequestMapping(value = "/a_register", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/a_register", method = RequestMethod.GET)
     public String a_register() {
         logger.debug("Inside a_register()----------------------");
         System.out.println("Inside a_register()----------------");
-        return "a_register";
+        return "user/a_register";
     }
 
-    @RequestMapping(value = "/a_login", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/a_login", method = RequestMethod.GET)
     public String a_login() {
         logger.debug("Inside a_login()----------------------");
         System.out.println("Inside a_login()----------------");
-        return "a_login";
+        return "user/a_login";
     }
 
-    @RequestMapping(value = "/a_forgetPwd", method = RequestMethod.GET)
-    public String a_forgetPwd() {
-        logger.debug("Inside a_forgetPwd()----------------------");
-        System.out.println("Inside a_forgetPwd()----------------");
-        return "a_forgetPwd";
+    @RequestMapping(value = "/user/a_pwdRetrieve", method = RequestMethod.GET)
+    public String a_pwdRetrieve() {
+        logger.debug("Inside a_pwdRetrieve()----------------------");
+        System.out.println("Inside a_pwdRetrieve()----------------");
+        return "user/a_pwdRetrieve";
     }
 
-    @RequestMapping(value = "/a_agreement", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/a_agreement", method = RequestMethod.GET)
     public String a_agreement() {
         logger.debug("Inside a_agreement()----------------------");
-        System.out.println("Inside a_agreement()----------------");
-        return "a_agreement";
+        System.out.println("Inside a_agreement()--------X--------");
+        return "user/a_agreement";
+    }
+
+    @RequestMapping(value = "/a_map", method = RequestMethod.GET)
+    public String a_map() {
+        logger.debug("Inside a_map()----------------------");
+        System.out.println("Inside a_map()----------------");
+        return "a_map";
+    }
+
+    @RequestMapping(value = "/a_list", method = RequestMethod.GET)
+    public String a_listt() {
+        logger.debug("Inside a_list()----------------------");
+        System.out.println("Inside a_list()----------------");
+        return "a_list";
+    }
+
+    @RequestMapping(value = "/a_markpoint", method = RequestMethod.GET)
+    public String a_markpoint() {
+        logger.debug("Inside a_markpoint()----------------------");
+        System.out.println("Inside a_markpoint()----------------");
+        return "a_markpoint";
+    }
+
+    @RequestMapping(value = "/a_markline", method = RequestMethod.GET)
+    public String a_markline() {
+        logger.debug("Inside a_markline()----------------------");
+        System.out.println("Inside a_markline()----------------");
+        return "a_agreea_marklinement";
     }
 }
