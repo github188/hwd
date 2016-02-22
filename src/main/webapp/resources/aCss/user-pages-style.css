@@ -4,15 +4,6 @@ form, ul, ol, dl, dd, p {
     padding: 0;
 }
 
-li {
-    list-style-type: none;
-}
-
-img {
-    border: none;
-    vertical-align: middle;
-}
-
 button, input, select, textarea {
     font-size: 1em;
     margin: 0;
@@ -27,20 +18,11 @@ input[type="reset"] {
 }
 
 input[type="submit"] {
+    padding: 3px 8px;
     color: #fff;
-    font-size: 120%;
     border: none;
     background-color: #f27f02;
-    border-radius: 5px;
-}
-
-a {
-    color: #f27f02;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
+    border-radius: 4px;
 }
 
 sup {
@@ -53,11 +35,6 @@ sub {
 
 del {
     color: #686868;
-}
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
 }
 
 /*for font & text & tag =================================== */
@@ -137,17 +114,53 @@ b {
     margin-right: 10px;
 }
 
+.fl {
+    float: left;
+    display: inline;
+}
+
+.fr {
+    float: right;
+    display: inline;
+}
+
+.clear {
+    clear: both;
+    height: 0;
+    overflow: hidden;
+}
+
+.tipmsg {
+    font-size: 100%;
+    padding: 0 10px;
+    margin-bottom: 2rem;
+}
+
 .wraper {
-    background-color: #fff;
+    display: inline-block;
+    min-width: 50%;
+    margin: 0 auto;
+    padding: 3rem;
+    background-color: rgba(255, 255, 255, .8);
     color: #424242;
-    padding: 2rem;
     line-height: 2rem;
     text-align: left;
+    border-radius: 4px;
+}
+
+.wraper a {
+    color: #f27f02;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.wraper a:hover {
+    text-decoration: underline;
 }
 
 .wraper h3,
 .wraper h2 {
-    color: #212222;
+    color: #888;
     font-size: 2rem;
     font-weight: normal;
     line-height: 1.6rem;
@@ -155,19 +168,9 @@ b {
     font-family: "microsoft yahei", Verdana, Tahoma, Helvetica, Arial, sans-serif;
 }
 
-.wraper h3 span,
-.wraper h2 span {
-    color: #888;
-}
-
 .wraper pre {
     border: none;
-}
-
-.wraper > div:last-child {
-    padding-left: .5rem;
-    font-size: 120%;
-    font-weight: bold;
+    background: transparent;
 }
 
 .lireset2 {
@@ -175,7 +178,8 @@ b {
 }
 
 .form {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
+    margin-bottom: 3rem;
 }
 
 .form .need {
@@ -200,7 +204,7 @@ b {
 }
 
 .form label {
-    margin: 0 15px 0 4px;
+    margin: 0 1rem 0 .4rem;
     font-size: 100%;
 }
 
@@ -254,7 +258,7 @@ b {
 }
 
 .form li {
-    /*padding-bottom: 20px;*/
+    padding-bottom: 1rem;
 }
 
 .Validform_checktip {
@@ -263,29 +267,35 @@ b {
 
 .form .label {
     display: inline-block;
-    width: 70px;
+    width: 7rem;
     color: #424242;
 }
 
 .form .action {
-    padding-left: 20rem;
+    padding-left: 8.5rem;
 }
 
-.form .need {
-    width: 10px;
-    color: #b20202;
+.wraper > div:last-child {
+    padding-left: .5rem;
+    /*font-size: 120%;*/
+    font-weight: bold;
 }
 
-/*fullpage.js 目前只支持input的type为text类型，这里做一下特殊处理，天大的bug呀*/
-.form-reset {
-    border: none;
-    border-radius: 5px;
+.toTop {
+    /*display: block;*/
+    width: 48px;
+    height: 49px;
+    overflow: hidden;
+    text-indent: -20000px;
+    position: fixed;
+    right: 15px;
+    bottom: 20px;
+    display: none;
+    background: url(../img/totop.png) no-repeat;
+    _position: absolute;
+    _top: expression(documentElement.scrollTop+documentElement.clientHeight-this.offsetHeight-20);
 }
 
-.form-submit {
-    color: #fff;
-    font-size: 120%;
-    border: none;
-    background-color: #f27f02;
-    border-radius: 5px;
+.forward-link {
+    margin-left: 1rem;
 }

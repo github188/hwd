@@ -1,65 +1,37 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<div class="user-page-wrapper">
-    <h2 class="green">新用户注册</h2>
+<div class="wraper">
+    <p class="tr"><a href="#se_user/sl_user_login" class="blue ml10 fz12 to-login">返回注册页&raquo;</a></p>
 
-    <form class="form" action="<%=basePath%>user/api/register" onsubmit="return false;">
-        <ul>
-            <li>
-                <label class="label"><span class="need">*</span> 用户名：</label>
-                <input type="text" value="" name="username" class="inputxt" autofocus="autofocus"
-                       ajaxurl="<%=basePath%>user/api/uniqueUserNameCheck"
-                       datatype="s6-16"
-                       nullmsg="请设置用户名！"
-                       errormsg="用户名长度在6~16位之间！"/>
-                <span class="Validform_checktip">用户名长度在6~16位之间</span>
-            </li>
-            <li>
-                <label class="label"><span class="need">*</span> 密码：</label>
-                <input type="password" value="" name="password" class="inputxt" id="psw"
-                       datatype="*6-16"
-                       nullmsg="请设置密码！"
-                       errormsg="密码长度在6~20位之间！"/>
-                <span class="Validform_checktip">密码长度在6~20位之间</span>
-            </li>
-            <li>
-                <label class="label"><span class="need">*</span> 确认密码：</label>
-                <input type="password" value="" name="password2" class="inputxt"
-                       datatype="*"
-                       recheck="password"
-                       nullmsg="请再输入一次密码！"
-                       errormsg="您两次输入的账号密码不一致！"/>
-                <span class="Validform_checktip">两次输入密码需一致</span>
-            </li>
-            <li>
-                <label class="label"><span class="need">*</span> 邮箱：</label>
-                <input type="text" value="" name="email" class="inputxt"
-                       datatype="e"
-                       nullmsg="请填写邮箱！"
-                       ajaxurl="<%=basePath%>user/api/uniqueEmailCheck"/>
-                <span class="Validform_checktip">用于接收系统邮件和修改密码</span>
-            </li>
-            <li>
-                <label class="label"> 姓名：</label>
-                <input class="inputxt" type="text" name="name" datatype="s2-5" ignore="ignore">
-                <span class="Validform_checktip"></span>
-            </li>
-            <%--<li>
-                <label class="label"> 生日：</label>
-                <input class="inputxt" type="date" name="birthday" ignore="ignore"/>
-            </li>--%>
-            <li>
-                <label class="label"> 地区：</label>
-                <input class="inputxt" type="text" name="region" datatype="s2-30" ignore="ignore"/>
-            </li>
-        </ul>
-        <div class="action">
-            <input type="submit" value="同意协议并注册"/>
-            <input type="reset" value="重 置"/>
-            <a href="agreement" class="forward-link" target="_blank">注册协议</a>
-        </div>
-    </form>
-    <div>
-        已有账号?<a href="#fp_sec_user/fp_slide_login" class="forward-link">登录</a>
-    </div>
+    <h2 class="green">网易通行证服务条款</h2>
+    <pre>
+【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
+        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
+        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
+        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
+        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
+
+【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
+        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
+        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
+        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
+        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
+
+【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
+        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
+        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
+        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
+        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
+
+【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
+        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
+        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
+        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
+        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
+
+【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
+        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
+        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
+        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
+        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
+    </pre >
 </div>

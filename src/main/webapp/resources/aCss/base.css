@@ -140,9 +140,9 @@ body {
     color: #ccc;
 }
 
-.header .nav li:last-child a {
+/*.header .nav li:last-child a {
     font-size: 1.8rem;
-}
+}*/
 
 .header .nav li a.current, .header .nav li a:hover,
 .navbar-default .navbar-nav > .active > a,
@@ -222,7 +222,7 @@ body {
     float: right;
 }
 
-.global-search-wrapper .advs-link-wrapper a{
+.global-search-wrapper .advs-link-wrapper a {
     font-size: 1.6rem;
 }
 
@@ -274,6 +274,10 @@ body {
 .section iframe {
     height: 100%;
     width: 100%;
+}
+
+.section[data-anchor="se_user"] {
+    background: url("../img/login_bg.jpg") no-repeat center;
 }
 
 #fp-nav .fp-tooltip {

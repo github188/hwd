@@ -44,30 +44,29 @@
 </head>
 
 <body>--%>
-<div class="main">
-    <div class="wraper">
-        <p class="tr"><a href="login " class="blue ml10 fz12">返回登录页&raquo;</a></p>
+<div class="wraper">
+    <p class="tr"><a href="#se_user/sl_user_login" class="blue ml10 fz12 to-login">返回登录页&raquo;</a></p>
 
-        <h2>忘记密码了？别着急，我们帮您找回 ......</h2>
+    <h2 class="green">忘记密码了？别着急，我们帮您找回 ......</h2>
 
-        <div class="tipmsg">
-            <p>请输入您注册时使用的E-mail地址，我们将给您发送密码重置邮件。</p>
-        </div>
-        <form class="form" action="<%=requestURL%>">
-            <ul>
-                <li>
-                    <label class="label" for="email"><span class="need">*</span> E-mail：</label>
-                    <input type="text" value="" name="email" class="inputxt" autofocus="autofocus" id="email"
-                           datatype="e"
-                           nullmsg="请输入您注册的邮箱"/>
-                </li>
-            </ul>
-            <div class="action">
-                <input type="submit" value="发送密码重置邮件"/>
-                <a href="login" class="forward-link">返回登录页</a>
-            </div>
-        </form>
+    <div class="tipmsg">
+        <p>请输入您注册时使用的E-mail地址，我们将给您发送密码重置邮件。</p>
     </div>
+    <form class="form" action="<%=requestURL%>" id="user_pwd_retrieve">
+        <ul>
+            <li>
+                <label class="label" for="email"><span class="need">*</span> E-mail：</label>
+                <input type="text" id="email" value="" name="email" class="inputxt"
+                <%--autofocus="autofocus"--%>
+                       datatype="e"
+                       nullmsg="请输入您注册的邮箱"/>
+            </li>
+        </ul>
+        <div class="action">
+            <input type="submit" value="发送密码重置邮件"/>
+            <a href="#se_user/sl_user_login" class="forward-link to-login">返回登录页</a>
+        </div>
+    </form>
 </div>
 <%--<spring:url value="/resources/js/lib/jquery-1.11.3.min.js" var="jQuery"/>
 <script src="${jQuery}"></script>
@@ -77,52 +76,7 @@
 <script src="${ajax}"></script>
 <spring:url value="/resources/js/lib/Validform_v5.3.2_min.js" var="validform"/>
 <script src="${validform}"></script>--%>
-<script type="text/javascript">
-    $(function () {
-        var requestObj = {};
-        var successCallback = function (data) {
-            console.log(data);
-            if (data.code == 1) {
-                $.Showmsg("邮件发送成功，即将转到登录页面！");
-                setTimeout(function () {
-                    $.Hidemsg();
-                    window.location.href = 'login';
-                }, 3000);
-            } else {
-                console.log("code != 1");
-                errorCallback();
-            }
-        };
-        var errorCallback = function () {
-            $.Showmsg("操作失败，请稍后再试！");
-            setTimeout(function () {
-                $.Hidemsg();
-            }, 3000);
-        };
 
-        //导航处理
-        $('.nav').find('a').removeClass('current');
-        $('.user-nav').find('a').addClass('current');
-
-        //表单验证提交
-        $(".form").Validform({
-            tiptype: 3,
-            label: '.label',
-            showAllError: true,
-            postonce: true,//表单提交成功后不能二次提交
-            beforeSubmit: function (curform) {
-                //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。
-                requestObj = {
-                    url: '${requestURL}?email=' + $('#email').val(),
-                    success: successCallback,
-                    error: errorCallback
-                };
-                LoadData.get(requestObj);
-                return false;//return false的话，表单不再提交
-            }
-        });
-    })
-</script>
 <%--</body>
 </html>--%>
 

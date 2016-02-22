@@ -17,9 +17,10 @@
 <div class="main">
 --%>
 <div class="wraper">
-    <p class="tr"><a href="#fp_sec_user/0" class="blue ml10 fz12 to-login">返回注册页&raquo;</a></p>
+    <p class="tr"><a href="#se_user/sl_user_login" class="blue ml10 fz12 to-login">返回注册页&raquo;</a></p>
 
     <h2 class="green">网易通行证服务条款</h2>
+
 <pre>
 【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。如用户不同意本服务条款任意内容，请勿注册或使用网易服务。如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
 1.服务条款的确认和接纳
@@ -122,15 +123,15 @@
 （2）如本条款中的任何条款无论因何种原因完全或部分无效或不具有执行力，本服务条款的其余条款仍应有效且具有约束力，网易公司及用户均应尽力使该条款设定的本意得到实现。
 （3）本条款中的标题仅为方便而设，不作为解释本条款的依据。
 如用户对本条款内容有任何疑问，可拨打客服电话（020-83568094）或登录帮助中心（http://reg.163.com/help/help.shtml）进行查询。
-</pre>
-    <p class="tr"><a href="#fp_sec_user/0" class="blue ml10 fz12 to-login">返回注册页&raquo;</a></p>
+</pre >
+    <p class="tr"><a href="#se_user/sl_user_login" class="blue ml10 fz12 to-login">返回注册页&raquo;</a></p>
 </div>
-<script type="text/javascript">
+<%--<script type="text/javascript">
     $('a.to-login').on('click', function (e) {
         e.preventDefault();
-        $.fn.fullpage.silentMoveTo('fp_sec_user', 0);
+        $.fn.fullpage.silentMoveTo('sl_user_login', 0);
     });
-</script>
+</script>--%>
 <%--
 </div>
 <%@ include file="../new-footer.jsp" %>

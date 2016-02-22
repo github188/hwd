@@ -62,6 +62,47 @@ var User = {
     },
     login: function () {
     },
-    forgetPwd: function () {
+    pwdRetrieve: function () {
+        console.log('Inside User.pwdRetrieve() ======');
+        var requestObj = {};
+        var successCallback = function (data) {
+            console.log(data);
+            if (data.code == 1) {
+                $.Showmsg("邮件发送成功，即将转到登录页面！");
+                setTimeout(function () {
+                    $.Hidemsg();
+                    window.location.href = 'login';
+                }, 3000);
+            } else {
+                console.log("code != 1");
+                errorCallback();
+            }
+        };
+        var errorCallback = function () {
+            $.Showmsg("操作失败，请稍后再试！");
+            setTimeout(function () {
+                $.Hidemsg();
+            }, 3000);
+        };
+        //表单验证提交
+        $("#user_pwd_retrieve").Validform({
+            tiptype: 3,
+            label: '.label',
+            showAllError: true,
+            postonce: true,//表单提交成功后不能二次提交
+            beforeSubmit: function (curform) {
+                //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。
+                requestObj = {
+                    url: '${requestURL}?email=' + $('#email').val(),
+                    success: successCallback,
+                    error: errorCallback
+                };
+                LoadData.get(requestObj);
+                return false;//return false的话，表单不再提交
+            }
+        });
+    },
+    init: function () {
+        this.pwdRetrieve();
     }
 };
