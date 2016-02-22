@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>--%>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -25,7 +26,7 @@
     <link rel="stylesheet" type="text/css" href="resources/aCss/base.css"/>
 
     <%--↓user-related css--%>
-    <%--<link rel="stylesheet" type="text/css" href="resources/aCss/user-pages-style.css"/>--%>
+    <link rel="stylesheet" type="text/css" href="resources/aCss/user-pages-style.css"/>
 
     <!--[if IE]>
     <script type="text/javascript">
@@ -78,6 +79,16 @@
         </div>
         <div class="slide" data-anchor="fp_slide_pswRetrive">
             <h1>忘记密码</h1>
+
+            <form style="width: 80%">
+                <div style="display: block;">
+                    <label>xx</label>
+                    <input value="sssxss" type="text" name="name">
+                </div>
+                <div style="display:block;">
+                   a
+                </div>
+            </form>
         </div>
         <div class="slide" data-anchor="fp_slide_register">
             <%--<iframe src="a_register"></iframe>--%>

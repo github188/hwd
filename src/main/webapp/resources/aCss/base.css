@@ -140,15 +140,111 @@ body {
 .header .nav li a.current, .header .nav li a:hover,
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > .active > a:hover {
     background: transparent;
     border-bottom: 3px solid #f27f02;
-    color: #eee;
+    color: #fff;
 }
 
 .header .navbar-brand {
     font-size: 3.6rem;
     color: #ccc;
+}
+
+/* Style for global form
+* --------------------------------------- */
+
+.global-search-wrapper {
+    position: absolute;
+    top: 4.6rem;
+    left: 0;
+    /*background-color: #444;*/
+    width: 100%;
+    height: 3.2rem;
+    padding-left: .5rem;
+    text-align: left;
+}
+
+.global-search-form {
+    display: inline-block;
+    padding: .2rem;
+    width: 66%;
+    color: hsla(236, 10%, 27%, 1);
+    box-sizing: content-box;
+    /*border: 1px solid green;*/
+}
+
+.global-search-wrapper .global-search-form fieldset {
+    display: inline-block;
+    width: 80%;
+    width: calc(100% - 10rem);
+}
+
+.global-search-wrapper .global-search-form .search-scope {
+    /*备用，用于用户选择搜索范围，目前暂未使用（参考LinkedIn）*/
+    display: none;
+    float: left;
+    /*z-index: 10005;*/
+}
+
+.global-search-wrapper .global-search-form .search-box-container {
+    border-radius: 0 2px 2px 0;
+    float: left;
+    width: 40rem; /* fallback for browsers without support for calc() */
+    width: calc(100% - 6rem);
+}
+
+.global-search-wrapper .global-search-form .global-search-input {
+    width: 100%;
+    border-radius: 4px;
+    padding-left: .5rem;
+    line-height: 2.5rem;
+    border: 1px solid green;
+}
+
+/*advanced search link*/
+.global-search-wrapper .advs-link-wrapper {
+    display: inline-block;
+    height: 2.7rem;
+    width: 8rem;
+    line-height: 2.5rem;
+    margin: 0 5px;
+    word-break: break-all;
+    float: right;
+}
+
+.global-search-wrapper .advs-link-wrapper a:hover {
+    color: #287bbc;
+}
+
+.global-search-wrapper .global-search-form .global-search-button {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 0 3px;
+    height: 2.6rem;
+    line-height: 2.5rem;
+    width: 5rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #287bbc;
+    border: 1px solid #1b5480;
+    border-radius: 5px;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF287BBC', endColorstr='#FF23639A');
+    background-image: -webkit-linear-gradient(top, #287bbc 0%, #23639a 100%);
+    background-image: -moz-linear-gradient(top, #287bbc 0%, #23639a 100%);
+    background-image: -o-linear-gradient(top, #287bbc 0%, #23639a 100%);
+    background-image: linear-gradient(top, #287bbc 0%, #23639a 100%);
+    white-space: nowrap;
+    box-sizing: border-box;
+    float: left;
 }
 
 /* Style for sections

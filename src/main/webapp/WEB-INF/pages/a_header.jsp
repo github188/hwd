@@ -31,7 +31,6 @@
     </div>
 </div>
 <%--占一行的一个大的搜索框--%>
-<%--
 <div class="global-search-wrapper">
     <form class="global-search-form" method="get" action="api/search">
         <fieldset>
@@ -45,4 +44,4 @@
         </fieldset>
         <div class="advs-link-wrapper"><a href="#" class="advs-link">精确搜索</a></div>
     </form>
-</div>--%>
+</div>

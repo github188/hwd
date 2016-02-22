@@ -3,6 +3,7 @@ form, ul, ol, dl, dd, p {
     margin: 0;
     padding: 0;
 }
+
 li {
     list-style-type: none;
 }
@@ -19,7 +20,6 @@ button, input, select, textarea {
     color: #484848;
     border-radius: 2px;
 }
-
 input[type="reset"] {
     border: none;
     border-radius: 5px;
@@ -59,7 +59,7 @@ table {
     border-spacing: 0;
 }
 
- /*for font & text & tag =================================== */
+/*for font & text & tag =================================== */
 .red {
     color: red !important;
 }
@@ -91,7 +91,7 @@ b {
     color: #f27f02;
 }
 
- /*for margin & padding | width & height =================== */
+/*for margin & padding | width & height =================== */
 .mb10 {
     margin-bottom: 10px;
 }
@@ -139,7 +139,7 @@ b {
 .user-page-wrapper {
     background-color: #fff;
     color: #424242;
-    padding: 20px 0 30px;
+    padding: 2rem 0 3rem;
     line-height: 2rem;
 }
 
@@ -158,15 +158,97 @@ b {
     color: #888;
 }
 
-
 .user-page-wrapper > div:last-child {
     padding-left: .5rem;
     font-size: 120%;
     font-weight: bold;
 }
 
+.lireset2 {
+    padding-left: 10px;
+}
+
+.form {
+    font-size: 1.2rem;
+}
+
+.form .need {
+    width: 10px;
+    color: #b20202;
+}
+
+.form td {
+    padding: 5px 0;
+    vertical-align: top;
+    text-align: left;
+}
+
+.form .inputxt, .form textarea {
+    border: 1px solid #a5aeb6;
+    width: 20rem;
+    padding: 4px 2px;
+}
+
+.form textarea {
+    height: 75px;
+}
+
+.form label {
+    margin: 0 15px 0 4px;
+    font-size: 100%;
+}
+
+.form .tip {
+    line-height: 20px;
+    color: #5f6a72;
+}
+
+.form select {
+    width: 202px;
+}
+
+.formalter select {
+    width: 124px;
+}
+
+.swfupload {
+    vertical-align: top;
+}
+
+.passwordStrength {
+
+}
+
+.passwordStrength b {
+    font-weight: normal;
+}
+
+.passwordStrength b, .passwordStrength span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 16px;
+    line-height: 18px \9;
+    height: 16px;
+}
+
+.passwordStrength span {
+    width: 45px;
+    text-align: center;
+    background-color: #d0d0d0;
+    border-right: 1px solid #fff;
+}
+
+.passwordStrength .last {
+    border-right: none;
+}
+
+.passwordStrength .bgStrength {
+    color: #fff;
+    background-color: #71b83d;
+}
+
 .form li {
-    padding-bottom: 20px;
+    /*padding-bottom: 20px;*/
 }
 
 .Validform_checktip {
@@ -176,8 +258,28 @@ b {
 .form .label {
     display: inline-block;
     width: 70px;
+    color: #424242;
 }
 
-.action {
-    padding-left: 92px;
+.form .action {
+    padding-left: 20rem;
+}
+
+.form .need {
+    width: 10px;
+    color: #b20202;
+}
+
+/*fullpage.js 目前只支持input的type为text类型，这里做一下特殊处理，天大的bug呀*/
+.form-reset {
+    border: none;
+    border-radius: 5px;
+}
+
+.form-submit {
+    color: #fff;
+    font-size: 120%;
+    border: none;
+    background-color: #f27f02;
+    border-radius: 5px;
 }

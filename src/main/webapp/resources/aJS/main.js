@@ -33,10 +33,11 @@ $(function () {
         //↓Design
         controlArrows: false,
         sectionsColor: ['#C63D0F', '#1BBC9B', '#7E8F7C'],
-        fixedElements: '.header, .footer, .sidebar, .pivots',
+        fixedElements: '.header, .footer, .sidebar, .pivots,.global-search-wrapper',
         resize: true,
         paddingTop: '4rem',     //header height = 3.6rem
         paddingBottom: '2rem',  //footer height = 1.6rem
+        //responsiveHeight:900,
 
         //↓Scrolling
         normalScrollElements: '#mapHolder', //avoid the auto scroll when scrolling over map
