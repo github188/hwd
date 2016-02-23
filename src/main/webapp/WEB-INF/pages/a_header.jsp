@@ -38,10 +38,11 @@
         <fieldset>
             <div class="search-scope"></div>
             <div class="search-box-container">
-                <input class="global-search-input typeahead" type="text" placeholder="Search Here">
+                <input class="global-search-input typeahead" type="text" placeholder="Search Here"
+                       id="global-search-input">
             </div>
             <button type="submit" class="global-search-button btn btn-primary" role="button">
-                搜 索
+                <span class="glyphicon glyphicon-search"></span>
             </button>
         </fieldset>
         <div class="advs-link-wrapper"><a href="#" class="advs-link">精确搜索</a></div>

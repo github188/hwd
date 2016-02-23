@@ -200,7 +200,7 @@ body {
     border-radius: 0 2px 2px 0;
     float: left;
     width: 40rem; /* fallback for browsers without support for calc() */
-    width: calc(100% - 6rem);
+    width: calc(100% - 5rem);
 }
 
 .global-search-wrapper .global-search-form .global-search-input {
@@ -232,11 +232,11 @@ body {
 
 .global-search-wrapper .global-search-form .global-search-button {
     display: inline-block;
-    margin: 0 5px;
+    margin: 0 2px;
     padding: 0 3px;
     height: 2.6rem;
     line-height: 2.5rem;
-    width: 5rem;
+    width: 4rem;
     font-weight: bold;
     color: #fff;
     /*background-color: #287bbc;

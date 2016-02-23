@@ -23,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href="resources/aCss/jquery.fullpage.css"/>
     <link rel="stylesheet" type="text/css" href="resources/aCss/validform.css"/>
     <link rel="stylesheet" type="text/css" href="resources/aCss/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/aCss/typeaheadjs.css"/>
     <link rel="stylesheet" type="text/css" href="resources/aCss/base.css"/>
 
     <%--↓user-related css--%>
@@ -40,11 +41,16 @@
         };
     </script>
     <![endif]-->
-    <%--↓basic js--%>
+    <%--↓libs--%>
     <script src="resources/aJS/libs/jquery-1.11.3.min.js"></script>
     <script src="resources/aJS/libs/jquery.slimscroll.min.js"></script>
     <script src="resources/aJS/libs/jquery.fullpage.js"></script>
     <script src="resources/aJS/libs/bootstrap.min.js"></script>
+    <script src="resources/aJS/libs/typeahead.bundle.min.js"></script>
+
+    <%--↓basic js--%>
+    <script src="resources/aJS/InputSuggest.js"></script>
+    <script src="resources/aJS/HomeSearch.js"></script>
     <script src="resources/aJS/GlobalSearchForm.js"></script>
     <script src="resources/aJS/main.js"></script>
 
