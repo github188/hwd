@@ -33,14 +33,14 @@
     </div>
 </div>
 <%--占一行的一个大的搜索框--%>
-<div class="global-search-wrapper" id="global-search">
+<div class="global-search-wrapper" id="global-search" style="display: none;">
     <form class="global-search-form" method="get" action="api/search">
         <fieldset>
             <div class="search-scope"></div>
             <div class="search-box-container">
                 <input class="global-search-input typeahead" type="text" placeholder="Search Here">
             </div>
-            <button type="submit" class="global-search-button" role="button">
+            <button type="submit" class="global-search-button btn btn-primary" role="button">
                 搜 索
             </button>
         </fieldset>

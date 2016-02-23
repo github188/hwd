@@ -55,8 +55,8 @@
     <form class="form" action="<%=requestURL%>" id="user_pwd_retrieve">
         <ul>
             <li>
-                <label class="label" for="email"><span class="need">*</span> E-mail：</label>
-                <input type="text" id="email" value="" name="email" class="inputxt"
+                <label class="label" for="pwdRe_email"><span class="need">*</span> E-mail：</label>
+                <input type="text" id="pwdRe_email" value="" name="pwdRe_email" class="inputxt"
                 <%--autofocus="autofocus"--%>
                        datatype="e"
                        nullmsg="请输入您注册的邮箱"/>

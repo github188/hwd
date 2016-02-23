@@ -1,0 +1,33 @@
+@charset "UTF-8";
+.section[data-anchor="se_home"] {
+    background: no-repeat top center fixed linear-gradient(#3f4657, #452525)
+}
+
+.section .home-search {
+}
+
+.section .home-search .home-search-form {
+    padding-bottom: 4rem;
+}
+
+.section .home-search .form-group {
+    display: inline-block;
+    margin: 0 auto;
+    width: 50%;
+}
+
+.section .home-search input {
+    display: inline-block;
+    width: 80%;
+    width: calc(100% - 16rem); /*advs-link-wrapper:8rem + button:7rem + 1rem*/
+}
+
+.section .home-search .form-group div {
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+.section .home-search button {
+    display: inline-block;
+    width: 7rem;
+}

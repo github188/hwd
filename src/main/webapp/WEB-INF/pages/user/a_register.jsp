@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%--<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -41,17 +41,17 @@
 
 <body>
 <%@ include file="../new-header.jsp" %>
-<div class="main">
+<div class="main">--%>
     <div class="wraper">
-        <p class="tr"><a href="javascript:history.go(-1); " class="blue ml10 fz12">返回上一页&raquo;</a></p>
+        <%--<p class="tr"><a href="javascript:history.go(-1); " class="blue ml10 fz12">返回上一页&raquo;</a></p>--%>
 
         <h2 class="green">新用户注册</h2>
 
-        <form class="form" action="<%=basePath%>user/api/register" onsubmit="return false;">
+        <form class="form" action="<%=basePath%>user/api/register" onsubmit="return false;" id="register_form">
             <ul>
                 <li>
                     <label class="label"><span class="need">*</span> 用户名：</label>
-                    <input type="text" value="" name="username" class="inputxt" autofocus="autofocus"
+                    <input type="text" value="" name="username" class="inputxt"
                            ajaxurl="<%=basePath%>user/api/uniqueUserNameCheck"
                            datatype="s6-16"
                            nullmsg="请设置用户名！"
@@ -100,24 +100,25 @@
             <div class="action">
                 <input type="submit" value="同意协议并注册"/>
                 <input type="reset" value="重 置"/>
-                <a href="agreement" class="forward-link" target="_blank">注册协议</a>
+                <a href="#se_user/sl_user_agreement" class="forward-link">注册协议</a>
             </div>
         </form>
         <div>
-            已有账号?<a href="login" class="forward-link">登录</a>
+            已有账号?<a href="#se_user/sl_user_login" class="forward-link">登录</a>
         </div>
     </div>
-</div>
+<%--</div>--%>
 
-<%@ include file="../new-footer.jsp" %>
+<%--<%@ include file="../new-footer.jsp" %>--%>
 <%--<spring:url value="/resources/js/lib/jquery-1.11.3.min.js" var="jQuery"/>
 <script src="${jQuery}"></script>--%>
-<spring:url value="/resources/js/lib/Validform_v5.3.2_min.js" var="validform"/>
+<%--<spring:url value="/resources/js/lib/Validform_v5.3.2_min.js" var="validform"/>
 <script src="${validform}"></script>
 <spring:url value="/resources/js/lib/jquery.sha1.js" var="sha1"/>
-<script src="${sha1}"></script>
+<script src="${sha1}"></script>--%>
 <%--<spring:url value="/resources/js/lib/loading/jquery.showLoading.min.js" var="loading"/>
 <script src="${loading}"></script>--%>
+<%--
 <script type="text/javascript">
     $(function () {
         var pswStr = $("#psw").val(),
@@ -179,4 +180,4 @@
     })
 </script>
 </body>
-</html>
+</html>--%>

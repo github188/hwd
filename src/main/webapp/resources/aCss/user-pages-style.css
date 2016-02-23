@@ -4,7 +4,7 @@ form, ul, ol, dl, dd, p {
     padding: 0;
 }
 
-button, input, select, textarea {
+.wraper button, input, select, textarea {
     font-size: 1em;
     margin: 0;
     font-family: tahoma, arial, simsun, sans-serif;
@@ -12,17 +12,22 @@ button, input, select, textarea {
     border-radius: 2px;
 }
 
-input[type="reset"] {
-    border: none;
-    border-radius: 5px;
+input {
+    vertical-align: middle;
+    border-radius: 4px;
 }
 
+input[type="reset"],
 input[type="submit"] {
     padding: 3px 8px;
     color: #fff;
     border: none;
     background-color: #f27f02;
     border-radius: 4px;
+}
+
+input[type="reset"] {
+    background-color: #0057b0;
 }
 
 sup {
@@ -141,7 +146,7 @@ b {
     min-width: 50%;
     margin: 0 auto;
     padding: 3rem;
-    background-color: rgba(255, 255, 255, .8);
+    background-color: rgba(255, 255, 255, .7);
     color: #424242;
     line-height: 2rem;
     text-align: left;
@@ -196,7 +201,7 @@ b {
 .form .inputxt, .form textarea {
     border: 1px solid #a5aeb6;
     width: 20rem;
-    padding: 4px 2px;
+    padding: 2px;
 }
 
 .form textarea {
@@ -258,7 +263,7 @@ b {
 }
 
 .form li {
-    padding-bottom: 1rem;
+    padding-bottom: .5rem;
 }
 
 .Validform_checktip {

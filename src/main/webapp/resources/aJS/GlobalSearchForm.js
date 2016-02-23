@@ -9,11 +9,11 @@ var GlobalSearchForm = {
         return '.global-search-wrapper'
     }()),
     show: function () {
-        console.log('Inside GlobalSearchForm.show()========');
+        //console.log('Inside GlobalSearchForm.show()========');
         $(this._WRAPPER_SEL).show(this._HIDE_SHOW_SPEED);
     },
     hide: function () {
-        console.log('Inside GlobalSearchForm.hide()========');
+        //console.log('Inside GlobalSearchForm.hide()========');
         $(this._WRAPPER_SEL).hide(this._HIDE_SHOW_SPEED);
     },
     isHidden: function () {

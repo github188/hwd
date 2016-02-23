@@ -28,6 +28,9 @@
     <%--↓user-related css--%>
     <link rel="stylesheet" type="text/css" href="resources/aCss/user-pages-style.css"/>
 
+    <%--↓search-related css--%>
+    <link rel="stylesheet" type="text/css" href="resources/aCss/home-sec.css"/>
+
     <!--[if IE]>
     <script type="text/javascript">
         var console = {
@@ -56,9 +59,7 @@
 <%@include file="a_header.jsp" %>
 <div id="fullpage" class="fullpage">
     <div class="section" data-anchor="se_home">
-        <div class="intro">
-            <h1>首页</h1>
-        </div>
+        <%@include file="fp_home.jsp" %>
     </div>
     <div class="section" data-anchor="se_search">
         <div class="slide" data-anchor="sl_search_list">
@@ -79,16 +80,15 @@
     </div>
     <div class="section" data-anchor="se_user">
         <div class="slide" data-anchor="sl_user_login">
-            <%--<iframe src="user/a_login"></iframe>--%>
+            <%@include file="user/a_login.jsp" %>
         </div>
         <div class="slide" data-anchor="sl_user_pswRetrieve">
-            <%--<iframe src="user/a_pwdRetrieve"></iframe>--%>
-        </div>
-        <div class="slide" data-anchor="sl_user_register">
             <%@include file="user/a_pwdRetrieve.jsp" %>
         </div>
+        <div class="slide" data-anchor="sl_user_register">
+            <%@include file="user/a_register.jsp" %>
+        </div>
         <div class="slide" data-anchor="sl_user_agreement">
-            <%--<%@include file="user/test.jsp" %>--%>
             <%@include file="user/a_agreement.jsp" %>
         </div>
     </div>

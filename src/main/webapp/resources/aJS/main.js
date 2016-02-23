@@ -7,7 +7,7 @@ $(function () {
     //variables
     var SEARCH_SLIDE_NAV_TOOLTIPS = ['搜索', '定位', '展示', '探测'],
         SECTION_NAV_TOOLTIP_LIST = ['首页', '搜索', '用户'],
-        SECTION_BACKGROUND_LIST = ['#C63D0F', '#1BBC9B', ''];
+        SECTION_BACKGROUND_LIST = ['#686868', '#1BBC9B', ''];//gray,
 
     //functions
     var addTooltip4Slides = function () {
@@ -54,7 +54,7 @@ $(function () {
         controlArrows: false,
         sectionsColor: SECTION_BACKGROUND_LIST,
         fixedElements: '.header, .footer, .sidebar, .pivots,.global-search-wrapper',
-        //resize: true,
+        resize: false,
         paddingTop: '4.8rem',     //header height = 4.6rem
         paddingBottom: '2.8rem',  //footer height = 2.6rem
         //responsiveHeight:900,
@@ -72,34 +72,39 @@ $(function () {
             //（init-2）add slides nav tips for devices search
             addTooltip4Slides();
             //（init-3   ）hide slides nav for user operation
-            //$('.section:last-child .fp-slidesNav').hide();
+            $('.section:last-child .fp-slidesNav').hide();
         },
         afterResize: function () {
-            console.log('Inside afterResize() ==========');
+            //console.log('Inside afterResize() ==========');
         },
         onLeave: function (index, nextIndex, direction) {
-            console.log('Inside onLeave() ==========, index = ' + index + ', nextIndex = ' + nextIndex + ', direction = ' + direction);
+            //console.log('Inside onLeave() ==========, index = ' + index + ', nextIndex = ' + nextIndex + ', direction = ' + direction);
             //BE CAREFUL! 这里的index和nextIndex的值要严格和HTML的DOM中的section一一对应
             //↓如果下一个section是用户登陆、注册等操作，则隐藏全局搜索框
-            if (nextIndex == 3 && !GlobalSearchForm.isHidden()) {
-                GlobalSearchForm.hide();
-            } else if (GlobalSearchForm.isHidden()) {
-                GlobalSearchForm.show();
-            }
+            /* if (index == 3 && !GlobalSearchForm.isHidden()) {
+             GlobalSearchForm.hide();
+             } else if (GlobalSearchForm.isHidden()) {
+             GlobalSearchForm.show();
+             }*/
             /*//↓remove the active menu item, to make it animate more smoothly
              $('#menu').find('a[href="#' + anchorLink + '/' + slideIndex + '"]').closest('li').removeClass('active');*/
         },
         afterLoad: function (anchorLink, index) {
-            console.log('Inside afterLoad() ==========, anchorLink = ' + anchorLink + ', index = ' + index);
+            //console.log('Inside afterLoad() ==========, anchorLink = ' + anchorLink + ', index = ' + index);
             correctMenu();  //(1)
+            if (index == 3 && !GlobalSearchForm.isHidden() || index == 1) {
+                GlobalSearchForm.hide();
+            } else if (GlobalSearchForm.isHidden()) {
+                GlobalSearchForm.show();
+            }
         },
         afterSlideLoad: function (anchorLink, index, slideAnchor, slideIndex) {
-            console.log('Inside afterSlideLoad() ==========, anchorLink = ' + anchorLink + ', index = ' + index + ', slideAnchor = ' + slideAnchor + ', slideIndex = ' + slideAnchor);
+            //console.log('Inside afterSlideLoad() ==========, anchorLink = ' + anchorLink + ', index = ' + index + ', slideAnchor = ' + slideAnchor + ', slideIndex = ' + slideAnchor);
             correctMenu();
             $('.fp-slidesNav a').tooltip('hide');//隐藏slide的tooltip
         },
         onSlideLeave: function (anchorLink, index, slideIndex, direction, nextSlideIndex) {
-            console.log('Inside onSlideLeave() ==========, anchorLink = ' + anchorLink + ', index = ' + index + ', slideIndex = ' + slideIndex + ', nextSlideIndex = ' + nextSlideIndex);
+            //console.log('Inside onSlideLeave() ==========, anchorLink = ' + anchorLink + ', index = ' + index + ', slideIndex = ' + slideIndex + ', nextSlideIndex = ' + nextSlideIndex);
             //↓remove the active menu item, to make it animate more smoothly
             //$('#menu').find('a[href="#' + anchorLink + '/' + slideIndex + '"]').closest('li').removeClass('active');
         }

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%--<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -47,17 +47,17 @@
 </head>
 
 <body>
-<div class="main">
+<div class="main">--%>
     <div class="wraper">
-        <p class="tr"><a href="javascript:history.go(-1); " class="blue ml10 fz12">返回上一页&raquo;</a></p>
+        <%--<p class="tr"><a href="javascript:history.go(-1); " class="blue ml10 fz12">返回上一页&raquo;</a></p>--%>
 
         <h2 class="green">用户登录</h2>
 
-        <form class="form" action="<%=basePath%>user/api/login">
+        <form class="form" action="<%=basePath%>user/api/login" id="login_form">
             <ul>
                 <li>
                     <label class="label"><span class="need">*</span> 用户名：</label>
-                    <input type="text" value="" name="username" class="inputxt" autofocus="autofocus"
+                    <input type="text" value="" name="username" class="inputxt"
                            datatype="s6-16"
                            nullmsg="请输入用户名"/>
                 </li>
@@ -70,15 +70,16 @@
             </ul>
             <div class="action">
                 <input type="submit" value="登录"/>
-                <a href="forgetPwd" class="forward-link">忘记密码</a>
+                <a href="#se_user/sl_user_pswRetrieve" class="forward-link">忘记密码</a>
             </div>
         </form>
 
         <div>
-            还没有账号?<a href="register" class="forward-link">去注册</a>
+            还没有账号?<a href="#se_user/sl_user_register" class="forward-link to-register">去注册</a>
         </div>
     </div>
-</div>
+<%--</div>--%>
+<%--
 <spring:url value="/resources/js/lib/jquery-1.11.3.min.js" var="jQuery"/>
 <script src="${jQuery}"></script>
 <spring:url value="/resources/js/lib/loading/jquery.showLoading.min.js" var="loading"/>
@@ -88,7 +89,8 @@
 <spring:url value="/resources/js/lib/Validform_v5.3.2_min.js" var="validform"/>
 <script src="${validform}"></script>
 <spring:url value="/resources/js/lib/jquery.sha1.js" var="sha1"/>
-<script src="${sha1}"></script>
+<script src="${sha1}"></script>--%>
+<%--
 <script type="text/javascript">
     $(function () {
         var pswStr = $("#psw").val(),
@@ -151,4 +153,4 @@
     })
 </script>
 </body>
-</html>
+</html>--%>

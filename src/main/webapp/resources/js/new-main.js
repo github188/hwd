@@ -62,7 +62,7 @@ $(function () {
     $('.home-search-form').on('submit', function (e) {
         e.preventDefault();
         console.log("home form search");
-        Homepage.search();
+        HomeSearch.search();
     });
 
     //advanced search link
@@ -122,7 +122,7 @@ function pageSlide() {
         var data = MySessionStorage.get('data');    //当data.statuscode!=200的时候需要做特殊处理，待开发-------------
         switch (tag) {
             case 'home':
-                Homepage.show();
+                HomeSearch.show();
                 break;
             case 'list':
                 if (!homepage_search_flag) {
