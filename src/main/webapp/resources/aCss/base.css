@@ -140,10 +140,6 @@ body {
     color: #ccc;
 }
 
-/*.header .nav li:last-child a {
-    font-size: 1.8rem;
-}*/
-
 .header .nav li a.current, .header .nav li a:hover,
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:focus,
@@ -160,10 +156,15 @@ body {
     color: #ccc;
 }
 
+#logout {
+    display: none;
+}
+
 /* Style for global form
 * --------------------------------------- */
 
 .global-search-wrapper {
+    display: none;
     position: absolute;
     top: 4.6rem;
     left: 0;
@@ -248,11 +249,11 @@ body {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-   /* filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF287BBC', endColorstr='#FF23639A');
-    background-image: -webkit-linear-gradient(top, #287bbc 0%, #23639a 100%);
-    background-image: -moz-linear-gradient(top, #287bbc 0%, #23639a 100%);
-    background-image: -o-linear-gradient(top, #287bbc 0%, #23639a 100%);
-    background-image: linear-gradient(top, #287bbc 0%, #23639a 100%);*/
+    /* filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF287BBC', endColorstr='#FF23639A');
+     background-image: -webkit-linear-gradient(top, #287bbc 0%, #23639a 100%);
+     background-image: -moz-linear-gradient(top, #287bbc 0%, #23639a 100%);
+     background-image: -o-linear-gradient(top, #287bbc 0%, #23639a 100%);
+     background-image: linear-gradient(top, #287bbc 0%, #23639a 100%);*/
     white-space: nowrap;
     box-sizing: border-box;
     float: left;
@@ -262,6 +263,7 @@ body {
 * --------------------------------------- */
 .section {
     text-align: center;
+    background: no-repeat top center fixed linear-gradient(#3f4657, #452525)
 }
 
 .section .intro p {
@@ -276,6 +278,46 @@ body {
     width: 100%;
 }
 
+/*home section*/
+.section .home-search .home-search-form {
+    display: inline-block;
+    position: relative;
+    height: 7rem;
+    min-width: 30rem;
+    width: 50%;
+    line-height: 3rem;
+    padding-bottom: 4rem;
+    margin: 0 auto;
+}
+
+.section .home-search .input-group {
+    min-width: 20rem;
+    width: 90%;
+    width: calc(100% - 6rem);
+}
+
+.section .home-search .advs-link-wrapper {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6rem;
+}
+
+#home_search_btn {
+    z-index: 1001;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 0;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+/*search list section */
+
+/*user section*/
 .section[data-anchor="se_user"] {
     background: url("../img/login_bg.jpg") no-repeat center;
 }

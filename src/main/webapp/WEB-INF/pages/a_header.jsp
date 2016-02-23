@@ -23,8 +23,9 @@
                         <li data-menuanchor="se_search"><a href="#se_search/sl_search_point">全球视觉</a></li>
                         <li data-menuanchor="se_search"><a href="#se_search/sl_search_line">数据探测</a></li>
                         <%--<li><a href="resources/search_result_display/autoplay.html">数据分析</a></li>--%>
-                        <li data-menuanchor="seuser">
+                        <li data-menuanchor="se_user">
                             <a href="#se_user/sl_user_login">登录</a>
+                            <a href="#" id="logout"><span></span> 退出</a>
                         </li>
                     </ul>
                 </div>

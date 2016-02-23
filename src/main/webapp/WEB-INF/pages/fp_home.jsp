@@ -14,7 +14,7 @@
 <div class="home-wrapper">
 --%>
 <div class="home-search">
-    <form class="home-search-form">
+    <form class="home-search-form" id="home-search-form">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search..."
                    id="home_search_input" name="home_search_input">

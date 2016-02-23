@@ -18,7 +18,8 @@
 --%>
 <div class="wraper">
     <%--<p class="tr"><a href="#se_user/sl_user_login" class="blue ml10 fz12 to-login "  style="background:green;">返回注册页&raquo;</a></p>--%>
-    <h2 class="green">网易通行证服务条款</h2>
+    <h2 class="green">网易通行证服务条款    <a href="#se_user/sl_user_register" class="ml10 fz12 to-login blue">返回注册页&raquo;</a>
+    </h2>
 
 <pre>
 【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。如用户不同意本服务条款任意内容，请勿注册或使用网易服务。如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。

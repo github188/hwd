@@ -37,6 +37,9 @@ $(function () {
     };
 
     //execute
+    InputSuggest.init();
+    HomeSearch.init();
+    User.init();
     $('.fullpage').fullpage({
         //↓Navigation
         menu: '#menu',
@@ -75,20 +78,13 @@ $(function () {
             $('.section:last-child .fp-slidesNav').hide();
         },
         afterResize: function () {
-            //console.log('Inside afterResize() ==========');
+            console.log('Inside afterResize() ==========');
         },
         onLeave: function (index, nextIndex, direction) {
-            //console.log('Inside onLeave() ==========, index = ' + index + ', nextIndex = ' + nextIndex + ', direction = ' + direction);
+            console.log('Inside onLeave() ==========, index = ' + index + ', nextIndex = ' + nextIndex + ', direction = ' + direction);
             //BE CAREFUL! 这里的index和nextIndex的值要严格和HTML的DOM中的section一一对应
             //↓如果下一个section是用户登陆、注册等操作，则隐藏全局搜索框
-            /* if (index == 3 && !GlobalSearchForm.isHidden()) {
-             GlobalSearchForm.hide();
-             } else if (GlobalSearchForm.isHidden()) {
-             GlobalSearchForm.show();
-             }*/
-            /*//↓remove the active menu item, to make it animate more smoothly
-             $('#menu').find('a[href="#' + anchorLink + '/' + slideIndex + '"]').closest('li').removeClass('active');*/
-            if (nextIndex == 1 || nextIndex == 3) {
+            if ((nextIndex == 1 || nextIndex == 3) && !GlobalSearchForm.isHidden()) {
                 GlobalSearchForm.hide();
             }
         },
@@ -107,11 +103,7 @@ $(function () {
             $('.fp-slidesNav a').tooltip('hide');//隐藏slide的tooltip
         },
         onSlideLeave: function (anchorLink, index, slideIndex, direction, nextSlideIndex) {
-            //console.log('Inside onSlideLeave() ==========, anchorLink = ' + anchorLink + ', index = ' + index + ', slideIndex = ' + slideIndex + ', nextSlideIndex = ' + nextSlideIndex);
-            //↓remove the active menu item, to make it animate more smoothly
-            //$('#menu').find('a[href="#' + anchorLink + '/' + slideIndex + '"]').closest('li').removeClass('active');
+            console.log('Inside onSlideLeave() ==========, anchorLink = ' + anchorLink + ', index = ' + index + ', slideIndex = ' + slideIndex + ', nextSlideIndex = ' + nextSlideIndex);
         }
     });
-    InputSuggest.init();
-    User.init();
 });

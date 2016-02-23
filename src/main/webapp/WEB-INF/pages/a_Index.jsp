@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="resources/aCss/user-pages-style.css"/>
 
     <%--↓search-related css--%>
-    <link rel="stylesheet" type="text/css" href="resources/aCss/home-sec.css"/>
+    <%--<link rel="stylesheet" type="text/css" href="resources/aCss/home-sec.css"/>--%>
 
     <!--[if IE]>
     <script type="text/javascript">
@@ -44,15 +44,8 @@
     <%--↓libs--%>
     <script src="resources/aJS/libs/jquery-1.11.3.min.js"></script>
     <script src="resources/aJS/libs/jquery.slimscroll.min.js"></script>
-    <script src="resources/aJS/libs/jquery.fullpage.js"></script>
     <script src="resources/aJS/libs/bootstrap.min.js"></script>
     <script src="resources/aJS/libs/typeahead.bundle.min.js"></script>
-
-    <%--↓basic js--%>
-    <script src="resources/aJS/InputSuggest.js"></script>
-    <script src="resources/aJS/HomeSearch.js"></script>
-    <script src="resources/aJS/GlobalSearchForm.js"></script>
-    <script src="resources/aJS/main.js"></script>
 
     <%--↓user-related js--%>
     <script src="resources/aJS/libs/Validform_v5.3.2_min.js"></script>
@@ -60,16 +53,28 @@
     <script src="resources/aJS/ajax.js"></script>
     <script src="resources/aJS/User.js"></script>
 
+    <%--↓basic js--%>
+    <script src="resources/aJS/Session.js"></script>
+    <script src="resources/aJS/InputSuggest.js"></script>
+    <script src="resources/aJS/HomeSearch.js"></script>
+    <script src="resources/aJS/GlobalSearchForm.js"></script>
+
+    <script src="resources/aJS/libs/jquery.fullpage.js"></script>
+    <script src="resources/aJS/main.js"></script>
+
 </head>
 <body>
 <%@include file="a_header.jsp" %>
+<%--<%@include file="fp_sidebar.jsp" %>--%>
+<%--<div style="z-index:1000;position: fixed;top: 8rem;left: 0;">dddd</div>--%>
+
 <div id="fullpage" class="fullpage">
     <div class="section" data-anchor="se_home">
         <%@include file="fp_home.jsp" %>
     </div>
     <div class="section" data-anchor="se_search">
         <div class="slide" data-anchor="sl_search_list">
-            <h1>搜索列表</h1>
+            <%--<%@include file="fp_list.jsp" %>--%>
         </div>
         <div class="slide" data-anchor="sl_search_map">
             <h1>地图</h1>
