@@ -20,19 +20,20 @@ $(function () {
         });
         slideNavList.tooltip();
     };
-    var correctMenu = function () {
+    var correctMenu = function (sectionAnchor, slideIndex) {
         //console.log('Inside correctMenu() ==========');
-        var currentSection = $('.fp-section.active');
-        var currentSectionAnchor = currentSection.attr('data-anchor');
-        if (currentSection.find('div.fp-slides')) {
-            var currentSlide = currentSection.find('.fp-slide.active');
-            var currentSlideAnchor = currentSlide.attr('data-anchor');
-            var activeMenuItem = $('a[href="#' + currentSectionAnchor + '/' + currentSlideAnchor + '"]');
-            if (activeMenuItem.length == 0) {
-                activeMenuItem = $('a[href="#' + currentSectionAnchor);
+        var activeMenuItem, aHref;
+        if (true) {
+            var currentSection = $('.fp-section.active');
+            var currentSectionAnchor = currentSection.attr('data-anchor');
+            if (currentSection.find('div.fp-slides')) {
+                var currentSlide = currentSection.find('.fp-slide.active');
+                var currentSlideAnchor = currentSlide.attr('data-anchor');
+                aHref = currentSlideAnchor ? currentSectionAnchor + '/' + currentSlideAnchor : currentSectionAnchor;
+                activeMenuItem = $('a[href="#' + aHref + '"]');
+                $('#menu').find('li[data-menuanchor="' + currentSectionAnchor + '"]').removeClass('active');
+                activeMenuItem.closest('li').addClass('active');
             }
-            $('#menu').find('li[data-menuanchor="' + currentSectionAnchor + '"]').removeClass('active');
-            activeMenuItem.closest('li').addClass('active');
         }
     };
 
@@ -56,7 +57,7 @@ $(function () {
         //↓Design
         controlArrows: false,
         sectionsColor: SECTION_BACKGROUND_LIST,
-        fixedElements: '.header, .footer, .sidebar, .pivots,.global-search-wrapper',
+        fixedElements: '.header, .footer, .sidebar, .pivots-wrapper,.global-search-wrapper',
         resize: false,
         paddingTop: '4.8rem',     //header height = 4.6rem
         paddingBottom: '2.8rem',  //footer height = 2.6rem
@@ -84,8 +85,10 @@ $(function () {
             console.log('Inside onLeave() ==========, index = ' + index + ', nextIndex = ' + nextIndex + ', direction = ' + direction);
             //BE CAREFUL! 这里的index和nextIndex的值要严格和HTML的DOM中的section一一对应
             //↓如果下一个section是用户登陆、注册等操作，则隐藏全局搜索框
-            if ((nextIndex == 1 || nextIndex == 3) && !GlobalSearchForm.isHidden()) {
+            if (nextIndex == 1 || nextIndex == 3) {
                 GlobalSearchForm.hide();
+                Sidebar.hide();
+                Pivot.hide();
             }
         },
         afterLoad: function (anchorLink, index) {
@@ -93,8 +96,17 @@ $(function () {
             correctMenu();  //(1)
             if (index == 3 || index == 1) {
                 GlobalSearchForm.hide();
-            } else if (GlobalSearchForm.isHidden()) {
-                GlobalSearchForm.show();
+            } else {
+                if (GlobalSearchForm.isHidden()) {
+                    GlobalSearchForm.show();
+                }
+                if (Sidebar.isHidden()) {
+                    Sidebar.show();
+                }
+
+                if (Pivot.isHidden()) {
+                    Pivot.show();
+                }
             }
         },
         afterSlideLoad: function (anchorLink, index, slideAnchor, slideIndex) {

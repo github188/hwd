@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="resources/aCss/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="resources/aCss/typeaheadjs.css"/>
     <link rel="stylesheet" type="text/css" href="resources/aCss/base.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/aCss/sidebar.css"/>
 
     <%--↓user-related css--%>
     <link rel="stylesheet" type="text/css" href="resources/aCss/user-pages-style.css"/>
@@ -48,6 +49,7 @@
     <script src="resources/aJS/libs/typeahead.bundle.min.js"></script>
 
     <%--↓user-related js--%>
+    <script src="resources/aJS/libs/jquery.fullpage.js"></script>
     <script src="resources/aJS/libs/Validform_v5.3.2_min.js"></script>
     <script src="resources/aJS/libs/jquery.sha1.js"></script>
     <script src="resources/aJS/ajax.js"></script>
@@ -58,15 +60,15 @@
     <script src="resources/aJS/InputSuggest.js"></script>
     <script src="resources/aJS/HomeSearch.js"></script>
     <script src="resources/aJS/GlobalSearchForm.js"></script>
+    <script src="resources/aJS/Sidebar.js"></script>
+    <script src="resources/aJS/Pivot.js"></script>
 
-    <script src="resources/aJS/libs/jquery.fullpage.js"></script>
     <script src="resources/aJS/main.js"></script>
 
 </head>
 <body>
 <%@include file="a_header.jsp" %>
-<%--<%@include file="fp_sidebar.jsp" %>--%>
-<%--<div style="z-index:1000;position: fixed;top: 8rem;left: 0;">dddd</div>--%>
+<%@include file="fp_sidebar.jsp" %>
 
 <div id="fullpage" class="fullpage">
     <div class="section" data-anchor="se_home">

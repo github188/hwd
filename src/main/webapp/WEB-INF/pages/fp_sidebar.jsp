@@ -1,13 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div style="z-index:1000;position: fixed;top: 8rem;left: 0;">dddd</div>
-<%--<div class="sidebar">
-    &lt;%&ndash;<a class=" advs-link advs-link-main" href="#" role="button" aria-controls="advs-wrapper">精确搜索
-        <span class="glyphicon glyphicon-menu-right"></span>
-    </a>
-    <div class="search-types"></div>
-    <div class="clearfix"></div>&ndash;%&gt;
+<div class="sidebar">
     <div class="panel-group" id="facet" role="tablist" aria-multiselectable="true">
-
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="countryTitle">
                 <h4 class="panel-title">
@@ -101,4 +94,7 @@
             </div>
         </div>
     </div>
-</div>--%>
+</div>
+<div id="pivots_wrapper" class="pivots-wrapper for-sidebar-padding">aaaaaaaaaaaaaaaaa
+    <ul class="pivots"></ul>
+</div>

@@ -94,6 +94,7 @@ body {
 /* Fixed header and footer.
 * --------------------------------------- */
 .header, .footer {
+    z-index: 100;
     position: fixed;
     height: 4.6rem;
     display: block;
@@ -165,6 +166,7 @@ body {
 
 .global-search-wrapper {
     display: none;
+    z-index: 100;
     position: absolute;
     top: 4.6rem;
     left: 0;

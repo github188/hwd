@@ -1,0 +1,173 @@
+@charset "UTF-8";
+.sidebar {
+    display: none;
+    z-index: 99;
+    position: fixed;
+    top: 8rem;
+    /*padding-top: 3rem;*/
+    left: 0;
+    min-width: 20rem;
+    max-height: 100%;
+    float: left;
+    overflow: auto;
+    background: no-repeat top center -webkit-linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));
+    background: no-repeat top center linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));
+    box-sizing: border-box;
+}
+
+/*.sidebar.map {*/
+/*color: #333!important;*/
+/*background: hsla(201, 100%, 77%, 1);*/
+/*box-shadow: 1px 1px 2px white;*/
+/*}*/
+
+.sidebar a {
+    font-size: 2rem;
+    color: hsla(206, 85%, 65%, 1);
+    /*margin-top: 5rem;*/
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+/*侧边栏显示。需要正文内容缩进，以免内容与边栏覆盖，margin-left的值与.sidebar-col.width一致*/
+.for-sidebar-margin {
+    margin-left: 22rem;
+}
+
+.for-sidebar-padding {
+    padding-left: 22rem;
+}
+
+.sidebar .search-types {
+    /*预留，为将来按端口搜索或者按漏洞搜索预留*/
+    display: none;
+}
+
+#facet div {
+    background-color: transparent;
+    color: #ccc;
+    border: none;
+}
+
+#facet > div {
+    margin-top: 1rem;
+    border-bottom: 1px solid hsla(0, 30%, 21%, .6);
+}
+
+#facet .panel-title a {
+    display: block;
+    width: 100%;
+    padding-left: 1rem;
+    margin-left: 2px;
+    font-size: 2.1rem;
+    font-weight: bold;
+    line-height: 2.5rem;
+    letter-spacing: .5rem;
+}
+
+#facet .panel-heading {
+    padding: 5px;
+}
+
+#facet .panel-body {
+    padding-bottom: 0;
+}
+
+#facet ol.facet-values {
+    padding-top: 5px;
+    clear: left;
+}
+
+#facet ol li.facet-value {
+    width: 16rem;
+    padding-bottom: 3px;
+}
+
+#facet li input[type="checkbox"] {
+    z-index: 60;
+    position: relative;
+    display: inline;
+    width: 1em;
+    height: 1em;
+    margin-left: 5px;
+    cursor: pointer;
+    float: left;
+}
+
+#facet input[type="checkbox"] + .label-container label {
+    margin-left: 5px;
+    display: -moz-inline-stack;
+    display: inline-block;
+    zoom: 1;
+    position: relative;
+    cursor: pointer;
+    vertical-align: text-bottom;
+    line-height: 1.5rem;
+}
+
+#facet input[type="checkbox"] + label:before, .facet input[type="checkbox"] + .label-container label:before {
+    line-height: 2rem;
+    color: #0077b5;
+    font-weight: normal;
+    border-radius: 2px;
+    margin-left: -2rem;
+    z-index: 50;
+    display: -moz-inline-stack;
+    display: inline-block;
+    zoom: 1;
+    border: 1px solid #c1c1c1;
+    content: " ";
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    text-align: center;
+}
+
+#facet li.facet-value .facet-count {
+    font-weight: normal;
+    float: right;
+    unicode-bidi: bidi-override;
+}
+
+#facet li.facet-value .facet-label {
+    font-weight: normal;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+
+}
+
+#facet li.facet-value .facet-label bdi {
+    margin-right: 5px;
+}
+
+#facet ol.inner-facet-values {
+    margin-left: 1rem;
+}
+
+#facet ol.inner-facet-values .facet-value {
+    width: 15rem;
+}
+
+/*Pivots*/
+.pivots-wrapper {
+    display: none;
+    z-index: 99;
+    position: fixed;
+    top: 8rem;
+    left: 0;
+    /*width: 100%;*/
+    /*background: no-repeat top center -webkit-linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));*/
+    /*background: no-repeat top center linear-gradient(hsla(223, 16%, 29%, 1), hsla(0, 30%, 21%, 1));*/
+    box-sizing: border-box;
+}
+
+/*.sidebar.map {*/
+/*color: #333!important;*/
+/*background: hsla(201, 100%, 77%, 1);*/
+/*box-shadow: 1px 1px 2px white;*/
+/*}*/

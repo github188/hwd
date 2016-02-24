@@ -1,37 +1,103 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="wraper">
-    <p class="tr"><a href="#se_user/sl_user_login" class="blue ml10 fz12 to-login">返回注册页&raquo;</a></p>
-
-    <h2 class="green">网易通行证服务条款</h2>
-    <pre>
-【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
-        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
-        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
-        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
-        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
-
-【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
-        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
-        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
-        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
-        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
-
-【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
-        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
-        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
-        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
-        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
-
-【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
-        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
-        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
-        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
-        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
-
-【注意】欢迎申请使用广州网易计算机系统有限公司及其他合作运营主体（下列简称为“网易公司”或“网易”）提供的服务。
-        请您（下列简称为“用户”）仔细阅读以下全部内容（特别是粗体下划线标注的内容）。
-        如用户不同意本服务条款任意内容，请勿注册或使用网易服务。
-        如用户通过进入注册程序并勾选“我同意网易通行证服务条款”，即表示用户与网易公司已达成协议，自愿接受本服务条款的所有内容。
-        此后，用户不得以未阅读本服务条款内容作任何形式的抗辩。
-    </pre >
+<div style="z-index:1000;position: fixed;top: 8rem;left: 0;">dddd</div>
+<div class="sidebar">
+    <%--<a class=" advs-link advs-link-main" href="#" role="button" aria-controls="advs-wrapper">精确搜索
+        <span class="glyphicon glyphicon-menu-right"></span>
+    </a>
+    <div class="search-types"></div>
+    <div class="clearfix"></div>--%>
+    <div class="panel-group" id="facet" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="countryTitle">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#countryList" aria-expanded="false" aria-controls="countryList">
+                        国家<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="countryList" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="countryTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="device_serviceTitle">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#device_serviceList" aria-expanded="false" aria-controls="device_serviceList">
+                        服务<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="device_serviceList" class="panel-collapse collapse" role="tabpanel"
+                 aria-labelledby="device_serviceTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="portTitle">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#portList" aria-expanded="false" aria-controls="portList">
+                        端口<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="portList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="portTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="device_typeTitle">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#device_typeList" aria-expanded="false" aria-controls="device_typeList">
+                        类型<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="device_typeList" class="panel-collapse collapse" role="tabpanel"
+                 aria-labelledby="device_typeTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="vulTitle">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#vulList" aria-expanded="false" aria-controls="vulList">
+                        漏洞<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="vulList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="vulTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="osTitle">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse"
+                       href="#osList" aria-expanded="false" aria-controls="osList">
+                        操作系统<span class="glyphicon glyphicon-menu-down pull-right"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="osList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="osTitle">
+                <div class="panel-body">
+                    <ol class="facet-values"></ol>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
